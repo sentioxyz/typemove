@@ -1,0 +1,20 @@
+# https://ls-lint.org/2.0/configuration/the-rules.html#overview
+ls:
+  .dir: kebab-case | snake_case | regex:.[a-z0-9]+ | regex:[[a-z0-9]+]
+  .json: kebab-case | regex:.[a-z0-9]+ | regex:tsconfig[a-z0-9.]*
+  .js: kebab-case
+  .config.js: kebab-case
+  .ts: kebab-case | regex:_[a-z0-9]+ | regex:[a-z0-9]+.config
+  .test.ts: kebab-case
+  .d.ts: kebab-case
+
+ignore:
+  - .git
+  - .idea
+  - .github
+  - docs
+  - node_modules
+  - packages/base/dist
+  - packages/base/node_modules
+  - packages/sui/dist
+  - packages/sui/node_modules
