@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["packages/*"],
+  "name": "TypeMove",
+  "entryPointStrategy": "packages",
+  "includeVersion": true
+}

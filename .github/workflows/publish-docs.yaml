@@ -25,10 +25,10 @@ jobs:
         run: pnpm install
       - name: Build
         run: pnpm build:all
-#      - name: Create the docs
-#        run: pnpm gen:docs
-#      - name: Deploy 🚀
-#        uses: JamesIves/github-pages-deploy-action@v4
-#        with:
-#          branch: gh-pages
-#          folder: docs
+      - name: Create the docs
+        run: pnpm gen:docs
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs

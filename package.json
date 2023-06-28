@@ -4,6 +4,7 @@
     "build:all": "pnpm --filter \"./packages/*\" build",
     "cleanjest": "pnpm jest --clearCache",
     "format": "prettier --write .",
+    "gen:docs": "typedoc --options typedoc.json",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "git config --local include.path ../.github/.gitconfig && git config core.hooksPath .github/.githooks",
     "lint": "ls-lint && eslint .",
@@ -37,6 +38,7 @@
     "semantic-release-monorepo": "^7.0.5",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "typedoc": "^0.24.8",
     "typescript": "^5.1.3"
   },
   "engines": {
