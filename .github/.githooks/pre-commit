@@ -1,0 +1,7 @@
+set -e
+
+echo "Running pre-commit filename check"
+pnpm ls-lint
+
+echo "Running pre-commit code formatter"
+pnpm lint-staged

@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "config:base",
+    ":preserveSemverRanges"
+  ],
+  "labels": ["dependencies"],
+  "groupName": "all",
+  "separateMajorMinor": false,
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "node",
+        "semantic-release"
+      ],
+      "enabled": false
+    }
+  ],
+  "timezone": "America/Los_Angeles",
+  "schedule": ["after 9pm on sunday"]
+}

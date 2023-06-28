@@ -1,0 +1,34 @@
+name: Publish Docs
+
+on:
+  push:
+    tags:
+      - v**
+      - "!v**-rc**"
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - name: Install
+        run: pnpm install
+      - name: Build
+        run: pnpm build:all
+#      - name: Create the docs
+#        run: pnpm gen:docs
+#      - name: Deploy 🚀
+#        uses: JamesIves/github-pages-deploy-action@v4
+#        with:
+#          branch: gh-pages
+#          folder: docs

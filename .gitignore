@@ -1,3 +1,11 @@
+builtin
+debug
+docs
+types
+
+.idea
+.run
+
 # Logs
 logs
 *.log
