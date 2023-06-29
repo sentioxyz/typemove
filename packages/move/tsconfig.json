@@ -4,7 +4,7 @@
     "baseUrl": "./src",
     "outDir": "dist",
     "paths": {
-      "@typemove/move/*": ["./*/index.js"]
+      "@typemove/move": ["./index.ts"]
     }
   },
   "exclude": ["dist", "jest.config.ts"],
