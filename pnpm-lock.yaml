@@ -93,7 +93,7 @@ importers:
         specifier: ^5.1.3
         version: 5.1.5
 
-  packages/base:
+  packages/move:
     dependencies:
       chalk:
         specifier: ^5.2.0
@@ -107,9 +107,9 @@ importers:
       '@mysten/sui.js':
         specifier: ^0.36.0
         version: 0.36.0
-      '@sentio/typemove-base':
+      '@typemove/move':
         specifier: workspace:*
-        version: link:../base
+        version: link:../move
 
 packages:
 

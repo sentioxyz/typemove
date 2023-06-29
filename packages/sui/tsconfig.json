@@ -4,7 +4,7 @@
     "baseUrl": "./src",
     "outDir": "dist",
     "paths": {
-      "@sentio/typemove-sui/*": ["./*/index.js"]
+      "@typemove/sui/*": ["./*/index.js"]
     }
   },
   "exclude": ["dist", "jest.config.ts"],

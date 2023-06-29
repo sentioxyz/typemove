@@ -4,6 +4,6 @@ export default {
   modulePathIgnorePatterns: ['<rootDir>/lib/'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
-    '^@sentio/typemove-sui(.*)$': '<rootDir>/src/$1',
+    '^@typemove/sui(.*)$': '<rootDir>/src/$1',
   },
 }

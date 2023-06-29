@@ -1,5 +1,5 @@
 {
-  "name": "@sentio/typemove-base",
+  "name": "@typemove/move",
   "version": "1.0.0-development",
   "license": "Apache-2.0",
   "type": "module",
@@ -15,5 +15,6 @@
   "dependencies": {
     "chalk": "^5.2.0",
     "radash": "^11.0.0"
-  }
+  },
+  "url": "https://github.com/sentioxyz/typemove"
 }
