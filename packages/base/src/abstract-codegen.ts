@@ -14,9 +14,10 @@ import {
   moduleQname,
   normalizeToJSName,
   SPLITTER,
+  upperFirst,
   VECTOR_STR,
 } from './utils.js'
-import { camel, capitalize } from 'radash'
+import { camel } from 'radash'
 import { TypeDescriptor } from './types.js'
 import { ChainAdapter } from './chain-adapter.js'
 
@@ -208,7 +209,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     const qname = moduleQname(module)
     const functions = this.GENERATE_ON_ENTRY
       ? module.exposedFunctions
-          .map((f) => this.generateOnEntryFunctions(module, f))
+          .map((f) => this.generateForEntryFunctions(module, f))
           .filter((s) => s !== '')
       : []
     const clientFunctions = this.GENERATE_CLIENT
@@ -225,7 +226,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
 
     const eventTypes = new Set(eventStructs.keys())
     const events = Array.from(eventStructs.values())
-      .map((e) => this.generateOnEvents(module, e))
+      .map((e) => this.generateForEvents(module, e))
       .filter((s) => s !== '')
     const structs = module.structs.map((s) =>
       this.generateStructs(module, s, eventTypes)
@@ -394,7 +395,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
         )
       })
 
-    const camelFuncName = capitalize(camel(func.name))
+    const camelFuncName = upperFirst(camel(func.name))
 
     const genericString = this.generateFunctionTypeParameters(func)
     return `
@@ -442,57 +443,18 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     return source
   }
 
-  generateOnEntryFunctions(
+  generateForEntryFunctions(
     module: InternalMoveModule,
     func: InternalMoveFunction
   ) {
-    if (!func.isEntry) {
-      return ''
-    }
-
-    // const genericString = generateFunctionTypeParameters(func)
-    const moduleName = normalizeToJSName(module.name)
-
-    const camelFuncName = capitalize(camel(func.name))
-    const source = `
-  onEntry${camelFuncName}(func: (call: ${moduleName}.${camelFuncName}Payload, ctx: ${this.PREFIX}Context) => void, filter?: CallFilter, fetchConfig?: Partial<MoveFetchConfig>): ${moduleName} {
-    this.onEntryFunctionCall(func, {
-      ...filter,
-      function: '${module.name}::${func.name}'
-    },
-    fetchConfig)
-    return this
-  }`
-
-    return source
+    return ''
   }
 
-  generateOnEvents(
+  generateForEvents(
     module: InternalMoveModule,
     struct: InternalMoveStruct
   ): string {
-    // for struct that has drop + store
-    // if (!isEvent(struct, module)) {
-    //   return ''
-    // }
-
-    // const genericString = generateStructTypeParameters(struct)
-
-    const moduleName = normalizeToJSName(module.name)
-    const source = `
-  onEvent${struct.name}(func: (event: ${moduleName}.${normalizeToJSName(
-      struct.name
-    )}Instance, ctx: ${
-      this.PREFIX
-    }Context) => void, fetchConfig?: Partial<MoveFetchConfig>): ${moduleName} {
-    this.onMoveEvent(func, {
-      type: '${module.name}::${struct.name}'
-    },
-    fetchConfig)
-    return this
-  }
-  `
-    return source
+    return ''
   }
 
   generateTypeForDescriptor(
