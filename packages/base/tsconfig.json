@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "inlineSources": true,
     "rootDir": "./src",
     "baseUrl": "./src",
     "outDir": "dist",
