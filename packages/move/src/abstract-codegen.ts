@@ -32,6 +32,7 @@ interface Config<NetworkType> {
   network: NetworkType
 }
 
+// TODO be able to generate cjs
 export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
   TEST_NET: NetworkType
   MAIN_NET: NetworkType
@@ -42,6 +43,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
   GENERATE_ON_ENTRY = true
   PAYLOAD_OPTIONAL = false
   SYSTEM_MODULES = new Set(['0x1', '0x2', '0x3'])
+  ESM = true
 
   chainAdapter: ChainAdapter<NetworkType, ModuleTypes, StructType>
 
@@ -49,6 +51,10 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     chainAdapter: ChainAdapter<NetworkType, ModuleTypes, StructType>
   ) {
     this.chainAdapter = chainAdapter
+  }
+
+  public maybeEsmPrefix() {
+    return this.ESM ? '.js' : ''
   }
 
   readModulesFile(fullPath: string) {
@@ -183,11 +189,8 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
       rootFileContent += `export * as _${parsed.name.replaceAll(
         '-',
         '_'
-      )} from './${parsed.name}.js'\n`
+      )} from './${parsed.name}${this.maybeEsmPrefix()}\n`
     }
-    // if (builtin) {
-    //   rootFileContent += `export { BUILTIN_TYPES } from '@sentio/sdk/move'`
-    // }
     fs.writeFileSync(rootFile, rootFileContent)
 
     return outputs.length + 1
@@ -586,21 +589,6 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
       return []
     }
 
-    const imports = `
-    import { CallFilter, TypeDescriptor, ANY_TYPE, MoveFetchConfig } from "@sentio/sdk/move"
-    import {
-      MoveCoder, defaultMoveCoder, ${this.moduleGen.PREFIX}BindOptions, ${
-      this.moduleGen.PREFIX
-    }BaseProcessor,
-      TypedEventInstance, ${this.moduleGen.PREFIX}Network, TypedFunctionPayload,
-      ${
-        this.moduleGen.PREFIX
-      }Context } from "@sentio/sdk/${this.moduleGen.PREFIX.toLowerCase()}"
-    import { ${
-      this.moduleGen.ADDRESS_TYPE
-    }, ModuleClient } from "@sentio/sdk/${this.moduleGen.PREFIX.toLowerCase()}"
-    `
-
     const dependedAccounts: string[] = []
 
     const moduleImports: string[] = []
@@ -616,11 +604,11 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
         if (isFrameworkAccount(account) && !isFrameworkAccount(address)) {
           // Decide where to find runtime library
           moduleImports.push(
-            `import { _${account} } from "@sentio/sdk/${this.moduleGen.PREFIX.toLowerCase()}/builtin"`
+            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"`
           )
         } else {
           moduleImports.push(
-            `import * as _${account} from "${tsAccountModule}.js"`
+            `import * as _${account} from "${tsAccountModule}${this.moduleGen.maybeEsmPrefix()}"`
           )
         }
 
@@ -649,7 +637,7 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
 
     /* Generated modules for account ${address} */
 
-    ${imports}
+    ${this.generateImports()}
 
     ${moduleImports.join('\n')}
 
@@ -677,5 +665,20 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
         fileContent: source,
       },
     ]
+  }
+
+  generateImports() {
+    const imports = `
+    import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
+    import {
+      MoveCoder, defaultMoveCoder, ${
+        this.moduleGen.PREFIX
+      }Network } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"
+    import { ${
+      this.moduleGen.ADDRESS_TYPE
+    }, ModuleClient } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"
+    `
+
+    return imports
   }
 }

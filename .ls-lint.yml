@@ -14,7 +14,7 @@ ignore:
   - .github
   - docs
   - node_modules
-  - packages/base/dist
-  - packages/base/node_modules
+  - packages/move/dist
+  - packages/move/node_modules
   - packages/sui/dist
   - packages/sui/node_modules
