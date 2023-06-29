@@ -27,5 +27,4 @@ export abstract class ChainAdapter<NetworkType, ModuleType, StructType> {
 
   abstract getType(base: StructType): string
   abstract getData<T>(base: StructType): any
-  abstract validateAndNormalizeAddress(address: string): string
 }

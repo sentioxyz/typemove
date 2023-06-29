@@ -1,4 +1,9 @@
-import { moduleQname, SPLITTER, VECTOR_STR, bytesToBigInt } from './utils.js'
+import {
+  accountAddressString,
+  moduleQname,
+  SPLITTER,
+  VECTOR_STR,
+} from './utils.js'
 import {
   DecodedStruct,
   matchType,
@@ -10,6 +15,7 @@ import {
   InternalMoveModule,
   InternalMoveStruct,
 } from './internal-models.js'
+// import { bytesToBigInt } from '../utils/index.js'
 import { ChainAdapter } from './chain-adapter.js'
 
 export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
@@ -24,13 +30,13 @@ export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
   }
 
   contains(account: string, name: string) {
-    return this.moduleMapping.has(account + '::' + name)
+    return this.moduleMapping.has(moduleQname({ address: account, name }))
   }
 
   abstract load(module: ModuleType): InternalMoveModule
 
   protected loadInternal(module: InternalMoveModule) {
-    const account = this.adapter.validateAndNormalizeAddress(module.address)
+    const account = accountAddressString(module.address)
     if (this.contains(account, module.name)) {
       return
     }
@@ -56,12 +62,13 @@ export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
 
   protected decodeBigInt(data: any): bigint {
     if (Array.isArray(data)) {
+      throw new Error('data is in byte array')
       // Only sui function need this, strange
-      const bytes = data as number[]
-      return bytesToBigInt(new Uint8Array(bytes.slice().reverse()))
-    } else {
-      return BigInt(data)
+      // const bytes = data as number[]
+      // return bytesToBigInt(new Uint8Array(bytes.slice().reverse()))
     }
+
+    return BigInt(data)
   }
 
   protected encodeBigInt(data: bigint): any {
@@ -72,7 +79,7 @@ export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
 
   async getMoveStruct(type: string): Promise<InternalMoveStruct> {
     const [account_, module, typeName] = type.split(SPLITTER)
-    const account = this.adapter.validateAndNormalizeAddress(account_)
+    const account = accountAddressString(account_)
     type = [account, module, typeName].join(SPLITTER)
 
     let struct = this.typeMapping.get(type)
@@ -101,7 +108,7 @@ export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
 
   async getMoveFunction(type: string): Promise<InternalMoveFunction> {
     const [account_, module, typeName] = type.split(SPLITTER)
-    const account = this.adapter.validateAndNormalizeAddress(account_)
+    const account = accountAddressString(account_)
     type = [account, module, typeName].join(SPLITTER)
 
     let func = this.funcMapping.get(type)
