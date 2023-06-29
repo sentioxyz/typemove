@@ -3,6 +3,10 @@
   "version": "1.0.0-development",
   "license": "Apache-2.0",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
   "files": [
     "{lib,src}",
     "!**/*.test.{js,ts}",
@@ -12,6 +16,7 @@
     "build": "tsc",
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "chalk": "^5.2.0",
     "radash": "^11.0.0"

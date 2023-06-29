@@ -107,9 +107,15 @@ importers:
       '@mysten/sui.js':
         specifier: ^0.36.0
         version: 0.36.0
+      '@sentio/chain':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@typemove/move':
         specifier: workspace:*
         version: link:../move
+      chalk:
+        specifier: ^5.2.0
+        version: 5.2.0
 
 packages:
 
@@ -1148,6 +1154,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@sentio/chain@1.0.1:
+    resolution: {integrity: sha512-MwE2JFSDbroN6xf/IHL6tfufT2Hxwy2ry9zY9eqdX3+xlAPsFykZajViMF9beDYvIA1RcMKK/GJs64fAiNPjkA==}
+    requiresBuild: true
+    dev: false
 
   /@sinclair/typebox@0.25.24:
     resolution: {integrity: sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==}

@@ -189,7 +189,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
       rootFileContent += `export * as _${parsed.name.replaceAll(
         '-',
         '_'
-      )} from './${parsed.name}${this.maybeEsmPrefix()}\n`
+      )} from './${parsed.name}${this.maybeEsmPrefix()}'\n`
     }
     fs.writeFileSync(rootFile, rootFileContent)
 
@@ -204,17 +204,25 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     return 'MAIN_NET'
   }
 
+  protected generateModuleExtra(
+    module: InternalMoveModule,
+    allEventStructs: Map<string, InternalMoveStruct>,
+    network: NetworkType
+  ) {
+    return ''
+  }
+
   generateModule(
     module: InternalMoveModule,
     allEventStructs: Map<string, InternalMoveStruct>,
     network: NetworkType
   ) {
     const qname = moduleQname(module)
-    const functions = this.GENERATE_ON_ENTRY
-      ? module.exposedFunctions
-          .map((f) => this.generateForEntryFunctions(module, f))
-          .filter((s) => s !== '')
-      : []
+    // const functions = this.GENERATE_ON_ENTRY
+    //   ? module.exposedFunctions
+    //       .map((f) => this.generateForEntryFunctions(module, f))
+    //       .filter((s) => s !== '')
+    //   : []
     const clientFunctions = this.GENERATE_CLIENT
       ? module.exposedFunctions
           .map((f) => this.generateClientFunctions(module, f))
@@ -239,53 +247,25 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     )
 
     const moduleName = normalizeToJSName(module.name)
-    let processor = ''
     let client = ''
 
     if (clientFunctions.length > 0) {
       client = `
-      export class ${moduleName}_client extends ModuleClient {
+      export class Client extends ModuleClient {
         ${clientFunctions.join('\n')}
       }
       `
     }
 
-    if (functions.length > 0 || events.length > 0) {
-      processor = `export class ${moduleName} extends ${
-        this.PREFIX
-      }BaseProcessor {
-
-    constructor(options: ${this.PREFIX}BindOptions) {
-      super("${module.name}", options)
-    }
-    static DEFAULT_OPTIONS: ${this.PREFIX}BindOptions = {
-      address: "${module.address}",
-      network: ${this.PREFIX}Network.${this.generateNetworkOption(network)}
-    }
-
-    static bind(options: Partial<${
-      this.PREFIX
-    }BindOptions> = {}): ${moduleName} {
-      return new ${moduleName}({ ...${moduleName}.DEFAULT_OPTIONS, ...options })
-    }
-
-    ${functions.join('\n')}
-
-    ${events.join('\n')}
-  }
-  `
-    }
-
+    // TODO how to deal with callArgs
     return `
-  ${client}
-
-  ${processor}
+  ${this.generateModuleExtra(module, allEventStructs, network)}
 
   export namespace ${moduleName} {
     ${structs.join('\n')}
-
-    ${callArgs.join('\n')}
- }
+    
+    ${client}
+  }
   `
   }
 
@@ -446,12 +426,12 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     return source
   }
 
-  generateForEntryFunctions(
-    module: InternalMoveModule,
-    func: InternalMoveFunction
-  ) {
-    return ''
-  }
+  // generateForEntryFunctions(
+  //   module: InternalMoveModule,
+  //   func: InternalMoveFunction
+  // ) {
+  //   return ''
+  // }
 
   generateForEvents(
     module: InternalMoveModule,
@@ -671,7 +651,7 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
     const imports = `
     import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
     import {
-      MoveCoder, defaultMoveCoder, ${
+      MoveCoder, defaultMoveCoder, TypedEventInstance, ${
         this.moduleGen.PREFIX
       }Network } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"
     import { ${

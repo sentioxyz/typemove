@@ -3,19 +3,27 @@
   "version": "1.0.0-development",
   "license": "Apache-2.0",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
   "files": [
     "{lib,src}",
     "!**/*.test.{js,ts}",
     "!{lib,src}/*/tests"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "pnpm gen && tsc",
     "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
+    "gen": "ts-node-esm  src/codegen/run.ts src/abis src/builtin",
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@mysten/sui.js": "^0.36.0",
-    "@typemove/move": "workspace:*"
+    "@sentio/chain": "^1.0.1",
+    "@typemove/move": "workspace:*",
+    "chalk": "^5.2.0"
   },
   "url": "https://github.com/sentioxyz/typemove"
 }
