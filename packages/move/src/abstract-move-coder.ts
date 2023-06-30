@@ -18,15 +18,15 @@ import {
 // import { bytesToBigInt } from '../utils/index.js'
 import { ChainAdapter } from './chain-adapter.js'
 
-export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
+export abstract class AbstractMoveCoder<ModuleType, StructType> {
   protected moduleMapping = new Map<string, InternalMoveModule>()
   private typeMapping = new Map<string, InternalMoveStruct>()
   private funcMapping = new Map<string, InternalMoveFunction>()
-  network: Network
-  adapter: ChainAdapter<Network, ModuleType, StructType>
+  // network: string
+  adapter: ChainAdapter<ModuleType, StructType>
 
-  protected constructor(network: Network) {
-    this.network = network
+  protected constructor(adapter: ChainAdapter<ModuleType, StructType>) {
+    this.adapter = adapter
   }
 
   contains(account: string, name: string) {
@@ -89,11 +89,9 @@ export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
     const key = account + SPLITTER + module
     let resp = this.requestMap.get(account + SPLITTER + module)
     if (!resp) {
-      resp = this.adapter
-        .fetchModule(account, module, this.network)
-        .then((m) => {
-          return this.load(m)
-        })
+      resp = this.adapter.fetchModule(account, module).then((m) => {
+        return this.load(m)
+      })
       this.requestMap.set(key, resp)
     }
     await resp
@@ -118,11 +116,9 @@ export abstract class AbstractMoveCoder<Network, ModuleType, StructType> {
     const key = account + SPLITTER + module
     let resp = this.requestMap.get(account + SPLITTER + module)
     if (!resp) {
-      resp = this.adapter
-        .fetchModule(account, module, this.network)
-        .then((m) => {
-          return this.load(m)
-        })
+      resp = this.adapter.fetchModule(account, module).then((m) => {
+        return this.load(m)
+      })
       this.requestMap.set(key, resp)
     }
     await resp
