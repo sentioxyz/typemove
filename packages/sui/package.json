@@ -22,7 +22,7 @@
   },
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@mysten/sui.js": "^0.36.0",
+    "@mysten/sui.js": "^0.37.1",
     "@typemove/move": "workspace:*",
     "chalk": "^5.2.0",
     "radash": "^11.0.0"
