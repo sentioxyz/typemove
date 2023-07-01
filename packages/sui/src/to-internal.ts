@@ -32,7 +32,7 @@ export function toInternalModule(
   }
 }
 
-export function toInternalFunction(
+function toInternalFunction(
   name: string,
   func: SuiMoveNormalizedFunction
 ): InternalMoveFunction {
@@ -62,7 +62,7 @@ export function toInternalFunction(
   }
 }
 
-export function toInternalStruct(
+function toInternalStruct(
   name: string,
   struct: SuiMoveNormalizedStruct
 ): InternalMoveStruct {
@@ -77,7 +77,7 @@ export function toInternalStruct(
   }
 }
 
-export function toInternalField(
+function toInternalField(
   module: SuiMoveNormalizedField
 ): InternalMoveStructField {
   return {
@@ -86,7 +86,7 @@ export function toInternalField(
   }
 }
 
-export function toTypeDescriptor(
+function toTypeDescriptor(
   normalizedType: SuiMoveNormalizedType
 ): TypeDescriptor {
   if (typeof normalizedType === 'string') {

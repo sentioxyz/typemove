@@ -26,16 +26,16 @@ interface OutputFile {
   fileContent: string
 }
 
-interface Config<NetworkType> {
+interface Config {
   fileName: string
   outputDir: string
-  network: NetworkType
+  // network: NetworkType
 }
 
 // TODO be able to generate cjs
-export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
-  TEST_NET: NetworkType
-  MAIN_NET: NetworkType
+export abstract class AbstractCodegen<ModuleTypes, StructType> {
+  // TEST_NET: NetworkType
+  // MAIN_NET: NetworkType
   ADDRESS_TYPE: string
   PREFIX: string
   STRUCT_FIELD_NAME: string = 'data'
@@ -45,11 +45,9 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
   SYSTEM_MODULES = new Set(['0x1', '0x2', '0x3'])
   ESM = true
 
-  chainAdapter: ChainAdapter<NetworkType, ModuleTypes, StructType>
+  chainAdapter: ChainAdapter<ModuleTypes, StructType>
 
-  protected constructor(
-    chainAdapter: ChainAdapter<NetworkType, ModuleTypes, StructType>
-  ) {
+  protected constructor(chainAdapter: ChainAdapter<ModuleTypes, StructType>) {
     this.chainAdapter = chainAdapter
   }
 
@@ -64,27 +62,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
   async generate(
     srcDir: string,
     outputDir: string,
-    builtin = false
-  ): Promise<number> {
-    const num1 = await this.generateForNetwork(
-      srcDir,
-      outputDir,
-      this.MAIN_NET,
-      builtin
-    )
-    const num2 = await this.generateForNetwork(
-      path.join(srcDir, 'testnet'),
-      path.join(outputDir, 'testnet'),
-      this.TEST_NET,
-      builtin
-    )
-    return num1 + num2
-  }
-
-  async generateForNetwork(
-    srcDir: string,
-    outputDir: string,
-    network: NetworkType,
+    // network: NetworkType,
     builtin = false
   ) {
     if (!fs.existsSync(srcDir)) {
@@ -122,7 +100,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
       const codeGen = new AccountCodegen(this, loader, abi, modules, {
         fileName: path.basename(file, '.json'),
         outputDir: outputDir,
-        network,
+        // network,
       })
 
       outputs.push(...codeGen.generate())
@@ -131,13 +109,13 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     while (loader.pendingAccounts.size > 0) {
       for (const account of loader.pendingAccounts) {
         console.log(
-          `download dependent module for account ${account} at ${network}`
+          `download dependent module for account ${account} at ${this.chainAdapter.endpoint}`
         )
 
         try {
           const rawModules = await this.chainAdapter.fetchModules(
-            account,
-            network
+            account
+            // network
           )
           const modules = this.chainAdapter.toInternalModules(rawModules)
 
@@ -156,7 +134,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
             {
               fileName: account,
               outputDir: outputDir,
-              network,
+              // network,
             }
           )
 
@@ -196,26 +174,26 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
     return outputs.length + 1
   }
 
-  generateNetworkOption(network: NetworkType) {
-    switch (network) {
-      case this.TEST_NET:
-        return 'TEST_NET'
-    }
-    return 'MAIN_NET'
-  }
+  // generateNetworkOption(network: NetworkType) {
+  //   switch (network) {
+  //     case this.TEST_NET:
+  //       return 'TEST_NET'
+  //   }
+  //   return 'MAIN_NET'
+  // }
 
   protected generateModuleExtra(
     module: InternalMoveModule,
-    allEventStructs: Map<string, InternalMoveStruct>,
-    network: NetworkType
+    allEventStructs: Map<string, InternalMoveStruct>
+    // network: NetworkType
   ) {
     return ''
   }
 
   generateModule(
     module: InternalMoveModule,
-    allEventStructs: Map<string, InternalMoveStruct>,
-    network: NetworkType
+    allEventStructs: Map<string, InternalMoveStruct>
+    // network: NetworkType
   ) {
     const qname = moduleQname(module)
     // const functions = this.GENERATE_ON_ENTRY
@@ -259,7 +237,7 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
 
     // TODO how to deal with callArgs
     return `
-  ${this.generateModuleExtra(module, allEventStructs, network)}
+  ${this.generateModuleExtra(module, allEventStructs)}
 
   export namespace ${moduleName} {
     ${structs.join('\n')}
@@ -535,17 +513,17 @@ export abstract class AbstractCodegen<NetworkType, ModuleTypes, StructType> {
 
 export class AccountCodegen<NetworkType, ModuleType, StructType> {
   modules: InternalMoveModule[]
-  config: Config<NetworkType>
+  config: Config
   abi: ModuleType[]
   loader: AccountRegister
-  moduleGen: AbstractCodegen<NetworkType, ModuleType, StructType>
+  moduleGen: AbstractCodegen<ModuleType, StructType>
 
   constructor(
-    moduleGen: AbstractCodegen<NetworkType, ModuleType, StructType>,
+    moduleGen: AbstractCodegen<ModuleType, StructType>,
     loader: AccountRegister,
     abi: ModuleType[],
     modules: InternalMoveModule[],
-    config: Config<NetworkType>
+    config: Config
   ) {
     // const json = fs.readFileSync(config.srcFile, 'utf-8')
     this.moduleGen = moduleGen
@@ -584,7 +562,8 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
         if (isFrameworkAccount(account) && !isFrameworkAccount(address)) {
           // Decide where to find runtime library
           moduleImports.push(
-            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"`
+            // `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"`
+            `import _${account} = builtin._${account} `
           )
         } else {
           moduleImports.push(
@@ -596,14 +575,11 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
       }
     }
 
-    let loadAllTypes = `loadAllTypes(defaultMoveCoder(${
-      this.moduleGen.PREFIX
-    }Network.${this.moduleGen.generateNetworkOption(this.config.network)}))`
+    let loadAllTypes = `loadAllTypes(defaultMoveCoder())`
 
     if (this.moduleGen.SYSTEM_MODULES.has(address)) {
       loadAllTypes = `
-        loadAllTypes(defaultMoveCoder(${this.moduleGen.PREFIX}Network.MAIN_NET))
-        loadAllTypes(defaultMoveCoder(${this.moduleGen.PREFIX}Network.TEST_NET))
+        loadAllTypes(defaultMoveCoder())
       `
     }
 
@@ -622,9 +598,7 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
     ${moduleImports.join('\n')}
 
     ${this.modules
-      .map((m) =>
-        this.moduleGen.generateModule(m, eventsMap, this.config.network)
-      )
+      .map((m) => this.moduleGen.generateModule(m, eventsMap))
       .join('\n')}
 
     const MODULES = JSON.parse('${JSON.stringify(this.abi)}')
@@ -651,9 +625,7 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
     const imports = `
     import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
     import {
-      MoveCoder, defaultMoveCoder, TypedEventInstance, ${
-        this.moduleGen.PREFIX
-      }Network } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"
+      MoveCoder, defaultMoveCoder, TypedEventInstance, builtin } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"
     import { ${
       this.moduleGen.ADDRESS_TYPE
     }, ModuleClient } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"

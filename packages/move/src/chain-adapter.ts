@@ -1,17 +1,16 @@
 import { InternalMoveModule, InternalMoveStruct } from './internal-models.js'
 import { TypeDescriptor } from './types.js'
 
-export abstract class ChainAdapter<NetworkType, ModuleType, StructType> {
-  abstract fetchModule(
-    account: string,
-    module: string,
-    network: NetworkType
-  ): Promise<ModuleType>
+export abstract class ChainAdapter<ModuleType, StructType> {
+  endpoint: string
 
-  abstract fetchModules(
-    account: string,
-    network: NetworkType
-  ): Promise<ModuleType[]>
+  constructor(endpoint: string) {
+    this.endpoint = endpoint
+  }
+
+  abstract fetchModule(account: string, module: string): Promise<ModuleType>
+
+  abstract fetchModules(account: string): Promise<ModuleType[]>
   abstract toInternalModules(modules: ModuleType[]): InternalMoveModule[]
 
   // Get all structs that represent Events

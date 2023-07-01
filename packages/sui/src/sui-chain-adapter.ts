@@ -1,5 +1,4 @@
-import { toInternalModule } from './move-types.js'
-import { SuiNetwork } from './network.js'
+import { toInternalModule } from './to-internal.js'
 import {
   InternalMoveModule,
   InternalMoveStruct,
@@ -18,26 +17,26 @@ import {
 } from '@mysten/sui.js'
 
 export class SuiChainAdapter extends ChainAdapter<
-  SuiNetwork,
+  // SuiNetwork,
   SuiMoveNormalizedModule,
   SuiEvent | SuiMoveObject
 > {
-  static INSTANCE = new SuiChainAdapter()
+  // static INSTANCE = new SuiChainAdapter()
 
   async fetchModule(
     account: string,
-    module: string,
-    network: SuiNetwork
+    module: string
+    // network: SuiNetwork
   ): Promise<SuiMoveNormalizedModule> {
-    const client = getRpcClient(network)
+    const client = getRpcClient(this.endpoint)
     return await client.getNormalizedMoveModule({ package: account, module })
   }
 
   async fetchModules(
-    account: string,
-    network: SuiNetwork
+    account: string
+    // network: SuiNetwork
   ): Promise<SuiMoveNormalizedModule[]> {
-    const client = getRpcClient(network)
+    const client = getRpcClient(this.endpoint)
     const modules = await client.getNormalizedMoveModulesByPackage({
       package: account,
     })
@@ -101,16 +100,14 @@ export class SuiChainAdapter extends ChainAdapter<
   // }
 }
 
-function getRpcEndpoint(network: SuiNetwork): string {
-  switch (network) {
-    case SuiNetwork.TEST_NET:
-      return 'https://fullnode.testnet.sui.io/'
-  }
-  return 'https://fullnode.mainnet.sui.io/'
-}
+// function getRpcEndpoint(network: SuiNetwork): string {
+//   switch (network) {
+//     case SuiNetwork.TEST_NET:
+//       return 'https://fullnode.testnet.sui.io/'
+//   }
+//   return 'https://fullnode.mainnet.sui.io/'
+// }
 
-function getRpcClient(network: SuiNetwork): JsonRpcProvider {
-  return new JsonRpcProvider(
-    new Connection({ fullnode: getRpcEndpoint(network) })
-  )
+function getRpcClient(endpoint: string): JsonRpcProvider {
+  return new JsonRpcProvider(new Connection({ fullnode: endpoint }))
 }
