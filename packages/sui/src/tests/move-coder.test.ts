@@ -1,16 +1,14 @@
+import { coin, dynamic_field } from '../builtin/0x2.js'
 import { defaultMoveCoder } from '../move-coder.js'
-
-import { coin, dynamic_field, loadAllTypes } from '../builtin/0x2.js'
 import { expect } from 'chai'
 import { TypedSuiMoveObject } from '../models.js'
-import { SuiNetwork } from '../network.js'
 import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
 import { single_collateral } from './types/testnet/0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2.js'
 import { ascii } from '../builtin/0x1.js'
 
-describe('Test Sui Example', () => {
-  const coder = defaultMoveCoder(SuiNetwork.TEST_NET)
-  loadAllTypes(coder)
+describe('Test Sui coder', () => {
+  const coder = defaultMoveCoder()
+  // loadAllTypes(coder)
 
   test('decode string', async () => {
     const res = await coder.decodedType('mystring', ascii.String.type())
@@ -155,7 +153,7 @@ describe('Test Sui Example', () => {
 
   test('decode dynamic fields 3', async () => {
     const objects = data3.objects
-    const coder = defaultMoveCoder(SuiNetwork.MAIN_NET)
+    const coder = defaultMoveCoder()
 
     const res: TypedSuiMoveObject<dynamic_field.Field<any, any>>[] =
       await coder.filterAndDecodeObjects(dynamic_field.Field.type(), objects)

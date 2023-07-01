@@ -15,8 +15,6 @@ import {
   TypeDescriptor,
 } from '@typemove/move'
 
-export type { SuiAddress } from '@mysten/sui.js'
-
 export function toInternalModule(
   module: SuiMoveNormalizedModule
 ): InternalMoveModule {
