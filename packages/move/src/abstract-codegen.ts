@@ -345,6 +345,20 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return genericString
   }
 
+  // generateTypeParameters(struct: TypeDescriptor, useAny = false) {
+  //   let genericString = ''
+  //
+  //   if (struct.typeArgs && struct.typeArgs.length > 0) {
+  //     const params = struct.typeArgs
+  //         .map((_, idx) => {
+  //           return useAny ? 'any' : 'T' + idx
+  //         })
+  //         .join(',')
+  //     genericString = `<${params}>`
+  //   }
+  //   return genericString
+  // }
+
   generateCallArgsStructs(
     module: InternalMoveModule,
     func: InternalMoveFunction

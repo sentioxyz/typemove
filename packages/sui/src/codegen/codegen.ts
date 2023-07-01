@@ -151,21 +151,35 @@ class SuiCodegen extends AbstractCodegen<
 
     const genericString = this.generateFunctionTypeParameters(func)
 
+    const typeParamArg = func.typeParams
+      .map((v, idx) => {
+        return `TypeDescriptor<T${idx}> | string`
+      })
+      .join(',')
+    const typeParamToString = func.typeParams
+      .map((v, idx) => {
+        return `typeof typeArguments[${idx}] === 'string' ? typeArguments[${idx}] : typeArguments[${idx}].getSignature()`
+      })
+      .join(',')
+
     return `export function ${camel(
       func.name
-    )}${genericString}(tx: TransactionBlock, args: [${args
-      .map((a) => a.paramType)
-      .join(',')}] ): TransactionArgument & [ ${'TransactionArgument,'.repeat(
-      func.params.length
-    )} ] {
+    )}${genericString}(tx: TransactionBlock, 
+      args: [${args.map((a) => a.paramType).join(',')}],
+      ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ):
+       TransactionArgument & [ ${'TransactionArgument,'.repeat(
+         func.params.length
+       )} ] {
       const _args = []
       ${args.map((a) => a.callValue).join('\n')}
       
       // @ts-ignore
       return tx.moveCall({
         target: "${module.address}::${module.name}::${func.name}",
-        arguments: _args
-        // typeArguments: 
+        arguments: _args,
+        ${
+          typeParamArg.length > 0 ? `typeArguments: [${typeParamToString}]` : ``
+        }
       })
     }`
   }
