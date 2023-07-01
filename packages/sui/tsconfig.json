@@ -4,8 +4,8 @@
     "baseUrl": "./src",
     "outDir": "dist",
     "paths": {
-      "@typemove/sui": ["./index.ts"]
-      //      "@typemove/sui/*": ["./*/index.js"]
+      "@typemove/sui": ["./index.ts"],
+      "@typemove/sui/*": ["./*/index.ts"]
     }
   },
   "exclude": ["dist", "jest.config.ts"],

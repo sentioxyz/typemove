@@ -88,7 +88,7 @@ export class TypeDescriptor<T = any> {
       return []
     }
 
-    if (this.qname.toLowerCase() === VECTOR_STR) {
+    if (this.isVector()) {
       return this.typeArgs[0].dependedTypes()
     }
 
@@ -116,6 +116,10 @@ export class TypeDescriptor<T = any> {
     types.add(this.qname)
 
     return Array.from(types)
+  }
+
+  isVector(): boolean {
+    return this.qname.toLowerCase() === VECTOR_STR
   }
 }
 

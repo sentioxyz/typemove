@@ -37,6 +37,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   // TEST_NET: NetworkType
   // MAIN_NET: NetworkType
   ADDRESS_TYPE: string
+  REFERENCE_TYPE: string
   PREFIX: string
   STRUCT_FIELD_NAME: string = 'data'
   GENERATE_CLIENT = false
@@ -190,6 +191,10 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return ''
   }
 
+  protected generateBuilder(module: InternalMoveModule) {
+    return ''
+  }
+
   generateModule(
     module: InternalMoveModule,
     allEventStructs: Map<string, InternalMoveStruct>
@@ -243,6 +248,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     ${structs.join('\n')}
     
     ${client}
+    ${this.generateBuilder(module)}
   }
   `
   }
@@ -423,7 +429,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     currentAddress: string
   ): string {
     if (type.reference) {
-      return this.ADDRESS_TYPE
+      return this.REFERENCE_TYPE
     }
 
     switch (type.qname) {
@@ -509,9 +515,21 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     }
     return '_' + parts.join('.')
   }
+
+  generateImports() {
+    const imports = `
+    import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
+    import {
+      MoveCoder, defaultMoveCoder, TypedEventInstance } from "@typemove/${this.PREFIX.toLowerCase()}"
+    import { ${this.ADDRESS_TYPE}, ${
+      this.ADDRESS_TYPE === this.REFERENCE_TYPE ? '' : `${this.REFERENCE_TYPE},`
+    } ModuleClient } from "@typemove/${this.PREFIX.toLowerCase()}"
+    `
+    return imports
+  }
 }
 
-export class AccountCodegen<NetworkType, ModuleType, StructType> {
+export class AccountCodegen<ModuleType, StructType> {
   modules: InternalMoveModule[]
   config: Config
   abi: ModuleType[]
@@ -562,8 +580,8 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
         if (isFrameworkAccount(account) && !isFrameworkAccount(address)) {
           // Decide where to find runtime library
           moduleImports.push(
-            // `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"`
-            `import _${account} = builtin._${account} `
+            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}/builtin"`
+            // `import _${account} = builtin._${account} `
           )
         } else {
           moduleImports.push(
@@ -593,7 +611,7 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
 
     /* Generated modules for account ${address} */
 
-    ${this.generateImports()}
+    ${this.moduleGen.generateImports()}
 
     ${moduleImports.join('\n')}
 
@@ -619,18 +637,5 @@ export class AccountCodegen<NetworkType, ModuleType, StructType> {
         fileContent: source,
       },
     ]
-  }
-
-  generateImports() {
-    const imports = `
-    import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
-    import {
-      MoveCoder, defaultMoveCoder, TypedEventInstance, builtin } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"
-    import { ${
-      this.moduleGen.ADDRESS_TYPE
-    }, ModuleClient } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}"
-    `
-
-    return imports
   }
 }
