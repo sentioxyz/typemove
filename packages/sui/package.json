@@ -4,7 +4,8 @@
   "license": "Apache-2.0",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./builtin": "./dist/builtin/index.js"
   },
   "main": "./dist/index.js",
   "files": [
@@ -15,7 +16,7 @@
   "scripts": {
     "build": "pnpm gen && tsc",
     "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
-    "gen": "ts-node-esm  src/codegen/run.ts src/abis src/builtin",
+    "gen": "pnpm gen:test && ts-node-esm  src/codegen/run.ts src/abis src/builtin",
     "gen:test": "ts-node-esm src/codegen/run.ts src/tests/abis/testnet src/tests/types/testnet testnet",
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
@@ -23,7 +24,8 @@
   "dependencies": {
     "@mysten/sui.js": "^0.36.0",
     "@typemove/move": "workspace:*",
-    "chalk": "^5.2.0"
+    "chalk": "^5.2.0",
+    "radash": "^11.0.0"
   },
   "url": "https://github.com/sentioxyz/typemove"
 }

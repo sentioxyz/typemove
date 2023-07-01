@@ -11,9 +11,11 @@ import {
   InternalMoveStruct,
   AbstractCodegen,
   structQname,
+  InternalMoveFunction,
 } from '@typemove/move'
 import { join } from 'path'
 import { SuiChainAdapter } from '../sui-chain-adapter.js'
+import { camel } from 'radash'
 
 export async function codegen(
   abisDir: string,
@@ -36,6 +38,7 @@ class SuiCodegen extends AbstractCodegen<
   SuiEvent | SuiMoveObject
 > {
   ADDRESS_TYPE = 'SuiAddress'
+  REFERENCE_TYPE = 'ObjectId'
   // ADDRESS_TYPE = 'string'
   // MAIN_NET = SuiNetwork.MAIN_NET
   // TEST_NET = SuiNetwork.TEST_NET
@@ -98,5 +101,79 @@ class SuiCodegen extends AbstractCodegen<
         return ''
     }
     return super.generateForEvents(module, struct)
+  }
+
+  protected generateBuilder(module: InternalMoveModule): string {
+    const funcs = module.exposedFunctions.map((f) =>
+      this.generateBuilderForFunction(module, f)
+    )
+
+    return `
+    export namespace builder {
+      ${funcs.join('\n')}
+    }
+    `
+  }
+
+  protected generateBuilderForFunction(
+    module: InternalMoveModule,
+    func: InternalMoveFunction
+  ): string {
+    if (!func.isEntry) {
+      return ''
+    }
+
+    const args = []
+    for (const [idx, arg] of func.params.entries()) {
+      if (arg.reference) {
+        args.push({
+          paramType: 'ObjectId | ObjectCallArg | TransactionArgument',
+          callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.object(args[${idx}]))`,
+        })
+      } else if (arg.isVector()) {
+        args.push({
+          paramType: '(ObjectId | ObjectCallArg)[] | TransactionArgument',
+          callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.makeMoveVec({
+            objects: args[${idx}].map(a => tx.object(a))
+            // type: TODO
+          }))`,
+        })
+      } else {
+        args.push({
+          paramType: `${this.generateTypeForDescriptor(
+            arg,
+            module.address
+          )} | TransactionArgument`,
+          callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.pure(args[${idx}]))`,
+        })
+      }
+    }
+
+    const genericString = this.generateFunctionTypeParameters(func)
+
+    return `export function ${camel(
+      func.name
+    )}${genericString}(tx: TransactionBlock, args: [${args
+      .map((a) => a.paramType)
+      .join(',')}] ): TransactionArgument & [ ${'TransactionArgument,'.repeat(
+      func.params.length
+    )} ] {
+      const _args = []
+      ${args.map((a) => a.callValue).join('\n')}
+      
+      // @ts-ignore
+      return tx.moveCall({
+        target: "${module.address}::${module.name}::${func.name}",
+        arguments: _args
+        // typeArguments: 
+      })
+    }`
+  }
+
+  generateImports(): string {
+    return `
+      ${super.generateImports()}
+      import { TransactionBlock, TransactionArgument, ObjectCallArg } from '@mysten/sui.js'
+    `
   }
 }

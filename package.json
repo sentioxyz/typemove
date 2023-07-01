@@ -38,6 +38,7 @@
     "semantic-release-monorepo": "^7.0.5",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
+    "tslib": "^2.5.0",
     "typedoc": "^0.24.8",
     "typescript": "^5.1.3"
   },
