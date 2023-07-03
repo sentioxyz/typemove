@@ -16,8 +16,8 @@ import {
   SPLITTER,
   upperFirst,
   VECTOR_STR,
+  camel,
 } from './utils.js'
-import { camel } from 'radash'
 import { TypeDescriptor } from './types.js'
 import { ChainAdapter } from './chain-adapter.js'
 
