@@ -22,6 +22,7 @@
   },
   "types": "./dist/index.d.ts",
   "dependencies": {
+    "@mysten/bcs": "^0.7.3",
     "@mysten/sui.js": "^0.37.1",
     "@typemove/move": "workspace:*",
     "chalk": "^5.2.0",
