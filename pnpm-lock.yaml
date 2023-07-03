@@ -107,6 +107,9 @@ importers:
 
   packages/sui:
     dependencies:
+      '@mysten/bcs':
+        specifier: ^0.7.3
+        version: 0.7.3
       '@mysten/sui.js':
         specifier: ^0.37.1
         version: 0.37.1

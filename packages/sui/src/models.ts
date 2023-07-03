@@ -15,3 +15,7 @@ export type TypedFunctionPayload<T extends Array<any>> =
      */
     arguments_decoded: T
   }
+
+// export interface TypedExecutionResultType<T> extends ExecutionResultType {
+//
+// }

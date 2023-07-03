@@ -12,10 +12,12 @@ import {
   AbstractCodegen,
   structQname,
   InternalMoveFunction,
+  InternalMoveFunctionVisibility,
+  normalizeToJSName,
+  camel,
 } from '@typemove/move'
 import { join } from 'path'
 import { SuiChainAdapter } from '../sui-chain-adapter.js'
-import { camel } from 'radash'
 
 export async function codegen(
   abisDir: string,
@@ -119,7 +121,7 @@ class SuiCodegen extends AbstractCodegen<
     module: InternalMoveModule,
     func: InternalMoveFunction
   ): string {
-    if (!func.isEntry) {
+    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
       return ''
     }
 
@@ -163,14 +165,14 @@ class SuiCodegen extends AbstractCodegen<
       .join(',')
 
     return `export function ${camel(
-      func.name
+      normalizeToJSName(func.name)
     )}${genericString}(tx: TransactionBlock, 
       args: [${args.map((a) => a.paramType).join(',')}],
       ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ):
        TransactionArgument & [ ${'TransactionArgument,'.repeat(
          func.params.length
        )} ] {
-      const _args = []
+      const _args: any[] = []
       ${args.map((a) => a.callValue).join('\n')}
       
       // @ts-ignore

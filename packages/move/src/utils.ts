@@ -1,4 +1,5 @@
 import { InternalMoveModule, InternalMoveStruct } from './internal-models.js'
+import { camel as camelRadash } from 'radash'
 
 export const SPLITTER = '::'
 
@@ -51,6 +52,8 @@ const KEYWORDS = new Set([
   'number',
   'bigint',
   'any',
+  'new',
+  'delete',
 ])
 
 export function normalizeToJSName(name: string) {
@@ -80,4 +83,9 @@ export function structQname(
 
 export function upperFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+export function camel(str: string): string {
+  const base = camelRadash(str)
+  return str.endsWith('_') ? base + '_' : base
 }

@@ -1,0 +1,5523 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "clob": {
+      "fileFormatVersion": 6,
+      "address": "0xdee9",
+      "name": "clob",
+      "friends": [],
+      "structs": {
+        "Order": {
+          "abilities": {
+            "abilities": ["Drop", "Store"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "quantity",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "expire_timestamp",
+              "type": "U64"
+            }
+          ]
+        },
+        "OrderCanceled": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "base_asset_quantity_canceled",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            }
+          ]
+        },
+        "OrderFilled": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "total_quantity",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_filled",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_remaining",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            }
+          ]
+        },
+        "OrderFilledV2": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "total_quantity",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_filled",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_remaining",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "taker_commission",
+              "type": "U64"
+            },
+            {
+              "name": "maker_rebates",
+              "type": "U64"
+            }
+          ]
+        },
+        "OrderPlaced": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "base_asset_quantity_placed",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            }
+          ]
+        },
+        "OrderPlacedV2": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "base_asset_quantity_placed",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "expire_timestamp",
+              "type": "U64"
+            }
+          ]
+        },
+        "Pool": {
+          "abilities": {
+            "abilities": ["Key"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "UID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "bids",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "clob",
+                        "name": "TickLevel",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "asks",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "clob",
+                        "name": "TickLevel",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "next_bid_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "next_ask_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "usr_open_orders",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "table",
+                  "name": "Table",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0x2",
+                        "module": "object",
+                        "name": "ID",
+                        "typeArguments": []
+                      }
+                    },
+                    {
+                      "Struct": {
+                        "address": "0x2",
+                        "module": "linked_table",
+                        "name": "LinkedTable",
+                        "typeArguments": ["U64", "U64"]
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "taker_fee_rate",
+              "type": "U64"
+            },
+            {
+              "name": "maker_rebate_rate",
+              "type": "U64"
+            },
+            {
+              "name": "tick_size",
+              "type": "U64"
+            },
+            {
+              "name": "lot_size",
+              "type": "U64"
+            },
+            {
+              "name": "base_custodian",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "quote_custodian",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "creation_fee",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0x2",
+                        "module": "sui",
+                        "name": "SUI",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "base_asset_trading_fees",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "quote_asset_trading_fees",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "PoolCreated": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "base_asset",
+              "type": {
+                "Struct": {
+                  "address": "0x1",
+                  "module": "type_name",
+                  "name": "TypeName",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "quote_asset",
+              "type": {
+                "Struct": {
+                  "address": "0x1",
+                  "module": "type_name",
+                  "name": "TypeName",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "taker_fee_rate",
+              "type": "U64"
+            },
+            {
+              "name": "maker_rebate_rate",
+              "type": "U64"
+            },
+            {
+              "name": "tick_size",
+              "type": "U64"
+            },
+            {
+              "name": "lot_size",
+              "type": "U64"
+            }
+          ]
+        },
+        "TickLevel": {
+          "abilities": {
+            "abilities": ["Store"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "open_orders",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "linked_table",
+                  "name": "LinkedTable",
+                  "typeArguments": [
+                    "U64",
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "clob",
+                        "name": "Order",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "exposedFunctions": {
+        "account_balance": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": ["U64", "U64", "U64", "U64"]
+        },
+        "batch_cancel_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Vector": "U64"
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "cancel_all_orders": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "cancel_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "create_account": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian",
+                "name": "AccountCap",
+                "typeArguments": []
+              }
+            }
+          ]
+        },
+        "create_pool": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            "U64",
+            "U64",
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "sui",
+                      "name": "SUI",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "deposit_base": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "deposit_quote": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "get_level2_book_status_ask_side": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Vector": "U64"
+            },
+            {
+              "Vector": "U64"
+            }
+          ]
+        },
+        "get_level2_book_status_bid_side": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Vector": "U64"
+            },
+            {
+              "Vector": "U64"
+            }
+          ]
+        },
+        "get_market_price": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": ["U64", "U64"]
+        },
+        "get_order_status": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Order",
+                  "typeArguments": []
+                }
+              }
+            }
+          ]
+        },
+        "list_open_orders": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Vector": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Order",
+                  "typeArguments": []
+                }
+              }
+            }
+          ]
+        },
+        "place_limit_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            "U64",
+            "Bool",
+            "U64",
+            "U8",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": ["U64", "U64", "Bool", "U64"]
+        },
+        "place_market_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            "Bool",
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "swap_exact_base_for_quote": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            "U64"
+          ]
+        },
+        "swap_exact_quote_for_base": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            "U64"
+          ]
+        },
+        "withdraw_base": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "withdraw_quote": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "clob_v2": {
+      "fileFormatVersion": 6,
+      "address": "0xdee9",
+      "name": "clob_v2",
+      "friends": [],
+      "structs": {
+        "DepositAsset": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "quantity",
+              "type": "U64"
+            },
+            {
+              "name": "owner",
+              "type": "Address"
+            }
+          ]
+        },
+        "Order": {
+          "abilities": {
+            "abilities": ["Drop", "Store"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "client_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "original_quantity",
+              "type": "U64"
+            },
+            {
+              "name": "quantity",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": "Address"
+            },
+            {
+              "name": "expire_timestamp",
+              "type": "U64"
+            },
+            {
+              "name": "self_matching_prevention",
+              "type": "U8"
+            }
+          ]
+        },
+        "OrderCanceled": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "client_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": "Address"
+            },
+            {
+              "name": "original_quantity",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_canceled",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            }
+          ]
+        },
+        "OrderFilled": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "taker_client_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "maker_client_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "taker_address",
+              "type": "Address"
+            },
+            {
+              "name": "maker_address",
+              "type": "Address"
+            },
+            {
+              "name": "original_quantity",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_filled",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_remaining",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "taker_commission",
+              "type": "U64"
+            },
+            {
+              "name": "maker_rebates",
+              "type": "U64"
+            }
+          ]
+        },
+        "OrderPlaced": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "order_id",
+              "type": "U64"
+            },
+            {
+              "name": "client_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "is_bid",
+              "type": "Bool"
+            },
+            {
+              "name": "owner",
+              "type": "Address"
+            },
+            {
+              "name": "original_quantity",
+              "type": "U64"
+            },
+            {
+              "name": "base_asset_quantity_placed",
+              "type": "U64"
+            },
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "expire_timestamp",
+              "type": "U64"
+            }
+          ]
+        },
+        "Pool": {
+          "abilities": {
+            "abilities": ["Key"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            },
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "UID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "bids",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "clob_v2",
+                        "name": "TickLevel",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "asks",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "clob_v2",
+                        "name": "TickLevel",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "next_bid_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "next_ask_order_id",
+              "type": "U64"
+            },
+            {
+              "name": "usr_open_orders",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "table",
+                  "name": "Table",
+                  "typeArguments": [
+                    "Address",
+                    {
+                      "Struct": {
+                        "address": "0x2",
+                        "module": "linked_table",
+                        "name": "LinkedTable",
+                        "typeArguments": ["U64", "U64"]
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "taker_fee_rate",
+              "type": "U64"
+            },
+            {
+              "name": "maker_rebate_rate",
+              "type": "U64"
+            },
+            {
+              "name": "tick_size",
+              "type": "U64"
+            },
+            {
+              "name": "lot_size",
+              "type": "U64"
+            },
+            {
+              "name": "base_custodian",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "quote_custodian",
+              "type": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "creation_fee",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0x2",
+                        "module": "sui",
+                        "name": "SUI",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "base_asset_trading_fees",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "quote_asset_trading_fees",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "PoolCreated": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "base_asset",
+              "type": {
+                "Struct": {
+                  "address": "0x1",
+                  "module": "type_name",
+                  "name": "TypeName",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "quote_asset",
+              "type": {
+                "Struct": {
+                  "address": "0x1",
+                  "module": "type_name",
+                  "name": "TypeName",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "taker_fee_rate",
+              "type": "U64"
+            },
+            {
+              "name": "maker_rebate_rate",
+              "type": "U64"
+            },
+            {
+              "name": "tick_size",
+              "type": "U64"
+            },
+            {
+              "name": "lot_size",
+              "type": "U64"
+            }
+          ]
+        },
+        "TickLevel": {
+          "abilities": {
+            "abilities": ["Store"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "price",
+              "type": "U64"
+            },
+            {
+              "name": "open_orders",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "linked_table",
+                  "name": "LinkedTable",
+                  "typeArguments": [
+                    "U64",
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "clob_v2",
+                        "name": "Order",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "WithdrawAsset": {
+          "abilities": {
+            "abilities": ["Copy", "Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "pool_id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "ID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "quantity",
+              "type": "U64"
+            },
+            {
+              "name": "owner",
+              "type": "Address"
+            }
+          ]
+        }
+      },
+      "exposedFunctions": {
+        "account_balance": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": ["U64", "U64", "U64", "U64"]
+        },
+        "batch_cancel_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Vector": "U64"
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "cancel_all_orders": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "cancel_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "clean_up_expired_orders": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "Vector": "U64"
+            },
+            {
+              "Vector": "Address"
+            }
+          ],
+          "return": []
+        },
+        "create_account": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian_v2",
+                "name": "AccountCap",
+                "typeArguments": []
+              }
+            }
+          ]
+        },
+        "create_pool": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            "U64",
+            "U64",
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "sui",
+                      "name": "SUI",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "deposit_base": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "deposit_quote": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": []
+        },
+        "get_level2_book_status_ask_side": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Vector": "U64"
+            },
+            {
+              "Vector": "U64"
+            }
+          ]
+        },
+        "get_level2_book_status_bid_side": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Vector": "U64"
+            },
+            {
+              "Vector": "U64"
+            }
+          ]
+        },
+        "get_market_price": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x1",
+                "module": "option",
+                "name": "Option",
+                "typeArguments": ["U64"]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x1",
+                "module": "option",
+                "name": "Option",
+                "typeArguments": ["U64"]
+              }
+            }
+          ]
+        },
+        "get_order_status": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Order",
+                  "typeArguments": []
+                }
+              }
+            }
+          ]
+        },
+        "list_open_orders": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Vector": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Order",
+                  "typeArguments": []
+                }
+              }
+            }
+          ]
+        },
+        "place_limit_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            "U64",
+            "U64",
+            "U8",
+            "Bool",
+            "U64",
+            "U8",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": ["U64", "U64", "Bool", "U64"]
+        },
+        "place_market_order": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            "U64",
+            "U64",
+            "Bool",
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "swap_exact_base_for_quote": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            "U64",
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            "U64"
+          ]
+        },
+        "swap_exact_quote_for_base": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "clock",
+                  "name": "Clock",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            },
+            "U64"
+          ]
+        },
+        "withdraw_base": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "withdraw_quote": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            },
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "clob_v2",
+                  "name": "Pool",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    },
+                    {
+                      "TypeParameter": 1
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 1
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "critbit": {
+      "fileFormatVersion": 6,
+      "address": "0xdee9",
+      "name": "critbit",
+      "friends": [
+        {
+          "address": "0xdee9",
+          "name": "clob"
+        },
+        {
+          "address": "0xdee9",
+          "name": "clob_v2"
+        }
+      ],
+      "structs": {
+        "CritbitTree": {
+          "abilities": {
+            "abilities": ["Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": ["Store"]
+              },
+              "isPhantom": false
+            }
+          ],
+          "fields": [
+            {
+              "name": "root",
+              "type": "U64"
+            },
+            {
+              "name": "internal_nodes",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "table",
+                  "name": "Table",
+                  "typeArguments": [
+                    "U64",
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "critbit",
+                        "name": "InternalNode",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "leaves",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "table",
+                  "name": "Table",
+                  "typeArguments": [
+                    "U64",
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "critbit",
+                        "name": "Leaf",
+                        "typeArguments": [
+                          {
+                            "TypeParameter": 0
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "min_leaf",
+              "type": "U64"
+            },
+            {
+              "name": "max_leaf",
+              "type": "U64"
+            },
+            {
+              "name": "next_internal_node_index",
+              "type": "U64"
+            },
+            {
+              "name": "next_leaf_index",
+              "type": "U64"
+            }
+          ]
+        },
+        "InternalNode": {
+          "abilities": {
+            "abilities": ["Drop", "Store"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "mask",
+              "type": "U64"
+            },
+            {
+              "name": "left_child",
+              "type": "U64"
+            },
+            {
+              "name": "right_child",
+              "type": "U64"
+            },
+            {
+              "name": "parent",
+              "type": "U64"
+            }
+          ]
+        },
+        "Leaf": {
+          "abilities": {
+            "abilities": ["Drop", "Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": false
+            }
+          ],
+          "fields": [
+            {
+              "name": "key",
+              "type": "U64"
+            },
+            {
+              "name": "value",
+              "type": {
+                "TypeParameter": 0
+              }
+            },
+            {
+              "name": "parent",
+              "type": "U64"
+            }
+          ]
+        }
+      },
+      "exposedFunctions": {
+        "borrow_leaf_by_index": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": [
+            {
+              "Reference": {
+                "TypeParameter": 0
+              }
+            }
+          ]
+        },
+        "borrow_leaf_by_key": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": [
+            {
+              "Reference": {
+                "TypeParameter": 0
+              }
+            }
+          ]
+        },
+        "borrow_mut_leaf_by_index": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": [
+            {
+              "MutableReference": {
+                "TypeParameter": 0
+              }
+            }
+          ]
+        },
+        "destroy_empty": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "critbit",
+                "name": "CritbitTree",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ],
+          "return": []
+        },
+        "drop": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Drop", "Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "critbit",
+                "name": "CritbitTree",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ],
+          "return": []
+        },
+        "find_closest_key": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": ["U64"]
+        },
+        "find_leaf": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": ["Bool", "U64"]
+        },
+        "insert_leaf": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "TypeParameter": 0
+            }
+          ],
+          "return": ["U64"]
+        },
+        "is_empty": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": ["Bool"]
+        },
+        "max_leaf": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": ["U64", "U64"]
+        },
+        "min_leaf": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": ["U64", "U64"]
+        },
+        "new": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "critbit",
+                "name": "CritbitTree",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "next_leaf": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": ["U64", "U64"]
+        },
+        "previous_leaf": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": ["U64", "U64"]
+        },
+        "remove_leaf_by_index": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": [
+            {
+              "TypeParameter": 0
+            }
+          ]
+        },
+        "size": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": ["Store"]
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "critbit",
+                  "name": "CritbitTree",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "return": ["U64"]
+        }
+      }
+    },
+    "custodian": {
+      "fileFormatVersion": 6,
+      "address": "0xdee9",
+      "name": "custodian",
+      "friends": [
+        {
+          "address": "0xdee9",
+          "name": "clob"
+        }
+      ],
+      "structs": {
+        "Account": {
+          "abilities": {
+            "abilities": ["Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "available_balance",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "locked_balance",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "AccountCap": {
+          "abilities": {
+            "abilities": ["Store", "Key"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "UID",
+                  "typeArguments": []
+                }
+              }
+            }
+          ]
+        },
+        "Custodian": {
+          "abilities": {
+            "abilities": ["Store", "Key"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "UID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "account_balances",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "table",
+                  "name": "Table",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0x2",
+                        "module": "object",
+                        "name": "ID",
+                        "typeArguments": []
+                      }
+                    },
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "custodian",
+                        "name": "Account",
+                        "typeArguments": [
+                          {
+                            "TypeParameter": 0
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "exposedFunctions": {
+        "account_available_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            }
+          ],
+          "return": ["U64"]
+        },
+        "account_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            }
+          ],
+          "return": ["U64", "U64"]
+        },
+        "account_locked_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            }
+          ],
+          "return": ["U64"]
+        },
+        "decrease_user_available_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "decrease_user_locked_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            },
+            "U64"
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "increase_user_available_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ],
+          "return": []
+        },
+        "increase_user_locked_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ],
+          "return": []
+        },
+        "lock_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": []
+        },
+        "mint_account_cap": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian",
+                "name": "AccountCap",
+                "typeArguments": []
+              }
+            }
+          ]
+        },
+        "new": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian",
+                "name": "Custodian",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unlock_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            },
+            "U64"
+          ],
+          "return": []
+        },
+        "withdraw_asset": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "custodian_v2": {
+      "fileFormatVersion": 6,
+      "address": "0xdee9",
+      "name": "custodian_v2",
+      "friends": [
+        {
+          "address": "0xdee9",
+          "name": "clob_v2"
+        }
+      ],
+      "structs": {
+        "Account": {
+          "abilities": {
+            "abilities": ["Store"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "available_balance",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "locked_balance",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "balance",
+                  "name": "Balance",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "AccountCap": {
+          "abilities": {
+            "abilities": ["Store", "Key"]
+          },
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "UID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "owner",
+              "type": "Address"
+            }
+          ]
+        },
+        "Custodian": {
+          "abilities": {
+            "abilities": ["Store", "Key"]
+          },
+          "typeParameters": [
+            {
+              "constraints": {
+                "abilities": []
+              },
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "object",
+                  "name": "UID",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "name": "account_balances",
+              "type": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "table",
+                  "name": "Table",
+                  "typeArguments": [
+                    "Address",
+                    {
+                      "Struct": {
+                        "address": "0xdee9",
+                        "module": "custodian_v2",
+                        "name": "Account",
+                        "typeArguments": [
+                          {
+                            "TypeParameter": 0
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "exposedFunctions": {
+        "account_available_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Address"
+          ],
+          "return": ["U64"]
+        },
+        "account_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Address"
+          ],
+          "return": ["U64", "U64"]
+        },
+        "account_locked_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Address"
+          ],
+          "return": ["U64"]
+        },
+        "account_owner": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": ["Address"]
+        },
+        "create_child_account_cap": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": [
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian_v2",
+                "name": "AccountCap",
+                "typeArguments": []
+              }
+            }
+          ]
+        },
+        "decrease_user_available_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "decrease_user_locked_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Address",
+            "U64"
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "delete_account_cap": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian_v2",
+                "name": "AccountCap",
+                "typeArguments": []
+              }
+            }
+          ],
+          "return": []
+        },
+        "increase_user_available_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Address",
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ],
+          "return": []
+        },
+        "increase_user_locked_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "balance",
+                "name": "Balance",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ],
+          "return": []
+        },
+        "lock_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            "U64"
+          ],
+          "return": []
+        },
+        "mint_account_cap": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian_v2",
+                "name": "AccountCap",
+                "typeArguments": []
+              }
+            }
+          ]
+        },
+        "new": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0xdee9",
+                "module": "custodian_v2",
+                "name": "Custodian",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "unlock_balance": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "Address",
+            "U64"
+          ],
+          "return": []
+        },
+        "withdraw_asset": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [
+            {
+              "abilities": []
+            }
+          ],
+          "parameters": [
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "Custodian",
+                  "typeArguments": [
+                    {
+                      "TypeParameter": 0
+                    }
+                  ]
+                }
+              }
+            },
+            "U64",
+            {
+              "Reference": {
+                "Struct": {
+                  "address": "0xdee9",
+                  "module": "custodian_v2",
+                  "name": "AccountCap",
+                  "typeArguments": []
+                }
+              }
+            },
+            {
+              "MutableReference": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "tx_context",
+                  "name": "TxContext",
+                  "typeArguments": []
+                }
+              }
+            }
+          ],
+          "return": [
+            {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "Coin",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "math": {
+      "fileFormatVersion": 6,
+      "address": "0xdee9",
+      "name": "math",
+      "friends": [
+        {
+          "address": "0xdee9",
+          "name": "clob"
+        },
+        {
+          "address": "0xdee9",
+          "name": "clob_v2"
+        },
+        {
+          "address": "0xdee9",
+          "name": "critbit"
+        }
+      ],
+      "structs": {},
+      "exposedFunctions": {
+        "count_leading_zeros": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U128"],
+          "return": ["U8"]
+        },
+        "div_round": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U64", "U64"],
+          "return": ["Bool", "U64"]
+        },
+        "mul": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U64", "U64"],
+          "return": ["U64"]
+        },
+        "mul_round": {
+          "visibility": "Public",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U64", "U64"],
+          "return": ["Bool", "U64"]
+        },
+        "unsafe_div": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U64", "U64"],
+          "return": ["U64"]
+        },
+        "unsafe_div_round": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U64", "U64"],
+          "return": ["Bool", "U64"]
+        },
+        "unsafe_mul": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U64", "U64"],
+          "return": ["U64"]
+        },
+        "unsafe_mul_round": {
+          "visibility": "Friend",
+          "isEntry": false,
+          "typeParameters": [],
+          "parameters": ["U64", "U64"],
+          "return": ["Bool", "U64"]
+        }
+      }
+    }
+  },
+  "id": 1
+}
