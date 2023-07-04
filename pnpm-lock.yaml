@@ -96,6 +96,18 @@ importers:
         specifier: ^5.1.3
         version: 5.1.5
 
+  examples/sui:
+    dependencies:
+      '@mysten/sui.js':
+        specifier: ^0.37.1
+        version: 0.37.1
+      '@typemove/move':
+        specifier: workspace:*
+        version: link:../../packages/move
+      '@typemove/sui':
+        specifier: workspace:*
+        version: link:../../packages/sui
+
   packages/move:
     dependencies:
       chalk:
