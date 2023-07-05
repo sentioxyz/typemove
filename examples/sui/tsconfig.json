@@ -2,7 +2,8 @@
   "compilerOptions": {
     "rootDir": "./src",
     "baseUrl": "./src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "moduleResolution": "nodenext"
   },
   "exclude": ["dist", "jest.config.ts"],
   "extends": "../../tsconfig.json"

@@ -19,7 +19,7 @@
     "stripInternal": true,
     "noFallthroughCasesInSwitch": true,
     "noEmitOnError": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   }
 }
