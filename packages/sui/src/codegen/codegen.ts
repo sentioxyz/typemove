@@ -41,6 +41,7 @@ class SuiCodegen extends AbstractCodegen<
 > {
   ADDRESS_TYPE = 'SuiAddress'
   REFERENCE_TYPE = 'ObjectId'
+  SYSTEM_PACKAGE = '@mysten/sui.js'
   // ADDRESS_TYPE = 'string'
   // MAIN_NET = SuiNetwork.MAIN_NET
   // TEST_NET = SuiNetwork.TEST_NET
@@ -110,21 +111,21 @@ class SuiCodegen extends AbstractCodegen<
       this.generateBuilderForFunction(module, f)
     )
 
+    const viewFuncs = module.exposedFunctions.map((f) =>
+      this.generateViewFunction(module, f)
+    )
+
     return `
     export namespace builder {
       ${funcs.join('\n')}
     }
+    export namespace view {
+      ${viewFuncs.join('\n')}
+    }
     `
   }
 
-  protected generateBuilderForFunction(
-    module: InternalMoveModule,
-    func: InternalMoveFunction
-  ): string {
-    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
-      return ''
-    }
-
+  private generateArgs(module: InternalMoveModule, func: InternalMoveFunction) {
     const args = []
     for (const [idx, arg] of func.params.entries()) {
       if (arg.reference) {
@@ -136,7 +137,7 @@ class SuiCodegen extends AbstractCodegen<
         args.push({
           paramType: '(ObjectId | ObjectCallArg)[] | TransactionArgument',
           callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.makeMoveVec({
-            objects: args[${idx}].map(a => tx.object(a))
+            objects: args[${idx}].map((a: any) => tx.object(a))
             // type: TODO
           }))`,
         })
@@ -150,6 +151,53 @@ class SuiCodegen extends AbstractCodegen<
         })
       }
     }
+    return args
+  }
+
+  protected generateViewFunction(
+    module: InternalMoveModule,
+    func: InternalMoveFunction
+  ): string {
+    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
+      return ''
+    }
+    const genericString = this.generateFunctionTypeParameters(func)
+
+    const typeParamArg = func.typeParams
+      .map((v, idx) => {
+        return `TypeDescriptor<T${idx}> | string`
+      })
+      .join(',')
+
+    const args = this.generateArgs(module, func)
+
+    return `export async function ${camel(
+      normalizeToJSName(func.name)
+    )}${genericString}(
+      provider: JsonRpcProvider,
+      args: [${args.map((a) => a.paramType).join(',')}],
+      ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ) {
+      const tx = new TransactionBlock()
+      builder.${camel(normalizeToJSName(func.name))}(tx, args ${
+      typeParamArg.length > 0 ? `, typeArguments` : ''
+    })
+      const res = await provider.devInspectTransactionBlock({
+        transactionBlock: tx,
+        sender: ZERO_ADDRESS
+      })
+      return res
+    }`
+  }
+
+  protected generateBuilderForFunction(
+    module: InternalMoveModule,
+    func: InternalMoveFunction
+  ): string {
+    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
+      return ''
+    }
+
+    const args = this.generateArgs(module, func)
 
     const genericString = this.generateFunctionTypeParameters(func)
 
@@ -189,7 +237,8 @@ class SuiCodegen extends AbstractCodegen<
   generateImports(): string {
     return `
       ${super.generateImports()}
-      import { TransactionBlock, TransactionArgument, ObjectCallArg } from '@mysten/sui.js'
+      import { ZERO_ADDRESS } from '@typemove/sui'
+      import { TransactionBlock, TransactionArgument, ObjectCallArg, JsonRpcProvider } from '@mysten/sui.js'
     `
   }
 }

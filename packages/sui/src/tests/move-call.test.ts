@@ -6,7 +6,7 @@ import {
   // bcs,
   testnetConnection,
 } from '@mysten/sui.js'
-import { clob_v2 } from './types/testnet/0xdee9'
+import { clob_v2 } from './types/testnet/0xdee9.js'
 
 export const SENDER =
   '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
@@ -39,6 +39,15 @@ describe('Test Sui call', () => {
       sender:
         '0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd',
     })
+
+    const result2 = await clob_v2.view.getMarketPrice(
+      provider,
+      ['0x5d2687b354f2ad4bce90c828974346d91ac1787ff170e5d09cb769e5dbcdefae'],
+      [
+        '0x2::sui::SUI',
+        '0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT',
+      ]
+    )
 
     // const returnValues = result.results![0]!.returnValues!
     //
