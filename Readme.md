@@ -25,7 +25,6 @@ const res = await defaultMoveCoder().decodedType(
 <details>
   <summary>Without TypeMove</summary>
 
-### Heading
 ```typescript
 export interface Info {
   index: string;
@@ -84,6 +83,7 @@ const decodedObjects = await coder.getDynamicFields(
 )
 console.log(decodedObjects[0].value.info.delivery_info?.price)
 ```
+IDE could infer result type correctly.
 ![dynamic_fields.png](images/dynamic_fields.png)
 
 ### Building transaction
