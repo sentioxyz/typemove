@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "@example/sui",
+  "version": "1.0.0-development",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "{lib,src}",
+    "!**/*.test.{js,ts}",
+    "!{lib,src}/*/tests"
+  ],
+  "scripts": {
+    "build": "pnpm gen && tsc",
+    "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
+    "gen": "typemove-sui ./src/abis ./src/types",
+    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+  },
+  "dependencies": {
+    "@mysten/sui.js": "^0.37.1",
+    "@typemove/move": "workspace:*",
+    "@typemove/sui": "workspace:*"
+  },
+  "url": "https://github.com/sentioxyz/typemove"
+}
