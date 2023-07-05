@@ -38,6 +38,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   // MAIN_NET: NetworkType
   ADDRESS_TYPE: string
   REFERENCE_TYPE: string
+  SYSTEM_PACKAGE: string
   PREFIX: string
   STRUCT_FIELD_NAME: string = 'data'
   GENERATE_CLIENT = false
@@ -537,7 +538,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
       MoveCoder, defaultMoveCoder, TypedEventInstance } from "@typemove/${this.PREFIX.toLowerCase()}"
     import { ${this.ADDRESS_TYPE}, ${
       this.ADDRESS_TYPE === this.REFERENCE_TYPE ? '' : `${this.REFERENCE_TYPE},`
-    } ModuleClient } from "@typemove/${this.PREFIX.toLowerCase()}"
+    } } from "${this.SYSTEM_PACKAGE}"
     `
     return imports
   }

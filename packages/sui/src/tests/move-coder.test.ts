@@ -36,13 +36,8 @@ describe('Test Sui coder', () => {
         round: '11',
       },
     }
-    const res = await coder.decodedType(
-      data,
-      parseMoveType(
-        '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::Info'
-      )
-    )
-    expect(res.delivery_info.price).equals(603716059n)
+    const res = await coder.decodedType(data, single_collateral.Info.type())
+    expect(res?.delivery_info?.price).equals(603716059n)
     // console.log(res)
   })
 
