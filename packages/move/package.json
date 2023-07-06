@@ -8,9 +8,9 @@
   },
   "main": "./dist/index.js",
   "files": [
-    "{lib,src}",
+    "{dist,src}",
     "!**/*.test.{js,ts}",
-    "!{lib,src}/*/tests"
+    "!{dist,src}/*/tests"
   ],
   "scripts": {
     "build": "tsc",
