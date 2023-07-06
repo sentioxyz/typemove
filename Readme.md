@@ -6,6 +6,16 @@ Generate TypeScript bindings for Sui contracts.
  - Automatically manage depended modules
  - BCS schema (WIP) 
 ## Usage
+### Install package
+```shell
+yarn add @typemove/sui
+```
+or 
+
+```shell
+pnpm add @typemove/sui
+```
+
 ### Code Generation
 ```typescript
 typemove-sui <path-of-abi-file> <path-of-target-ts-directory> <testnet|mainnet>
@@ -116,3 +126,12 @@ await clob_v2.view.getMarketPrice(provider,
 ```
 
 Checkout our [example](./examples/sui) for full codes。
+
+
+## Development
+```shell
+pnpm install
+pnpm build:all
+```
+
+Check submodules's package.json for other commands

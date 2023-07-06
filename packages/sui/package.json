@@ -20,9 +20,9 @@
     "typemove-sui": "./dist/codegen/run.js"
   },
   "files": [
-    "{lib,src}",
+    "{dist,src}",
     "!**/*.test.{js,ts}",
-    "!{lib,src}/*/tests"
+    "!{dist,src}/*/tests"
   ],
   "scripts": {
     "build": "pnpm gen && tsc",
