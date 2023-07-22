@@ -63,6 +63,10 @@ class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResou
       return this.generateTypeForDescriptor(param, module.address)
     })
 
+    const returns = func.return.map((param) => {
+      return this.generateTypeForDescriptor(param, module.address)
+    })
+
     const typeParamArg = func.typeParams
       .map((v, idx) => {
         return `TypeDescriptor<T${idx}> | string`
@@ -76,10 +80,12 @@ class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResou
     request: {
       type_arguments: [${func.typeParams.map((_) => 'string').join(', ')}], 
       arguments: [${fields.join(',')}]},
-    version?: bigint) {
+    version?: bigint): Promise<[${returns.join(',')}]> {
       const data = { ...request, function: "${module.address}::${module.name}::${func.name}", }
       const res = await client.view(data, version?.toString())
-      return res
+      const coder = defaultMoveCoder(client.nodeUrl)
+      const type = await coder.getMoveFunction("${module.address}::${module.name}::${func.name}")
+      return await coder.decodeArray(res, type.return) as any
     }`
   }
 }
