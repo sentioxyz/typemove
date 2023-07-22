@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "outDir": "dist",
+    "paths": {
+      "@typemove/aptos": ["./index.ts"],
+      "@typemove/aptos/*": ["./*/index.ts"]
+    }
+  },
+  "exclude": ["dist", "jest.config.ts"],
+  "extends": "../../tsconfig.json"
+}

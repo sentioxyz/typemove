@@ -1,0 +1,42 @@
+{
+  "name": "@typemove/aptos",
+  "version": "1.0.0-development",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./builtin": {
+      "source": "./src/builtin/index.ts",
+      "import": "./dist/builtin/index.js",
+      "types": "./dist/builtin/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "bin": {
+    "typemove-aptos": "./dist/codegen/run.js"
+  },
+  "files": [
+    "{dist,src}",
+    "!**/*.test.{js,ts}",
+    "!{dist,src}/*/tests"
+  ],
+  "scripts": {
+    "build": "pnpm gen && tsc",
+    "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
+    "gen": "pnpm gen:test && ts-node-esm  src/codegen/run.ts src/abis src/builtin",
+    "gen:test": "ts-node-esm src/codegen/run.ts src/tests/abis/testnet src/tests/types/testnet testnet",
+    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+  },
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "@typemove/move": "workspace:*",
+    "aptos": "^1.14.0",
+    "chalk": "^5.2.0",
+    "radash": "^11.0.0"
+  },
+  "url": "https://github.com/sentioxyz/typemove"
+}

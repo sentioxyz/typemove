@@ -18,3 +18,5 @@ ignore:
   - packages/move/node_modules
   - packages/sui/dist
   - packages/sui/node_modules
+  - packages/aptos/dist
+  - packages/aptos/node_modules
