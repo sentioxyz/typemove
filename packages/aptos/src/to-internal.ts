@@ -7,16 +7,9 @@ import {
   parseMoveType,
 } from '@typemove/move'
 import { Types } from 'aptos'
-import {
-  MoveFunction,
-  MoveModuleBytecode,
-  MoveStruct,
-  MoveStructField,
-} from './move-types'
+import { MoveFunction, MoveModuleBytecode, MoveStruct, MoveStructField } from './move-types'
 
-export function toInternalModule(
-  module: MoveModuleBytecode
-): InternalMoveModule {
+export function toInternalModule(module: MoveModuleBytecode): InternalMoveModule {
   if (!module.abi) {
     throw Error('module with no ABI found')
   }
@@ -45,6 +38,7 @@ export function toInternalFunction(func: MoveFunction): InternalMoveFunction {
   return {
     typeParams: func.generic_type_params,
     isEntry: func.is_entry,
+    isView: func.is_view,
     name: func.name,
     params: func.params.map(parseMoveType),
     return: func.return.map(parseMoveType),
@@ -62,9 +56,7 @@ export function toInternalStruct(struct: MoveStruct): InternalMoveStruct {
   }
 }
 
-export function toInternalField(
-  module: MoveStructField
-): InternalMoveStructField {
+export function toInternalField(module: MoveStructField): InternalMoveStructField {
   return {
     name: module.name,
     type: parseMoveType(module.type),
