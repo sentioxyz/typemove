@@ -11,6 +11,7 @@ export interface InternalMoveFunction {
   name: string
   visibility: InternalMoveFunctionVisibility
   isEntry: boolean
+  isView?: boolean
   typeParams: InternalMoveTypeParam[]
   params: TypeDescriptor[]
   return: TypeDescriptor[]

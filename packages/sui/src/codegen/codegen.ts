@@ -1,8 +1,4 @@
-import {
-  SuiMoveNormalizedModule,
-  SuiEvent,
-  SuiMoveObject,
-} from '@mysten/sui.js'
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject } from '@mysten/sui.js'
 
 import * as fs from 'fs'
 import chalk from 'chalk'
@@ -62,11 +58,7 @@ class SuiCodegen extends AbstractCodegen<
     return res
   }
 
-  generateStructs(
-    module: InternalMoveModule,
-    struct: InternalMoveStruct,
-    events: Set<string>
-  ): string {
+  generateStructs(module: InternalMoveModule, struct: InternalMoveStruct, events: Set<string>): string {
     let content = ''
     switch (structQname(module, struct)) {
       // TODO they should still have module code generated
@@ -85,15 +77,10 @@ class SuiCodegen extends AbstractCodegen<
         content += `export type Option<T> = T | undefined`
         break
     }
-    return (
-      content + super.generateStructs(module, struct, events, content !== '')
-    )
+    return content + super.generateStructs(module, struct, events, content !== '')
   }
 
-  generateForEvents(
-    module: InternalMoveModule,
-    struct: InternalMoveStruct
-  ): string {
+  generateForEvents(module: InternalMoveModule, struct: InternalMoveStruct): string {
     switch (structQname(module, struct)) {
       case '0x1::ascii::Char':
       case '0x1::ascii::String':
@@ -106,14 +93,10 @@ class SuiCodegen extends AbstractCodegen<
     return super.generateForEvents(module, struct)
   }
 
-  protected generateBuilder(module: InternalMoveModule): string {
-    const funcs = module.exposedFunctions.map((f) =>
-      this.generateBuilderForFunction(module, f)
-    )
+  protected generateExtra(module: InternalMoveModule): string {
+    const funcs = module.exposedFunctions.map((f) => this.generateBuilderForFunction(module, f))
 
-    const viewFuncs = module.exposedFunctions.map((f) =>
-      this.generateViewFunction(module, f)
-    )
+    const viewFuncs = module.exposedFunctions.map((f) => this.generateViewFunction(module, f))
 
     return `
     export namespace builder {
@@ -143,10 +126,7 @@ class SuiCodegen extends AbstractCodegen<
         })
       } else {
         args.push({
-          paramType: `${this.generateTypeForDescriptor(
-            arg,
-            module.address
-          )} | TransactionArgument`,
+          paramType: `${this.generateTypeForDescriptor(arg, module.address)} | TransactionArgument`,
           callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.pure(args[${idx}]))`,
         })
       }
@@ -154,10 +134,7 @@ class SuiCodegen extends AbstractCodegen<
     return args
   }
 
-  protected generateViewFunction(
-    module: InternalMoveModule,
-    func: InternalMoveFunction
-  ): string {
+  protected generateViewFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
     if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
       return ''
     }
@@ -171,16 +148,12 @@ class SuiCodegen extends AbstractCodegen<
 
     const args = this.generateArgs(module, func)
 
-    return `export async function ${camel(
-      normalizeToJSName(func.name)
-    )}${genericString}(
+    return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
       provider: JsonRpcProvider,
       args: [${args.map((a) => a.paramType).join(',')}],
       ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ) {
       const tx = new TransactionBlock()
-      builder.${camel(normalizeToJSName(func.name))}(tx, args ${
-      typeParamArg.length > 0 ? `, typeArguments` : ''
-    })
+      builder.${camel(normalizeToJSName(func.name))}(tx, args ${typeParamArg.length > 0 ? `, typeArguments` : ''})
       const res = await provider.devInspectTransactionBlock({
         transactionBlock: tx,
         sender: ZERO_ADDRESS
@@ -189,10 +162,7 @@ class SuiCodegen extends AbstractCodegen<
     }`
   }
 
-  protected generateBuilderForFunction(
-    module: InternalMoveModule,
-    func: InternalMoveFunction
-  ): string {
+  protected generateBuilderForFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
     if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
       return ''
     }
@@ -212,14 +182,10 @@ class SuiCodegen extends AbstractCodegen<
       })
       .join(',')
 
-    return `export function ${camel(
-      normalizeToJSName(func.name)
-    )}${genericString}(tx: TransactionBlock, 
+    return `export function ${camel(normalizeToJSName(func.name))}${genericString}(tx: TransactionBlock, 
       args: [${args.map((a) => a.paramType).join(',')}],
       ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ):
-       TransactionArgument & [ ${'TransactionArgument,'.repeat(
-         func.params.length
-       )} ] {
+       TransactionArgument & [ ${'TransactionArgument,'.repeat(func.params.length)} ] {
       const _args: any[] = []
       ${args.map((a) => a.callValue).join('\n')}
       
@@ -227,9 +193,7 @@ class SuiCodegen extends AbstractCodegen<
       return tx.moveCall({
         target: "${module.address}::${module.name}::${func.name}",
         arguments: _args,
-        ${
-          typeParamArg.length > 0 ? `typeArguments: [${typeParamToString}]` : ``
-        }
+        ${typeParamArg.length > 0 ? `typeArguments: [${typeParamToString}]` : ``}
       })
     }`
   }

@@ -9,15 +9,7 @@ import fs from 'fs'
 import { AccountModulesImportInfo, AccountRegister } from './account.js'
 import chalk from 'chalk'
 import { format } from 'prettier'
-import {
-  isFrameworkAccount,
-  moduleQname,
-  normalizeToJSName,
-  SPLITTER,
-  upperFirst,
-  VECTOR_STR,
-  camel,
-} from './utils.js'
+import { isFrameworkAccount, moduleQname, normalizeToJSName, SPLITTER, upperFirst, VECTOR_STR, camel } from './utils.js'
 import { TypeDescriptor } from './types.js'
 import { ChainAdapter } from './chain-adapter.js'
 
@@ -81,10 +73,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
     // when generating user code, don't need to generate framework account
     for (const sysModule of this.SYSTEM_MODULES) {
-      loader.accountImports.set(
-        sysModule,
-        new AccountModulesImportInfo(sysModule, sysModule)
-      )
+      loader.accountImports.set(sysModule, new AccountModulesImportInfo(sysModule, sysModule))
     }
     // const client = getRpcClient(network)
 
@@ -110,9 +99,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
     while (loader.pendingAccounts.size > 0) {
       for (const account of loader.pendingAccounts) {
-        console.log(
-          `download dependent module for account ${account} at ${this.chainAdapter.endpoint}`
-        )
+        console.log(`download dependent module for account ${account} at ${this.chainAdapter.endpoint}`)
 
         try {
           const rawModules = await this.chainAdapter.fetchModules(
@@ -121,24 +108,15 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
           )
           const modules = this.chainAdapter.toInternalModules(rawModules)
 
-          fs.writeFileSync(
-            path.resolve(srcDir, account + '.json'),
-            JSON.stringify(rawModules, null, '\t')
-          )
+          fs.writeFileSync(path.resolve(srcDir, account + '.json'), JSON.stringify(rawModules, null, '\t'))
           for (const module of modules) {
             loader.register(module, account)
           }
-          const codeGen = new AccountCodegen(
-            this,
-            loader,
-            rawModules,
-            modules,
-            {
-              fileName: account,
-              outputDir: outputDir,
-              // network,
-            }
-          )
+          const codeGen = new AccountCodegen(this, loader, rawModules, modules, {
+            fileName: account,
+            outputDir: outputDir,
+            // network,
+          })
 
           outputs.push(...codeGen.generate())
         } catch (e) {
@@ -166,10 +144,9 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 `
     for (const output of outputs) {
       const parsed = path.parse(output.fileName)
-      rootFileContent += `export * as _${parsed.name.replaceAll(
-        '-',
-        '_'
-      )} from './${parsed.name}${this.maybeEsmPrefix()}'\n`
+      rootFileContent += `export * as _${parsed.name.replaceAll('-', '_')} from './${
+        parsed.name
+      }${this.maybeEsmPrefix()}'\n`
     }
     fs.writeFileSync(rootFile, rootFileContent)
 
@@ -192,7 +169,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return ''
   }
 
-  protected generateBuilder(module: InternalMoveModule) {
+  protected generateExtra(module: InternalMoveModule) {
     return ''
   }
 
@@ -208,9 +185,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     //       .filter((s) => s !== '')
     //   : []
     const clientFunctions = this.GENERATE_CLIENT
-      ? module.exposedFunctions
-          .map((f) => this.generateClientFunctions(module, f))
-          .filter((s) => s !== '')
+      ? module.exposedFunctions.map((f) => this.generateClientFunctions(module, f)).filter((s) => s !== '')
       : []
     const eventStructs = new Map<string, InternalMoveStruct>()
     for (const [type, struct] of allEventStructs.entries()) {
@@ -223,12 +198,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     const events = Array.from(eventStructs.values())
       .map((e) => this.generateForEvents(module, e))
       .filter((s) => s !== '')
-    const structs = module.structs.map((s) =>
-      this.generateStructs(module, s, eventTypes)
-    )
-    const callArgs = module.exposedFunctions.map((f) =>
-      this.generateCallArgsStructs(module, f)
-    )
+    const structs = module.structs.map((s) => this.generateStructs(module, s, eventTypes))
+    const callArgs = module.exposedFunctions.map((f) => this.generateCallArgsStructs(module, f))
 
     const moduleName = normalizeToJSName(module.name)
     let client = ''
@@ -249,17 +220,12 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     ${structs.join('\n')}
     
     ${client}
-    ${this.generateBuilder(module)}
+    ${this.generateExtra(module)}
   }
   `
   }
 
-  generateStructs(
-    module: InternalMoveModule,
-    struct: InternalMoveStruct,
-    events: Set<string>,
-    typeOnly = false
-  ) {
+  generateStructs(module: InternalMoveModule, struct: InternalMoveStruct, events: Set<string>, typeOnly = false) {
     const typeParams = struct.typeParams || []
     const genericString = this.generateStructTypeParameters(struct)
     const genericStringAny = this.generateStructTypeParameters(struct, true)
@@ -360,22 +326,14 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   //   return genericString
   // }
 
-  generateCallArgsStructs(
-    module: InternalMoveModule,
-    func: InternalMoveFunction
-  ) {
+  generateCallArgsStructs(module: InternalMoveModule, func: InternalMoveFunction) {
     if (!func.isEntry) {
       return
     }
 
-    const fields = this.chainAdapter
-      .getMeaningfulFunctionParams(func.params)
-      .map((param) => {
-        return (
-          this.generateTypeForDescriptor(param, module.address) +
-          (this.PAYLOAD_OPTIONAL ? ' | undefined' : '')
-        )
-      })
+    const fields = this.chainAdapter.getMeaningfulFunctionParams(func.params).map((param) => {
+      return this.generateTypeForDescriptor(param, module.address) + (this.PAYLOAD_OPTIONAL ? ' | undefined' : '')
+    })
 
     const camelFuncName = upperFirst(camel(func.name))
 
@@ -389,10 +347,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   `
   }
 
-  generateClientFunctions(
-    module: InternalMoveModule,
-    func: InternalMoveFunction
-  ) {
+  generateClientFunctions(module: InternalMoveModule, func: InternalMoveFunction) {
     if (func.visibility === InternalMoveFunctionVisibility.PRIVATE) {
       return ''
     }
@@ -401,11 +356,9 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     }
     // const moduleName = normalizeToJSName(module.name)
     const funcName = camel(func.name)
-    const fields = this.chainAdapter
-      .getMeaningfulFunctionParams(func.params)
-      .map((param) => {
-        return this.generateTypeForDescriptor(param, module.address)
-      })
+    const fields = this.chainAdapter.getMeaningfulFunctionParams(func.params).map((param) => {
+      return this.generateTypeForDescriptor(param, module.address)
+    })
     const genericString = this.generateFunctionTypeParameters(func)
 
     const returns = func.return.map((param) => {
@@ -415,12 +368,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     const source = `
   ${funcName}${genericString}(type_arguments: [${func.typeParams
       .map((_) => 'string')
-      .join(', ')}], args: [${fields.join(
-      ','
-    )}], version?: bigint): Promise<[${returns.join(',')}]> {
-    return this.viewDecoded('${module.address}::${module.name}::${
-      func.name
-    }', type_arguments, args, version) as any
+      .join(', ')}], args: [${fields.join(',')}], version?: bigint): Promise<[${returns.join(',')}]> {
+    return this.viewDecoded('${module.address}::${module.name}::${func.name}', type_arguments, args, version) as any
   }`
     return source
   }
@@ -432,17 +381,11 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   //   return ''
   // }
 
-  generateForEvents(
-    module: InternalMoveModule,
-    struct: InternalMoveStruct
-  ): string {
+  generateForEvents(module: InternalMoveModule, struct: InternalMoveStruct): string {
     return ''
   }
 
-  generateTypeForDescriptor(
-    type: TypeDescriptor,
-    currentAddress: string
-  ): string {
+  generateTypeForDescriptor(type: TypeDescriptor, currentAddress: string): string {
     if (type.reference) {
       return this.REFERENCE_TYPE
     }
@@ -480,36 +423,23 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
         // only for aptos
         return 'string'
       }
-      if (
-        elementTypeQname.startsWith('T') &&
-        !elementTypeQname.includes(SPLITTER)
-      ) {
+      if (elementTypeQname.startsWith('T') && !elementTypeQname.includes(SPLITTER)) {
         return `${elementTypeQname}[] | string`
       }
-      return (
-        this.generateTypeForDescriptor(type.typeArgs[0], currentAddress) + '[]'
-      )
+      return this.generateTypeForDescriptor(type.typeArgs[0], currentAddress) + '[]'
     }
 
     const simpleName = this.generateSimpleType(type.qname, currentAddress)
     if (simpleName.length === 0) {
       console.error('unexpected error')
     }
-    if (
-      simpleName.toLowerCase() === VECTOR_STR ||
-      simpleName.toLowerCase().startsWith(VECTOR_STR + SPLITTER)
-    ) {
+    if (simpleName.toLowerCase() === VECTOR_STR || simpleName.toLowerCase().startsWith(VECTOR_STR + SPLITTER)) {
       console.error('unexpected vector type error')
     }
     if (type.typeArgs.length > 0) {
       // return simpleName
       return (
-        simpleName +
-        '<' +
-        type.typeArgs
-          .map((t) => this.generateTypeForDescriptor(t, currentAddress))
-          .join(',') +
-        '>'
+        simpleName + '<' + type.typeArgs.map((t) => this.generateTypeForDescriptor(t, currentAddress)).join(',') + '>'
       )
     }
     return simpleName
@@ -589,9 +519,7 @@ export class AccountCodegen<ModuleType, StructType> {
     if (info) {
       for (const [account] of info.imports.entries()) {
         // Remap to user's filename if possible, TODO codepath not well tested
-        const tsAccountModule =
-          './' +
-          (this.loader.accountImports.get(account)?.moduleName || account)
+        const tsAccountModule = './' + (this.loader.accountImports.get(account)?.moduleName || account)
         if (isFrameworkAccount(account) && !isFrameworkAccount(address)) {
           // Decide where to find runtime library
           moduleImports.push(
@@ -599,9 +527,7 @@ export class AccountCodegen<ModuleType, StructType> {
             // `import _${account} = builtin._${account} `
           )
         } else {
-          moduleImports.push(
-            `import * as _${account} from "${tsAccountModule}${this.moduleGen.maybeEsmPrefix()}"`
-          )
+          moduleImports.push(`import * as _${account} from "${tsAccountModule}${this.moduleGen.maybeEsmPrefix()}"`)
         }
 
         dependedAccounts.push(account)
@@ -616,8 +542,7 @@ export class AccountCodegen<ModuleType, StructType> {
       `
     }
 
-    const eventsMap: Map<string, InternalMoveStruct> =
-      this.moduleGen.chainAdapter.getAllEventStructs(this.modules)
+    const eventsMap: Map<string, InternalMoveStruct> = this.moduleGen.chainAdapter.getAllEventStructs(this.modules)
 
     const source = `
     /* Autogenerated file. Do not edit manually. */
@@ -630,9 +555,7 @@ export class AccountCodegen<ModuleType, StructType> {
 
     ${moduleImports.join('\n')}
 
-    ${this.modules
-      .map((m) => this.moduleGen.generateModule(m, eventsMap))
-      .join('\n')}
+    ${this.modules.map((m) => this.moduleGen.generateModule(m, eventsMap)).join('\n')}
 
     const MODULES = JSON.parse('${JSON.stringify(this.abi)}')
 
