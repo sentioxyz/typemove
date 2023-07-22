@@ -18,7 +18,7 @@ pnpm add @typemove/sui
 
 ### Code Generation
 ```typescript
-typemove-sui <path-of-abi-file> <path-of-target-ts-directory> <testnet|mainnet>
+yarn typemove-sui <path-of-abi-file> <path-of-target-ts-directory> <testnet|mainnet>
 ```
 
 ### Decode Object
