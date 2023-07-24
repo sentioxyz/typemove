@@ -1,9 +1,9 @@
-import { AptosClient, Types } from 'aptos'
+import { AptosClient, Types, AptosAccount } from 'aptos'
 import { _0x1 } from '@typemove/aptos/builtin'
 import { expect } from 'chai'
 import { jest } from '@jest/globals'
 
-describe('view function', () => {
+describe('client call of entry or view', () => {
   const client = new AptosClient('https://mainnet.aptoslabs.com/')
   jest.setTimeout(100000)
 
@@ -37,5 +37,13 @@ describe('view function', () => {
       arguments: ['0xee49776eff9fd395eb90d601449542080645e63704f518b31c6f72b6a95d7868'],
     })
     expect(res.length).eql(3)
+  })
+
+  test.skip('build transaction', async () => {
+    const account = new AptosAccount(undefined, '0x5967ebb35647e8a664ea8d2d96276f28cc88e7bfeff46e625c8900d8b541506a')
+    const res = await _0x1.coin.entry.transfer(client, account, {
+      type_arguments: ['0x1::aptos_coin::AptosCoin'],
+      arguments: ['0x1', 1n],
+    })
   })
 })
