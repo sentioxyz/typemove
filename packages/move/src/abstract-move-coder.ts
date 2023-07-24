@@ -1,20 +1,6 @@
-import {
-  accountAddressString,
-  moduleQname,
-  SPLITTER,
-  VECTOR_STR,
-} from './utils.js'
-import {
-  DecodedStruct,
-  matchType,
-  parseMoveType,
-  TypeDescriptor,
-} from './types.js'
-import {
-  InternalMoveFunction,
-  InternalMoveModule,
-  InternalMoveStruct,
-} from './internal-models.js'
+import { accountAddressString, moduleQname, SPLITTER, VECTOR_STR } from './utils.js'
+import { DecodedStruct, matchType, parseMoveType, TypeDescriptor } from './types.js'
+import { InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from './internal-models.js'
 // import { bytesToBigInt } from '../utils/index.js'
 import { ChainAdapter } from './chain-adapter.js'
 
@@ -40,10 +26,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (this.contains(account, module.name)) {
       return
     }
-    this.moduleMapping.set(
-      moduleQname({ address: account, name: module.name }),
-      module
-    )
+    this.moduleMapping.set(moduleQname({ address: account, name: module.name }), module)
 
     for (const struct of module.structs) {
       // TODO move to util
@@ -71,10 +54,6 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     return BigInt(data)
   }
 
-  protected encodeBigInt(data: bigint): any {
-    return '0x' + data.toString(16)
-  }
-
   private requestMap = new Map<string, Promise<InternalMoveModule>>()
 
   async getMoveStruct(type: string): Promise<InternalMoveStruct> {
@@ -99,9 +78,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (struct) {
       return struct
     }
-    throw new Error(
-      'Failed to load function ' + type + ' type are not imported anywhere'
-    )
+    throw new Error('Failed to load function ' + type + ' type are not imported anywhere')
   }
 
   async getMoveFunction(type: string): Promise<InternalMoveFunction> {
@@ -126,9 +103,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (func) {
       return func
     }
-    throw new Error(
-      'Failed to load function ' + type + ' type are not imported anywhere'
-    )
+    throw new Error('Failed to load function ' + type + ' type are not imported anywhere')
   }
 
   protected async decode<T>(data: any, type: TypeDescriptor<T>): Promise<T> {
@@ -193,74 +168,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     return typedData
   }
 
-  protected async encode(data: any, type: TypeDescriptor): Promise<any> {
-    // process simple type
-    if (type.reference) {
-      return data
-    }
-    switch (type.qname) {
-      case 'signer': // TODO check this, aptos only
-      case 'address':
-      case 'Address':
-      case '0x2::object::ID':
-      case '0x2::coin::Coin':
-      case '0x1::string::String':
-      case 'bool':
-      case 'Bool':
-      case 'u8':
-      case 'U8':
-      case 'u16':
-      case 'U16':
-      case 'u32':
-      case 'U32':
-        return data
-      case 'u64':
-      case 'U64':
-      case 'u128':
-      case 'U128':
-      case 'u256':
-      case 'U256':
-        return this.encodeBigInt(data)
-    }
-
-    // process vector
-    if (type.qname.toLowerCase() === VECTOR_STR) {
-      // vector<u8> as hex string
-      if (type.typeArgs[0].qname === 'u8' || type.typeArgs[0].qname === 'U8') {
-        return data
-      }
-
-      const res = []
-      for (const entry of data) {
-        res.push(this.encode(entry, type.typeArgs[0]))
-      }
-      return res
-    }
-
-    // Process complex type
-    const struct = await this.getMoveStruct(type.qname)
-
-    const typeCtx = new Map<string, TypeDescriptor>()
-    for (const [idx, typeArg] of type.typeArgs.entries()) {
-      typeCtx.set('T' + idx, typeArg)
-    }
-
-    const typedData: any = {}
-
-    for (const field of struct.fields) {
-      let filedType = field.type
-      filedType = filedType.applyTypeArgs(typeCtx)
-      const value = await this.encode(data[field.name], filedType)
-      typedData[field.name] = value
-    }
-    return typedData
-  }
-
-  async decodeArray(
-    entries: any[],
-    types: TypeDescriptor[],
-    strict = true
-  ): Promise<any[]> {
+  async decodeArray(entries: any[], types: TypeDescriptor[], strict = true): Promise<any[]> {
     const entriesDecoded: any[] = []
     for (const [idx, arg] of entries.entries()) {
       // TODO consider apply payload.type_arguments, but this might be hard since we don't code gen for them
@@ -272,47 +180,33 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
           entriesDecoded.push(await this.decode(arg, argType))
         }
       } catch (e) {
-        throw Error(
-          'Decoding error for ' +
-            JSON.stringify(arg) +
-            'using type' +
-            argType +
-            e.toString()
-        )
+        throw Error('Decoding error for ' + JSON.stringify(arg) + 'using type' + argType + e.toString())
       }
     }
     return entriesDecoded
   }
 
-  async encodeArray(
-    entriesDecoded: any[],
-    types: TypeDescriptor[]
-  ): Promise<any[]> {
-    const entries: any[] = []
-    for (const [idx, arg] of entriesDecoded.entries()) {
-      // TODO consider apply payload.type_arguments, but this might be hard since we don't code gen for them
-      const argType = types[idx]
-      try {
-        entries.push(await this.encode(arg, argType))
-      } catch (e) {
-        throw Error(
-          'Decoding error for ' +
-            JSON.stringify(arg) +
-            'using type' +
-            argType +
-            e.toString()
-        )
+  protected encode(data: any): any {
+    if (!data) {
+      return undefined
+    }
+    for (const [key, value] of Object.entries(data)) {
+      if (!value) {
+        continue
+      }
+      if (typeof value === 'bigint') {
+        data[key] = value.toString()
       }
     }
-    return entries
+    return data
   }
 
-  async encodeCallArgs(args: any[], func: string): Promise<any[]> {
-    const f = await this.getMoveFunction(func)
-    return this.encodeArray(
-      args,
-      this.adapter.getMeaningfulFunctionParams(f.params)
-    )
+  encodeArray(entriesDecoded: any[]): any[] {
+    const entries: any[] = []
+    for (const [idx, arg] of entriesDecoded.entries()) {
+      entries.push(this.encode(arg))
+    }
+    return entries
   }
 
   async decodeCallResult(res: any[], func: string): Promise<any[]> {
@@ -346,9 +240,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     return results
   }
 
-  protected async decodedStruct<T, ST extends StructType>(
-    typeStruct: ST
-  ): Promise<DecodedStruct<ST, T> | undefined> {
+  protected async decodedStruct<T, ST extends StructType>(typeStruct: ST): Promise<DecodedStruct<ST, T> | undefined> {
     const typeDescriptor = parseMoveType(this.adapter.getType(typeStruct))
     const typeArguments = typeDescriptor.typeArgs.map((t) => t.getSignature())
 
@@ -356,9 +248,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     try {
       dataTyped = await this.decode(typeStruct, typeDescriptor)
     } catch (e) {
-      throw Error(
-        'Decoding error for struct' + JSON.stringify(typeStruct) + e.toString()
-      )
+      throw Error('Decoding error for struct' + JSON.stringify(typeStruct) + e.toString())
       // return undefined
     }
     return {
@@ -367,18 +257,13 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
       type_arguments: typeArguments,
     }
   }
-  async decodedType<T, ST>(
-    typeStruct: ST,
-    type: TypeDescriptor<T>
-  ): Promise<T | undefined> {
+  async decodedType<T, ST>(typeStruct: ST, type: TypeDescriptor<T>): Promise<T | undefined> {
     if (typeStruct === null || typeStruct == undefined) {
       return typeStruct as any
     }
     if (typeof typeStruct === 'object') {
       if ('type' in typeStruct) {
-        const typeInStruct = parseMoveType(
-          (typeStruct.type as any).toString() || ''
-        )
+        const typeInStruct = parseMoveType((typeStruct.type as any).toString() || '')
         if (!matchType(type, typeInStruct)) {
           return undefined
         }

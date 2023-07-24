@@ -78,9 +78,13 @@ class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResou
       type_arguments: [${func.typeParams.map((_) => 'string').join(', ')}], 
       arguments: [${fields.join(',')}]},
     version?: bigint): Promise<[${returns.join(',')}]> {
-      const data = { ...request, function: "${module.address}::${module.name}::${func.name}", }
-      const res = await client.view(data, version?.toString())
       const coder = defaultMoveCoder(client.nodeUrl)
+      const data = { 
+        type_arguments: request.type_arguments,
+        arguments: coder.encodeArray(request.arguments),
+        function: "${module.address}::${module.name}::${func.name}"
+      }
+      const res = await client.view(data, version?.toString())
       const type = await coder.getMoveFunction("${module.address}::${module.name}::${func.name}")
       return await coder.decodeArray(res, type.return) as any
     }`
@@ -112,10 +116,11 @@ class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResou
       },
       extraArgs?: OptionalTransactionArgs
     ): Promise<Types.PendingTransaction> {
+      const coder = defaultMoveCoder(client.nodeUrl)
       const builder = new TransactionBuilderRemoteABI(client, { sender: account.address(), ...extraArgs });
       const txn = await builder.build("${module.address}::${module.name}::${
       func.name
-    }", request.type_arguments, request.arguments)
+    }", request.type_arguments, coder.encodeArray(request.arguments))
       const bcsTxn = AptosClient.generateBCSTransaction(account, txn)
       return await client.submitSignedBCSTransaction(bcsTxn)
     }`
