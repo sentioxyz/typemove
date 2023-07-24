@@ -33,8 +33,6 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   SYSTEM_PACKAGE: string
   PREFIX: string
   STRUCT_FIELD_NAME: string = 'data'
-  GENERATE_CLIENT = false
-  GENERATE_ON_ENTRY = true
   PAYLOAD_OPTIONAL = false
   SYSTEM_MODULES = new Set(['0x1', '0x2', '0x3'])
   ESM = true
@@ -184,9 +182,9 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     //       .map((f) => this.generateForEntryFunctions(module, f))
     //       .filter((s) => s !== '')
     //   : []
-    const clientFunctions = this.GENERATE_CLIENT
-      ? module.exposedFunctions.map((f) => this.generateClientFunctions(module, f)).filter((s) => s !== '')
-      : []
+    // const clientFunctions = this.GENERATE_CLIENT
+    //   ? module.exposedFunctions.map((f) => this.generateClientFunctions(module, f)).filter((s) => s !== '')
+    //   : []
     const eventStructs = new Map<string, InternalMoveStruct>()
     for (const [type, struct] of allEventStructs.entries()) {
       if (type.startsWith(qname + SPLITTER)) {
@@ -202,24 +200,12 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     const callArgs = module.exposedFunctions.map((f) => this.generateCallArgsStructs(module, f))
 
     const moduleName = normalizeToJSName(module.name)
-    let client = ''
-
-    if (clientFunctions.length > 0) {
-      client = `
-      export class Client extends ModuleClient {
-        ${clientFunctions.join('\n')}
-      }
-      `
-    }
-
-    // TODO how to deal with callArgs
     return `
   ${this.generateModuleExtra(module, allEventStructs)}
 
   export namespace ${moduleName} {
     ${structs.join('\n')}
     
-    ${client}
     ${this.generateExtra(module)}
   }
   `
