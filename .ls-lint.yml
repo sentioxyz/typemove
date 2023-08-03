@@ -12,6 +12,7 @@ ignore:
   - .git
   - .idea
   - .github
+  - package.cjs.json
   - docs
   - node_modules
   - packages/move/dist

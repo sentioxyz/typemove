@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/cjs",
+    "moduleResolution": "nodenext",
+    "module": "commonjs"
+  },
+  "extends": "./tsconfig.json"
+}
