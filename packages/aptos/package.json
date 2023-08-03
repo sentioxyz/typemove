@@ -4,22 +4,15 @@
   "license": "Apache-2.0",
   "type": "module",
   "exports": {
-    ".": {
-      "source": "./src/index.ts",
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./builtin": {
-      "source": "./src/builtin/index.ts",
-      "import": "./dist/builtin/index.js",
-      "types": "./dist/builtin/index.d.ts"
-    }
+    ".": "./dist/index.js",
+    "./builtin": "./dist/builtin/index.js"
   },
   "main": "./dist/index.js",
   "bin": {
     "typemove-aptos": "./dist/codegen/run.js"
   },
   "files": [
+    "**/package.json",
     "{dist,src}",
     "!**/*.test.{js,ts}",
     "!{dist,src}/*/tests"

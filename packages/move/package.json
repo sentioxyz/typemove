@@ -8,6 +8,7 @@
   },
   "main": "./dist/index.js",
   "files": [
+    "**/package.json",
     "{dist,src}",
     "!**/*.test.{js,ts}",
     "!{dist,src}/*/tests"
