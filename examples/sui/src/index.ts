@@ -1,24 +1,15 @@
-import {
-  JsonRpcProvider,
-  TransactionBlock,
-  // bcs,
-  testnetConnection,
-} from '@mysten/sui.js'
+import { TransactionBlock } from '@mysten/sui.js/transactions'
+import { getFullnodeUrl, SuiClient } from '@mysten/sui.js/client'
 import { clob_v2 } from './types/0xdee9.js'
-
-export const SENDER =
-  '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+import { _0x2 } from '@typemove/sui/builtin'
 
 const tx = new TransactionBlock()
-const provider = new JsonRpcProvider(testnetConnection)
+const provider = new SuiClient({ url: getFullnodeUrl('testnet') })
 
 clob_v2.builder.getMarketPrice(
   tx,
   ['0x5d2687b354f2ad4bce90c828974346d91ac1787ff170e5d09cb769e5dbcdefae'],
-  [
-    '0x2::sui::SUI',
-    '0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT',
-  ]
+  ['0x2::sui::SUI', '0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT']
 )
 
 const result = await provider.devInspectTransactionBlock({
@@ -27,3 +18,10 @@ const result = await provider.devInspectTransactionBlock({
 })
 
 console.log(tx.blockData)
+
+const balance = await _0x2.coin.view.balance(
+  provider,
+  ['0x5d2687b354f2ad4bce90c828974346d91ac1787ff170e5d09cb769e5dbcdefae'],
+  ['0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT']
+)
+console.log(balance)
