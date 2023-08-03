@@ -7,7 +7,7 @@ import {
   parseMoveType,
 } from '@typemove/move'
 import { Types } from 'aptos'
-import { MoveFunction, MoveModuleBytecode, MoveStruct, MoveStructField } from './move-types'
+import { MoveFunction, MoveModuleBytecode, MoveStruct, MoveStructField } from './move-types.js'
 
 export function toInternalModule(module: MoveModuleBytecode): InternalMoveModule {
   if (!module.abi) {

@@ -1,4 +1,4 @@
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject } from '@mysten/sui.js'
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject } from '@mysten/sui.js/client'
 
 import * as fs from 'fs'
 import chalk from 'chalk'
@@ -35,9 +35,8 @@ class SuiCodegen extends AbstractCodegen<
   SuiMoveNormalizedModule,
   SuiEvent | SuiMoveObject
 > {
-  ADDRESS_TYPE = 'SuiAddress'
-  REFERENCE_TYPE = 'ObjectId'
-  SYSTEM_PACKAGE = '@mysten/sui.js'
+  ADDRESS_TYPE = 'string'
+  SYSTEM_PACKAGE = '@typemove/sui'
   // ADDRESS_TYPE = 'string'
   // MAIN_NET = SuiNetwork.MAIN_NET
   // TEST_NET = SuiNetwork.TEST_NET
@@ -113,12 +112,12 @@ class SuiCodegen extends AbstractCodegen<
     for (const [idx, arg] of func.params.entries()) {
       if (arg.reference) {
         args.push({
-          paramType: 'ObjectId | ObjectCallArg | TransactionArgument',
+          paramType: `${this.ADDRESS_TYPE} | ObjectCallArg | TransactionArgument`,
           callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.object(args[${idx}]))`,
         })
       } else if (arg.isVector()) {
         args.push({
-          paramType: '(ObjectId | ObjectCallArg)[] | TransactionArgument',
+          paramType: `(${this.ADDRESS_TYPE} | ObjectCallArg)[] | TransactionArgument`,
           callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.makeMoveVec({
             objects: args[${idx}].map((a: any) => tx.object(a))
             // type: TODO
@@ -149,12 +148,12 @@ class SuiCodegen extends AbstractCodegen<
     const args = this.generateArgs(module, func)
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
-      provider: JsonRpcProvider,
+      client: SuiClient,
       args: [${args.map((a) => a.paramType).join(',')}],
       ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ) {
       const tx = new TransactionBlock()
       builder.${camel(normalizeToJSName(func.name))}(tx, args ${typeParamArg.length > 0 ? `, typeArguments` : ''})
-      const res = await provider.devInspectTransactionBlock({
+      const res = await client.devInspectTransactionBlock({
         transactionBlock: tx,
         sender: ZERO_ADDRESS
       })
@@ -202,7 +201,9 @@ class SuiCodegen extends AbstractCodegen<
     return `
       ${super.generateImports()}
       import { ZERO_ADDRESS } from '@typemove/sui'
-      import { TransactionBlock, TransactionArgument, ObjectCallArg, JsonRpcProvider } from '@mysten/sui.js'
+      import { TransactionBlock } from '@mysten/sui.js/transactions'
+      import { ObjectCallArg, TransactionArgument } from '@mysten/sui.js'
+      import { SuiClient } from '@mysten/sui.js/client'
     `
   }
 }

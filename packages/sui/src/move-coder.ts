@@ -14,7 +14,7 @@ import {
   SuiEvent,
   SuiMoveNormalizedModule,
   SuiMoveObject,
-} from '@mysten/sui.js'
+} from '@mysten/sui.js/client'
 import { toInternalModule } from './to-internal.js'
 import { SuiChainAdapter } from './sui-chain-adapter.js'
 import { dynamic_field } from './builtin/0x2.js'
@@ -60,10 +60,7 @@ export class MoveCoder extends AbstractMoveCoder<
   decodeEvent<T>(event: SuiEvent): Promise<TypedEventInstance<T> | undefined> {
     return this.decodedStruct(event)
   }
-  filterAndDecodeEvents<T>(
-    type: TypeDescriptor<T> | string,
-    resources: SuiEvent[]
-  ): Promise<TypedEventInstance<T>[]> {
+  filterAndDecodeEvents<T>(type: TypeDescriptor<T> | string, resources: SuiEvent[]): Promise<TypedEventInstance<T>[]> {
     if (typeof type === 'string') {
       type = parseMoveType(type)
     }
@@ -77,9 +74,7 @@ export class MoveCoder extends AbstractMoveCoder<
   ): Promise<dynamic_field.Field<T1, T2>[]> {
     // const type = dynamic_field.Field.TYPE
     // Not using the code above to avoid cycle initialize failed
-    const type = new TypeDescriptor<dynamic_field.Field<T1, T2>>(
-      '0x2::dynamic_field::Field'
-    )
+    const type = new TypeDescriptor<dynamic_field.Field<T1, T2>>('0x2::dynamic_field::Field')
     type.typeArgs = [keyType, valueType]
     const res = await this.filterAndDecodeObjects(type, objects)
     return res.map((o) => o.data_decoded)
@@ -92,15 +87,8 @@ export class MoveCoder extends AbstractMoveCoder<
     return this.filterAndDecodeStruct(type, objects)
   }
 
-  async decodeFunctionPayload(
-    payload: MoveCallSuiTransaction,
-    inputs: SuiCallArg[]
-  ): Promise<MoveCallSuiTransaction> {
-    const functionType = [
-      payload.package,
-      payload.module,
-      payload.function,
-    ].join(SPLITTER)
+  async decodeFunctionPayload(payload: MoveCallSuiTransaction, inputs: SuiCallArg[]): Promise<MoveCallSuiTransaction> {
+    const functionType = [payload.package, payload.module, payload.function].join(SPLITTER)
     const func = await this.getMoveFunction(functionType)
     const params = this.adapter.getMeaningfulFunctionParams(func.params)
     const args = []
@@ -135,9 +123,7 @@ export class MoveCoder extends AbstractMoveCoder<
 const DEFAULT_ENDPOINT = 'https://fullnode.mainnet.sui.io/'
 const CODER_MAP = new Map<string, MoveCoder>()
 
-export function defaultMoveCoder(
-  endpoint: string = DEFAULT_ENDPOINT
-): MoveCoder {
+export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
     coder = new MoveCoder(DEFAULT_ENDPOINT)
