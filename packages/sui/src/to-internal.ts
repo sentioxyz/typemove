@@ -4,7 +4,7 @@ import type {
   SuiMoveNormalizedModule,
   SuiMoveNormalizedStruct,
   SuiMoveNormalizedType,
-} from '@mysten/sui.js'
+} from '@mysten/sui.js/client'
 import {
   InternalMoveFunction,
   InternalMoveFunctionVisibility,
@@ -15,25 +15,16 @@ import {
   TypeDescriptor,
 } from '@typemove/move'
 
-export function toInternalModule(
-  module: SuiMoveNormalizedModule
-): InternalMoveModule {
+export function toInternalModule(module: SuiMoveNormalizedModule): InternalMoveModule {
   return {
     address: module.address,
-    exposedFunctions: Object.entries(module.exposedFunctions).map(([n, f]) =>
-      toInternalFunction(n, f)
-    ),
+    exposedFunctions: Object.entries(module.exposedFunctions).map(([n, f]) => toInternalFunction(n, f)),
     name: module.name,
-    structs: Object.entries(module.structs).map(([n, s]) =>
-      toInternalStruct(n, s)
-    ),
+    structs: Object.entries(module.structs).map(([n, s]) => toInternalStruct(n, s)),
   }
 }
 
-function toInternalFunction(
-  name: string,
-  func: SuiMoveNormalizedFunction
-): InternalMoveFunction {
+function toInternalFunction(name: string, func: SuiMoveNormalizedFunction): InternalMoveFunction {
   let visibility
   switch (func.visibility) {
     case 'Private':
@@ -60,10 +51,7 @@ function toInternalFunction(
   }
 }
 
-function toInternalStruct(
-  name: string,
-  struct: SuiMoveNormalizedStruct
-): InternalMoveStruct {
+function toInternalStruct(name: string, struct: SuiMoveNormalizedStruct): InternalMoveStruct {
   return {
     abilities: struct.abilities.abilities,
     fields: struct.fields.map(toInternalField),
@@ -75,28 +63,22 @@ function toInternalStruct(
   }
 }
 
-function toInternalField(
-  module: SuiMoveNormalizedField
-): InternalMoveStructField {
+function toInternalField(module: SuiMoveNormalizedField): InternalMoveStructField {
   return {
     name: module.name,
     type: toTypeDescriptor(module.type),
   }
 }
 
-function toTypeDescriptor(
-  normalizedType: SuiMoveNormalizedType
-): TypeDescriptor {
+function toTypeDescriptor(normalizedType: SuiMoveNormalizedType): TypeDescriptor {
   if (typeof normalizedType === 'string') {
     return new TypeDescriptor(normalizedType)
   }
 
   if ('Struct' in normalizedType) {
-    const qname = [
-      normalizedType.Struct.address,
-      normalizedType.Struct.module,
-      normalizedType.Struct.name,
-    ].join(SPLITTER)
+    const qname = [normalizedType.Struct.address, normalizedType.Struct.module, normalizedType.Struct.name].join(
+      SPLITTER
+    )
 
     const args = normalizedType.Struct.typeArguments.map(toTypeDescriptor)
 
@@ -104,9 +86,7 @@ function toTypeDescriptor(
   }
 
   if ('Vector' in normalizedType) {
-    return new TypeDescriptor('Vector', [
-      toTypeDescriptor(normalizedType.Vector),
-    ])
+    return new TypeDescriptor('Vector', [toTypeDescriptor(normalizedType.Vector)])
   }
   if ('TypeParameter' in normalizedType) {
     return new TypeDescriptor('T' + normalizedType.TypeParameter)

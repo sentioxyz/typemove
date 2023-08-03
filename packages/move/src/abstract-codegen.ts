@@ -29,7 +29,6 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   // TEST_NET: NetworkType
   // MAIN_NET: NetworkType
   ADDRESS_TYPE: string
-  REFERENCE_TYPE: string
   SYSTEM_PACKAGE: string
   PREFIX: string
   STRUCT_FIELD_NAME: string = 'data'
@@ -373,7 +372,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
   generateTypeForDescriptor(type: TypeDescriptor, currentAddress: string): string {
     if (type.reference) {
-      return this.REFERENCE_TYPE
+      return this.ADDRESS_TYPE
     }
 
     switch (type.qname) {
@@ -448,13 +447,16 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   }
 
   generateImports() {
+    let refImports = `import { ${this.ADDRESS_TYPE} } from "${this.SYSTEM_PACKAGE}"`
+    if (this.ADDRESS_TYPE === 'string') {
+      refImports = ''
+    }
+
     const imports = `
     import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
     import {
       MoveCoder, defaultMoveCoder, TypedEventInstance } from "@typemove/${this.PREFIX.toLowerCase()}"
-    import { ${this.ADDRESS_TYPE}, ${
-      this.ADDRESS_TYPE === this.REFERENCE_TYPE ? '' : `${this.REFERENCE_TYPE},`
-    } } from "${this.SYSTEM_PACKAGE}"
+    ${refImports}
     `
     return imports
   }

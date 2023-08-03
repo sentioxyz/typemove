@@ -7,14 +7,8 @@ import {
   SPLITTER,
   TypeDescriptor,
 } from '@typemove/move'
-import {
-  Connection,
-  JsonRpcProvider,
-  SuiMoveNormalizedModule,
-  SuiEvent,
-  SuiMoveObject,
-  SuiParsedData,
-} from '@mysten/sui.js'
+
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui.js/client'
 
 export class SuiChainAdapter extends ChainAdapter<
   // SuiNetwork,
@@ -55,9 +49,7 @@ export class SuiChainAdapter extends ChainAdapter<
     return Object.values(modules).map(toInternalModule)
   }
 
-  getAllEventStructs(
-    modules: InternalMoveModule[]
-  ): Map<string, InternalMoveStruct> {
+  getAllEventStructs(modules: InternalMoveModule[]): Map<string, InternalMoveStruct> {
     const eventMap = new Map<string, InternalMoveStruct>()
 
     for (const module of modules) {
@@ -78,10 +70,16 @@ export class SuiChainAdapter extends ChainAdapter<
   }
 
   getData(val: SuiEvent | SuiMoveObject) {
-    if (SuiEvent.is(val)) {
+    // if (val.parsedJson) {
+    //   return val.parsedJson as any
+    // }
+    if ('parsedJson' in val) {
       return val.parsedJson as any
     }
-    if (SuiParsedData.is(val)) {
+    // if (SuiParsedData.is(val)) {
+    //   return val.fields as any
+    // }
+    if (val.dataType === 'moveObject') {
       return val.fields as any
     }
     // if (SuiMoveObject.is(val)) {
@@ -108,6 +106,6 @@ export class SuiChainAdapter extends ChainAdapter<
 //   return 'https://fullnode.mainnet.sui.io/'
 // }
 
-function getRpcClient(endpoint: string): JsonRpcProvider {
-  return new JsonRpcProvider(new Connection({ fullnode: endpoint }))
+function getRpcClient(endpoint: string): SuiClient {
+  return new SuiClient({ url: endpoint })
 }

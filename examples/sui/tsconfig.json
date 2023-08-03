@@ -3,7 +3,7 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "outDir": "dist",
-    "moduleResolution": "nodenext"
+    "moduleResolution": "node"
   },
   "exclude": ["dist", "jest.config.ts"],
   "extends": "../../tsconfig.json"
