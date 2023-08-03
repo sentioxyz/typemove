@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": "./src",
     "baseUrl": "./src",
-    "outDir": "dist",
+    "outDir": "dist/esm",
     "paths": {
       "@typemove/move": ["./index.ts"]
     }
