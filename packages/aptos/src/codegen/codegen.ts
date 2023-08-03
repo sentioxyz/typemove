@@ -22,7 +22,6 @@ export async function codegen(
 
 class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResource> {
   ADDRESS_TYPE = 'Address'
-  REFERENCE_TYPE = 'Address'
   PREFIX = 'Aptos'
   SYSTEM_PACKAGE = '@typemove/aptos'
 

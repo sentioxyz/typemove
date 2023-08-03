@@ -20,8 +20,7 @@ describe('Test Sui coder', () => {
       type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::Info',
       fields: {
         create_ts_ms: '1680756795894',
-        creator:
-          '0xb6c7e3b1c61ee81516a8317f221daa035f1503e0ac3ae7a50b61834bc7a3ead9',
+        creator: '0xb6c7e3b1c61ee81516a8317f221daa035f1503e0ac3ae7a50b61834bc7a3ead9',
         delivery_info: {
           type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::DeliveryInfo',
           fields: {
@@ -110,20 +109,15 @@ describe('Test Sui coder', () => {
     const objects = data.map((d) => d.data.content)
     const res = (await coder.filterAndDecodeObjects(
       parseMoveType('0x2::dynamic_field::Field<address, bool>'),
-      objects
+      objects as any
     )) as any
     expect(res.length).eq(objects.length)
-    const fieldType = dynamic_field.Field.type(
-      BUILTIN_TYPES.ADDRESS_TYPE,
-      BUILTIN_TYPES.BOOL_TYPE
-    )
-    const res2 = (await coder.filterAndDecodeObjects(fieldType, objects)).map(
-      (e) => e.data_decoded
-    )
+    const fieldType = dynamic_field.Field.type(BUILTIN_TYPES.ADDRESS_TYPE, BUILTIN_TYPES.BOOL_TYPE)
+    const res2 = (await coder.filterAndDecodeObjects(fieldType, objects as any)).map((e) => e.data_decoded)
     expect(res2.length).eq(objects.length)
 
     const decodedObjects = await coder.getDynamicFields(
-      objects,
+      objects as any,
       BUILTIN_TYPES.ADDRESS_TYPE,
       BUILTIN_TYPES.BOOL_TYPE
     )
@@ -133,12 +127,14 @@ describe('Test Sui coder', () => {
 
   test('decode dynamic fields 2', async () => {
     const objects = data2.map((d) => d.data.content)
-    const res: TypedSuiMoveObject<dynamic_field.Field<any, any>>[] =
-      await coder.filterAndDecodeObjects(dynamic_field.Field.type(), objects)
+    const res: TypedSuiMoveObject<dynamic_field.Field<any, any>>[] = await coder.filterAndDecodeObjects(
+      dynamic_field.Field.type(),
+      objects as any
+    )
     expect(res.length).eq(objects.length)
 
     const decodedObjects = await coder.getDynamicFields(
-      objects,
+      objects as any,
       BUILTIN_TYPES.U64_TYPE,
       single_collateral.PortfolioVault.type()
     )
@@ -150,8 +146,10 @@ describe('Test Sui coder', () => {
     const objects = data3.objects
     const coder = defaultMoveCoder()
 
-    const res: TypedSuiMoveObject<dynamic_field.Field<any, any>>[] =
-      await coder.filterAndDecodeObjects(dynamic_field.Field.type(), objects)
+    const res: TypedSuiMoveObject<dynamic_field.Field<any, any>>[] = await coder.filterAndDecodeObjects(
+      dynamic_field.Field.type(),
+      objects as any
+    )
     expect(res.length).eq(objects.length)
 
     // const decodedObjects = await coder.getDynamicFields(
@@ -171,12 +169,8 @@ describe('Test Sui coder', () => {
         undefined,
       ],
       [
-        parseMoveType(
-          '&0xf0bae856227dd70c836a9efa09d18807b56e16434a7bd3e0bd1c85ecbd9ed1af::pause::Pause'
-        ),
-        parseMoveType(
-          '&0xf0bae856227dd70c836a9efa09d18807b56e16434a7bd3e0bd1c85ecbd9ed1af::maven::Maven'
-        ),
+        parseMoveType('&0xf0bae856227dd70c836a9efa09d18807b56e16434a7bd3e0bd1c85ecbd9ed1af::pause::Pause'),
+        parseMoveType('&0xf0bae856227dd70c836a9efa09d18807b56e16434a7bd3e0bd1c85ecbd9ed1af::maven::Maven'),
         coin.Coin.type(),
       ]
     )
@@ -196,14 +190,12 @@ describe('Test Sui coder', () => {
 const data = [
   {
     data: {
-      objectId:
-        '0x0002645c0afc5c5c298bea19f3a6a4dc72f763e0fe022e61cd5fed80bfcffccf',
+      objectId: '0x0002645c0afc5c5c298bea19f3a6a4dc72f763e0fe022e61cd5fed80bfcffccf',
       version: 261183,
       digest: '4pY5doijhofhKKy6dAp5Zuvh3Drig7i6FPn28UDMqo2z',
       type: '0x2::dynamic_field::Field<address, bool>',
       owner: {
-        ObjectOwner:
-          '0xa14f85860d6ce99154ecbb13570ba5fba1d8dc16b290de13f036b016fd19a29c',
+        ObjectOwner: '0xa14f85860d6ce99154ecbb13570ba5fba1d8dc16b290de13f036b016fd19a29c',
       },
       content: {
         dataType: 'moveObject',
@@ -221,14 +213,12 @@ const data = [
   },
   {
     data: {
-      objectId:
-        '0x0002cd71bdbcd593ac8558cb9ae5ddd7df08861671ce8a50656a5380ce200094',
+      objectId: '0x0002cd71bdbcd593ac8558cb9ae5ddd7df08861671ce8a50656a5380ce200094',
       version: 284842,
       digest: '3eEgWLdREioWdyhArwq8sRQmYhheQyUJZWzGMiurk59T',
       type: '0x2::dynamic_field::Field<address, bool>',
       owner: {
-        ObjectOwner:
-          '0xa14f85860d6ce99154ecbb13570ba5fba1d8dc16b290de13f036b016fd19a29c',
+        ObjectOwner: '0xa14f85860d6ce99154ecbb13570ba5fba1d8dc16b290de13f036b016fd19a29c',
       },
       content: {
         dataType: 'moveObject',
@@ -246,14 +236,12 @@ const data = [
   },
   {
     data: {
-      objectId:
-        '0x001030edc1453fd6a81af482c881d328890c0544b5756c989f17f326595161dc',
+      objectId: '0x001030edc1453fd6a81af482c881d328890c0544b5756c989f17f326595161dc',
       version: 293745,
       digest: 'J5sByqHXemu6y8dPjLmW1Uu26T2Ty17UsM6zhRxhDUY8',
       type: '0x2::dynamic_field::Field<address, bool>',
       owner: {
-        ObjectOwner:
-          '0xa14f85860d6ce99154ecbb13570ba5fba1d8dc16b290de13f036b016fd19a29c',
+        ObjectOwner: '0xa14f85860d6ce99154ecbb13570ba5fba1d8dc16b290de13f036b016fd19a29c',
       },
       content: {
         dataType: 'moveObject',
@@ -274,14 +262,12 @@ const data = [
 const data2 = [
   {
     data: {
-      objectId:
-        '0x0b96ca4b33fef52a7a8e7575e5caeb6bb482a480c9c089d763c6664cd802ddea',
+      objectId: '0x0b96ca4b33fef52a7a8e7575e5caeb6bb482a480c9c089d763c6664cd802ddea',
       version: '6201683',
       digest: 'HHvMjfPCYq3DyxEoiAw6HgiLLAqz2vGY1HdkdTvPJrnR',
       type: '0x2::dynamic_field::Field<u64, 0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::PortfolioVault<0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::usdc::USDC, 0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::usdc::USDC, 0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::sui::SUI>>',
       owner: {
-        ObjectOwner:
-          '0xdcb1f0c4d31528a67f89303e3a99e15b9e21c7e22b4123a0e43e90b3fae5ea1e',
+        ObjectOwner: '0xdcb1f0c4d31528a67f89303e3a99e15b9e21c7e22b4123a0e43e90b3fae5ea1e',
       },
       content: {
         dataType: 'moveObject',
@@ -586,8 +572,7 @@ const data2 = [
                 type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::Info',
                 fields: {
                   create_ts_ms: '1680756795894',
-                  creator:
-                    '0xb6c7e3b1c61ee81516a8317f221daa035f1503e0ac3ae7a50b61834bc7a3ead9',
+                  creator: '0xb6c7e3b1c61ee81516a8317f221daa035f1503e0ac3ae7a50b61834bc7a3ead9',
                   delivery_info: {
                     type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::DeliveryInfo',
                     fields: {
