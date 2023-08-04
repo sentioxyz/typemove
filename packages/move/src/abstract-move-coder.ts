@@ -186,9 +186,15 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     return entriesDecoded
   }
 
-  protected encode(data: any): any {
+  public encode(data: any): any {
     if (!data) {
       return undefined
+    }
+    if (typeof data === 'bigint') {
+      return data.toString()
+    }
+    if (Array.isArray(data)) {
+      return this.encodeArray(data)
     }
     for (const [key, value] of Object.entries(data)) {
       if (!value) {
