@@ -30,7 +30,7 @@
     "build:cjs": "tsc --project tsconfig.cjs.json && cp ../../package.cjs.json ./dist/cjs/package.json",
     "gen": "pnpm gen:test && ts-node-esm  src/codegen/run.ts src/abis src/builtin",
     "gen:test": "ts-node-esm src/codegen/run.ts src/tests/abis src/tests/types mainnet",
-    "gen-with-address": "ts-node-esm src/codegen/run.ts 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af ./src/tests/types mainnet\n",
+    "gen-with-address": "ts-node-esm src/codegen/run.ts 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af ./src/tests/types mainnet",
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
   "types": "./dist/cjs/index.d.ts",
