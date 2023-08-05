@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "@example/aptos",
+  "version": "1.0.0-development",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "files": [
+    "{dist,src}",
+    "!**/*.test.{js,ts}",
+    "!{dist,src}/*/tests"
+  ],
+  "scripts": {
+    "build": "pnpm gen && tsc",
+    "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
+    "gen": "typemove-aptos 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af ./src/types",
+    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+  },
+  "dependencies": {
+    "@typemove/aptos": "workspace:*",
+    "@typemove/move": "workspace:*",
+    "aptos": "^1.17.0"
+  },
+  "url": "https://github.com/sentioxyz/typemove"
+}
