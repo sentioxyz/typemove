@@ -33,7 +33,6 @@ describe('client call of entry or view', () => {
 
   test('call get_validator_config', async () => {
     const res = await _0x1.stake.view.getValidatorConfig(client, {
-      type_arguments: [],
       arguments: ['0xee49776eff9fd395eb90d601449542080645e63704f518b31c6f72b6a95d7868'],
     })
     expect(res.length).eql(3)

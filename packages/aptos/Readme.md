@@ -38,8 +38,8 @@ Checkout our [tests](./src/tests/move-coder.test.ts) for more examples。
 ### View function
 ```typescript
 const aptosClient = new AptosClient("https://fullnode.mainnet.aptoslabs.com")
-const [lpName] = await stable_pool.view.lpNameById(client, { type_arguments: [], arguments: [3n] })
-const [poolBalances, weights, supply] = await stable_pool.view.poolInfo(client, { type_arguments: [], arguments: [lpName] })
+const [lpName] = await stable_pool.view.lpNameById(client, { arguments: [3n] })
+const [poolBalances, weights, supply] = await stable_pool.view.poolInfo(client, { arguments: [lpName] })
 ```
 
 Checkout our [tests](./src/tests/move-call.test.ts) for more examples。

@@ -70,17 +70,21 @@ class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResou
       .join(',')
 
     // const args = this.generateArgs(module, func)
+    const allEmpty = func.typeParams.length === 0 && func.params.length === 0
+    const requestArg = allEmpty
+      ? ''
+      : `request: {
+      ${func.typeParams.length > 0 ? `type_arguments: [${func.typeParams.map((_) => 'string').join(', ')}],` : ''}
+      ${func.params.length > 0 ? `arguments: [${fields.join(',')}]` : ''}},`
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
     client: AptosClient,
-    request: {
-      type_arguments: [${func.typeParams.map((_) => 'string').join(', ')}], 
-      arguments: [${fields.join(',')}]},
+    ${requestArg}
     version?: bigint): Promise<[${returns.join(',')}]> {
       const coder = defaultMoveCoder(client.nodeUrl)
       const data = { 
-        type_arguments: request.type_arguments,
-        arguments: coder.encodeArray(request.arguments),
+        type_arguments:  ${func.typeParams.length > 0 ? 'request.type_arguments' : '[]'},
+        arguments: ${func.params.length > 0 ? 'coder.encodeArray(request.arguments)' : '[]'},
         function: "${module.address}::${module.name}::${func.name}"
       }
       const res = await client.view(data, version?.toString())
