@@ -2,7 +2,7 @@ import {
   InternalMoveFunction,
   InternalMoveFunctionVisibility,
   InternalMoveModule,
-  InternalMoveStruct,
+  InternalMoveStruct
 } from './internal-models.js'
 import path from 'path'
 import fs from 'fs'
@@ -26,8 +26,6 @@ interface Config {
 
 // TODO be able to generate cjs
 export abstract class AbstractCodegen<ModuleTypes, StructType> {
-  // TEST_NET: NetworkType
-  // MAIN_NET: NetworkType
   ADDRESS_TYPE: string
   SYSTEM_PACKAGE: string
   PREFIX: string
@@ -50,11 +48,19 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return JSON.parse(fs.readFileSync(fullPath, 'utf-8'))
   }
 
+  protected defaultCoderPackage() {
+    return `@typemove/${this.PREFIX.toLowerCase()}`
+  }
+
+  generateLoadAll(isSystem: boolean): string {
+    return 'loadAllTypes(defaultMoveCoder())'
+  }
+
   async generate(
     srcDir: string,
     outputDir: string,
     // network: NetworkType,
-    builtin = false,
+    builtin = false
   ) {
     if (!fs.existsSync(srcDir)) {
       return 0
@@ -87,7 +93,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
       }
       const codeGen = new AccountCodegen(this, loader, abi, modules, {
         fileName: path.basename(file, '.json'),
-        outputDir: outputDir,
+        outputDir: outputDir
         // network,
       })
 
@@ -100,7 +106,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
         try {
           const rawModules = await this.chainAdapter.fetchModules(
-            account,
+            account
             // network
           )
           const modules = this.chainAdapter.toInternalModules(rawModules)
@@ -111,7 +117,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
           }
           const codeGen = new AccountCodegen(this, loader, rawModules, modules, {
             fileName: account,
-            outputDir: outputDir,
+            outputDir: outputDir
             // network,
           })
 
@@ -119,8 +125,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
         } catch (e) {
           console.error(
             chalk.red(
-              'Error downloading account module, check if you choose the right network，or download account modules manually into your director',
-            ),
+              'Error downloading account module, check if you choose the right network，or download account modules manually into your director'
+            )
           )
           console.error(e)
           process.exit(1)
@@ -150,40 +156,16 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return outputs.length + 1
   }
 
-  // generateNetworkOption(network: NetworkType) {
-  //   switch (network) {
-  //     case this.TEST_NET:
-  //       return 'TEST_NET'
-  //   }
-  //   return 'MAIN_NET'
-  // }
-
-  protected generateModuleExtra(
-    module: InternalMoveModule,
-    allEventStructs: Map<string, InternalMoveStruct>,
-    // network: NetworkType
-  ) {
-    return ''
-  }
-
   protected generateExtra(module: InternalMoveModule) {
     return ''
   }
 
   generateModule(
     module: InternalMoveModule,
-    allEventStructs: Map<string, InternalMoveStruct>,
+    allEventStructs: Map<string, InternalMoveStruct>
     // network: NetworkType
   ) {
     const qname = moduleQname(module)
-    // const functions = this.GENERATE_ON_ENTRY
-    //   ? module.exposedFunctions
-    //       .map((f) => this.generateForEntryFunctions(module, f))
-    //       .filter((s) => s !== '')
-    //   : []
-    // const clientFunctions = this.GENERATE_CLIENT
-    //   ? module.exposedFunctions.map((f) => this.generateClientFunctions(module, f)).filter((s) => s !== '')
-    //   : []
     const eventStructs = new Map<string, InternalMoveStruct>()
     for (const [type, struct] of allEventStructs.entries()) {
       if (type.startsWith(qname + SPLITTER)) {
@@ -200,7 +182,6 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
     const moduleName = normalizeToJSName(module.name)
     return `
-  ${this.generateModuleExtra(module, allEventStructs)}
 
   export namespace ${moduleName} {
     ${structs.join('\n')}
@@ -455,7 +436,10 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     const imports = `
     import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
     import {
-      MoveCoder, defaultMoveCoder, TypedEventInstance } from "@typemove/${this.PREFIX.toLowerCase()}"
+      MoveCoder, TypedEventInstance } from "@typemove/${this.PREFIX.toLowerCase()}"
+      
+    import { defaultMoveCoder } from "${this.defaultCoderPackage()}"
+
     ${refImports}
     `
     return imports
@@ -474,7 +458,7 @@ export class AccountCodegen<ModuleType, StructType> {
     loader: AccountRegister,
     abi: ModuleType[],
     modules: InternalMoveModule[],
-    config: Config,
+    config: Config
   ) {
     // const json = fs.readFileSync(config.srcFile, 'utf-8')
     this.moduleGen = moduleGen
@@ -511,7 +495,7 @@ export class AccountCodegen<ModuleType, StructType> {
         if (isFrameworkAccount(account) && !isFrameworkAccount(address)) {
           // Decide where to find runtime library
           moduleImports.push(
-            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}/builtin"`,
+            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}/builtin"`
             // `import _${account} = builtin._${account} `
           )
         } else {
@@ -520,14 +504,6 @@ export class AccountCodegen<ModuleType, StructType> {
 
         dependedAccounts.push(account)
       }
-    }
-
-    let loadAllTypes = `loadAllTypes(defaultMoveCoder())`
-
-    if (this.moduleGen.SYSTEM_MODULES.has(address)) {
-      loadAllTypes = `
-        loadAllTypes(defaultMoveCoder())
-      `
     }
 
     const eventsMap: Map<string, InternalMoveStruct> = this.moduleGen.chainAdapter.getAllEventStructs(this.modules)
@@ -553,15 +529,15 @@ export class AccountCodegen<ModuleType, StructType> {
         coder.load(m as any)
       }
     }
-
-    ${loadAllTypes}
+    
+    ${this.moduleGen.generateLoadAll(this.moduleGen.SYSTEM_MODULES.has(address))}
     ` // source
 
     return [
       {
         fileName: this.config.fileName + '.ts',
-        fileContent: source,
-      },
+        fileContent: source
+      }
     ]
   }
 }
