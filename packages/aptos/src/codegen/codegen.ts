@@ -20,7 +20,7 @@ export async function codegen(
   console.log(chalk.green(`Generated ${numFiles} for Aptos`))
 }
 
-class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResource> {
+export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResource> {
   ADDRESS_TYPE = 'Address'
   PREFIX = 'Aptos'
   SYSTEM_PACKAGE = '@typemove/aptos'
