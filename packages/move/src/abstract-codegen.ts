@@ -54,7 +54,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     srcDir: string,
     outputDir: string,
     // network: NetworkType,
-    builtin = false
+    builtin = false,
   ) {
     if (!fs.existsSync(srcDir)) {
       return 0
@@ -100,7 +100,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
         try {
           const rawModules = await this.chainAdapter.fetchModules(
-            account
+            account,
             // network
           )
           const modules = this.chainAdapter.toInternalModules(rawModules)
@@ -119,8 +119,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
         } catch (e) {
           console.error(
             chalk.red(
-              'Error downloading account module, check if you choose the right network，or download account modules manually into your director'
-            )
+              'Error downloading account module, check if you choose the right network，or download account modules manually into your director',
+            ),
           )
           console.error(e)
           process.exit(1)
@@ -130,7 +130,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
     for (const output of outputs) {
       // const content = output.fileContent
-      const content = format(output.fileContent, { parser: 'typescript' })
+      const content = await format(output.fileContent, { parser: 'typescript' })
       fs.writeFileSync(path.join(outputDir, output.fileName), content)
     }
 
@@ -160,7 +160,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
   protected generateModuleExtra(
     module: InternalMoveModule,
-    allEventStructs: Map<string, InternalMoveStruct>
+    allEventStructs: Map<string, InternalMoveStruct>,
     // network: NetworkType
   ) {
     return ''
@@ -172,7 +172,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
   generateModule(
     module: InternalMoveModule,
-    allEventStructs: Map<string, InternalMoveStruct>
+    allEventStructs: Map<string, InternalMoveStruct>,
     // network: NetworkType
   ) {
     const qname = moduleQname(module)
@@ -352,8 +352,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
     const source = `
   ${funcName}${genericString}(type_arguments: [${func.typeParams
-      .map((_) => 'string')
-      .join(', ')}], args: [${fields.join(',')}], version?: bigint): Promise<[${returns.join(',')}]> {
+    .map((_) => 'string')
+    .join(', ')}], args: [${fields.join(',')}], version?: bigint): Promise<[${returns.join(',')}]> {
     return this.viewDecoded('${module.address}::${module.name}::${func.name}', type_arguments, args, version) as any
   }`
     return source
@@ -474,7 +474,7 @@ export class AccountCodegen<ModuleType, StructType> {
     loader: AccountRegister,
     abi: ModuleType[],
     modules: InternalMoveModule[],
-    config: Config
+    config: Config,
   ) {
     // const json = fs.readFileSync(config.srcFile, 'utf-8')
     this.moduleGen = moduleGen
@@ -511,7 +511,7 @@ export class AccountCodegen<ModuleType, StructType> {
         if (isFrameworkAccount(account) && !isFrameworkAccount(address)) {
           // Decide where to find runtime library
           moduleImports.push(
-            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}/builtin"`
+            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}/builtin"`,
             // `import _${account} = builtin._${account} `
           )
         } else {
