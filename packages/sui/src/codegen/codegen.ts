@@ -30,7 +30,7 @@ export async function codegen(
   console.log(chalk.green(`Generated ${numFiles} for Sui`))
 }
 
-class SuiCodegen extends AbstractCodegen<
+export class SuiCodegen extends AbstractCodegen<
   // SuiNetwork,
   SuiMoveNormalizedModule,
   SuiEvent | SuiMoveObject
