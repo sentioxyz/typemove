@@ -1,15 +1,10 @@
-import {
-  InternalMoveFunction,
-  InternalMoveFunctionVisibility,
-  InternalMoveModule,
-  InternalMoveStruct
-} from './internal-models.js'
+import { InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from './internal-models.js'
 import path from 'path'
 import fs from 'fs'
 import { AccountModulesImportInfo, AccountRegister } from './account.js'
 import chalk from 'chalk'
 import { format } from 'prettier'
-import { isFrameworkAccount, moduleQname, normalizeToJSName, SPLITTER, upperFirst, VECTOR_STR, camel } from './utils.js'
+import { isFrameworkAccount, moduleQname, normalizeToJSName, SPLITTER, VECTOR_STR } from './utils.js'
 import { TypeDescriptor } from './types.js'
 import { ChainAdapter } from './chain-adapter.js'
 
@@ -187,6 +182,10 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     ${structs.join('\n')}
     
     ${this.generateExtra(module)}
+    
+    ${events.join('\n')}
+    
+    ${callArgs.join('\n')}
   }
   `
   }
@@ -293,59 +292,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   // }
 
   generateCallArgsStructs(module: InternalMoveModule, func: InternalMoveFunction) {
-    if (!func.isEntry) {
-      return
-    }
-
-    const fields = this.chainAdapter.getMeaningfulFunctionParams(func.params).map((param) => {
-      return this.generateTypeForDescriptor(param, module.address) + (this.PAYLOAD_OPTIONAL ? ' | undefined' : '')
-    })
-
-    const camelFuncName = upperFirst(camel(func.name))
-
-    const genericString = this.generateFunctionTypeParameters(func)
-    return `
-  export interface ${camelFuncName}Payload${genericString}
-      extends TypedFunctionPayload<[${fields.join(',')}]> {
-    arguments_decoded: [${fields.join(',')}],
-    type_arguments: [${func.typeParams.map((_) => 'string').join(', ')}]
+    return ''
   }
-  `
-  }
-
-  generateClientFunctions(module: InternalMoveModule, func: InternalMoveFunction) {
-    if (func.visibility === InternalMoveFunctionVisibility.PRIVATE) {
-      return ''
-    }
-    if (func.isEntry) {
-      return ''
-    }
-    // const moduleName = normalizeToJSName(module.name)
-    const funcName = camel(func.name)
-    const fields = this.chainAdapter.getMeaningfulFunctionParams(func.params).map((param) => {
-      return this.generateTypeForDescriptor(param, module.address)
-    })
-    const genericString = this.generateFunctionTypeParameters(func)
-
-    const returns = func.return.map((param) => {
-      return this.generateTypeForDescriptor(param, module.address)
-    })
-
-    const source = `
-  ${funcName}${genericString}(type_arguments: [${func.typeParams
-    .map((_) => 'string')
-    .join(', ')}], args: [${fields.join(',')}], version?: bigint): Promise<[${returns.join(',')}]> {
-    return this.viewDecoded('${module.address}::${module.name}::${func.name}', type_arguments, args, version) as any
-  }`
-    return source
-  }
-
-  // generateForEntryFunctions(
-  //   module: InternalMoveModule,
-  //   func: InternalMoveFunction
-  // ) {
-  //   return ''
-  // }
 
   generateForEvents(module: InternalMoveModule, struct: InternalMoveStruct): string {
     return ''
