@@ -39,7 +39,7 @@
   "types": "./dist/cjs/index.d.ts",
   "dependencies": {
     "@mysten/bcs": "^0.7.3",
-    "@mysten/sui.js": "^0.39.0",
+    "@mysten/sui.js": "^0.40.0",
     "@typemove/move": "workspace:*",
     "chalk": "^5.2.0",
     "radash": "^11.0.0"
