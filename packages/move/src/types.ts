@@ -49,12 +49,7 @@ export class TypeDescriptor<T = any> {
 
   getSignature(): string {
     if (this.typeArgs.length > 0) {
-      return (
-        this.qname +
-        '<' +
-        this.typeArgs.map((t) => t.getSignature()).join(', ') +
-        '>'
-      )
+      return this.qname + '<' + this.typeArgs.map((t) => t.getSignature()).join(', ') + '>'
     }
     return this.qname
   }
@@ -120,6 +115,18 @@ export class TypeDescriptor<T = any> {
 
   isVector(): boolean {
     return this.qname.toLowerCase() === VECTOR_STR
+  }
+
+  existAnyType(): boolean {
+    if (this.qname === 'any') {
+      return true
+    }
+    for (const param of this.typeArgs) {
+      if (param.existAnyType()) {
+        return true
+      }
+    }
+    return false
   }
 }
 
@@ -192,9 +199,7 @@ function adjustType(type: TypeDescriptor) {
 
 export const ANY_TYPE = new TypeDescriptor<any>('any')
 
-export function vectorType<T>(
-  t: TypeDescriptor<T> = ANY_TYPE
-): TypeDescriptor<T[]> {
+export function vectorType<T>(t: TypeDescriptor<T> = ANY_TYPE): TypeDescriptor<T[]> {
   return BUILTIN_TYPES.VECTOR_TYPE_ANY.apply(t)
 }
 
@@ -217,7 +222,7 @@ export const BUILTIN_TYPES = {
   // export const U64 = new TypeDescriptor<number>("U64")
   U128_TYPE: new TypeDescriptor<number>('u128'),
   // export const U128 = new TypeDescriptor<number>("U128")
-  U256_TYPE: new TypeDescriptor<number>('u256'),
+  U256_TYPE: new TypeDescriptor<number>('u256')
   // export const U256 = new TypeDescriptor<number>("U256")
 }
 
@@ -235,10 +240,7 @@ const BUILTIN_TYPES_SET = new Set(
  * @param matcher
  * @param type
  */
-export function matchType(
-  matcher: TypeDescriptor,
-  type: TypeDescriptor
-): boolean {
+export function matchType(matcher: TypeDescriptor, type: TypeDescriptor): boolean {
   if (matcher.qname === 'any') {
     return true
   }
