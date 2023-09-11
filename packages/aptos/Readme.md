@@ -48,6 +48,21 @@ const [lpName] = await stable_pool.view.lpNameById(client, { arguments: [3n] })
 const [poolBalances, weights, supply] = await stable_pool.view.poolInfo(client, { arguments: [lpName] })
 ```
 IDE will show you the detail type of the function:
+
 ![img.png](../../images/aptos-view.png)
 
-Checkout our [tests](./src/tests/move-call.test.ts) for more examples。
+### Build transaction
+Similar to view function, but use `entry` instead of `view`:
+```typescript
+const aptosClient = new AptosClient("https://fullnode.mainnet.aptoslabs.com")
+const account = new AptosAccount(...)
+const res = await _0x1.coin.entry.transfer(client, account, {
+  type_arguments: ['0x1::aptos_coin::AptosCoin'],
+  arguments: ['0x1', 1n],
+})
+
+```
+
+Checkout our [tests](./src/tests/move-call.test.ts) for more examples.
+
+### Resource utils
