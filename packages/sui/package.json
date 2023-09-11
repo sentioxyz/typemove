@@ -38,10 +38,10 @@
   },
   "types": "./dist/cjs/index.d.ts",
   "dependencies": {
-    "@mysten/bcs": "^0.7.3",
-    "@mysten/sui.js": "^0.41.0",
+    "@mysten/bcs": "^0.7.4",
+    "@mysten/sui.js": "^0.41.2",
     "@typemove/move": "workspace:*",
-    "chalk": "^5.2.0",
+    "chalk": "^5.3.0",
     "radash": "^11.0.0"
   },
   "url": "https://github.com/sentioxyz/typemove"

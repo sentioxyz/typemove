@@ -14,10 +14,5 @@ ignore:
   - .github
   - package.cjs.json
   - docs
-  - node_modules
-  - packages/move/dist
-  - packages/move/node_modules
-  - packages/sui/dist
-  - packages/sui/node_modules
-  - packages/aptos/dist
-  - packages/aptos/node_modules
+  - "**/node_modules"
+  - "**/dist"
