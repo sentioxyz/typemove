@@ -65,4 +65,16 @@ const res = await _0x1.coin.entry.transfer(client, account, {
 
 Checkout our [tests](./src/tests/move-call.test.ts) for more examples.
 
-### Resource utils
+### Resource client
+We provide a resource client to help you retrieve resources:
+```typescript
+const poolType = amm.Pool.type()
+const allPoolResources = await accountResourceClient.matchAll(ACCOUNT_ADDRESS, poolType)
+```
+or if you want to partial match one of the type parameters:
+```typescript
+const poolTypeWithAptos = amm.Pool.type(aptos_coin.AptosCoin.type(), ANY_TYPE)
+const aptosPoolResources = await accountResourceClient.matchAll(ACCOUNT_ADDRESS, poolTypeWithAptos)
+```
+
+Checkout our [tests](./src/account-resource-client.test.ts) for more examples.
