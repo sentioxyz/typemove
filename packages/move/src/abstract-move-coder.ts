@@ -54,7 +54,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     return BigInt(data)
   }
 
-  private requestMap = new Map<string, Promise<InternalMoveModule>>()
+  private requestMap = new Map<string, Promise<void>>()
 
   async getMoveStruct(type: string): Promise<InternalMoveStruct> {
     const [account_, module, typeName] = type.split(SPLITTER)
@@ -65,13 +65,14 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (struct) {
       return struct
     }
-    const key = account + SPLITTER + module
-    let resp = this.requestMap.get(account + SPLITTER + module)
+    let resp = this.requestMap.get(account)
     if (!resp) {
-      resp = this.adapter.fetchModule(account, module).then((m) => {
-        return this.load(m)
+      resp = this.adapter.fetchModules(account).then((modules) => {
+        for (const m of modules) {
+          this.load(m)
+        }
       })
-      this.requestMap.set(key, resp)
+      this.requestMap.set(account, resp)
     }
     await resp
     struct = this.typeMapping.get(type)
@@ -90,13 +91,19 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (func) {
       return func
     }
-    const key = account + SPLITTER + module
-    let resp = this.requestMap.get(account + SPLITTER + module)
+    let resp = this.requestMap.get(account)
     if (!resp) {
-      resp = this.adapter.fetchModule(account, module).then((m) => {
-        return this.load(m)
-      })
-      this.requestMap.set(key, resp)
+      resp = this.adapter
+        .fetchModules(account)
+        .then((modules) => {
+          for (const m of modules) {
+            this.load(m)
+          }
+        })
+        .catch((e) => {
+          this.requestMap.delete(account)
+        })
+      this.requestMap.set(account, resp)
     }
     await resp
     func = this.funcMapping.get(type)
