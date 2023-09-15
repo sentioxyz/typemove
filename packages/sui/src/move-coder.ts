@@ -6,24 +6,28 @@ import {
   parseMoveType,
   SPLITTER,
   TypeDescriptor,
-  InternalMoveModule,
+  InternalMoveModule
 } from '@typemove/move'
 import {
   MoveCallSuiTransaction,
   SuiCallArg,
   SuiEvent,
   SuiMoveNormalizedModule,
-  SuiMoveObject,
+  SuiMoveObject
 } from '@mysten/sui.js/client'
 import { toInternalModule } from './to-internal.js'
 import { SuiChainAdapter } from './sui-chain-adapter.js'
 import { dynamic_field } from './builtin/0x2.js'
+import { BCS, getSuiMoveConfig, StructTypeDefinition, Encoding } from '@mysten/bcs'
+import { normalizeSuiObjectId, normalizeSuiAddress } from '@mysten/sui.js/utils'
 
 export class MoveCoder extends AbstractMoveCoder<
   // SuiNetwork,
   SuiMoveNormalizedModule,
   SuiEvent | SuiMoveObject
 > {
+  bcs = new BCS(getSuiMoveConfig())
+
   constructor(network: string) {
     super(new SuiChainAdapter(network))
   }
@@ -38,20 +42,67 @@ export class MoveCoder extends AbstractMoveCoder<
     return m
   }
 
-  protected decode(data: any, type: TypeDescriptor): any {
+  protected async decode(data: any, type: TypeDescriptor): Promise<any> {
     switch (type.qname) {
       case '0x1::ascii::Char':
+        if (data !== undefined && typeof data !== 'string') {
+          // bcs
+          const byte = (await super.decode(data, type)).byte as number
+          return String.fromCharCode(byte)
+        }
       case '0x1::ascii::String':
+        if (data !== undefined && typeof data !== 'string') {
+          // bcs verified
+          const bytes = (await super.decode(data, type)).bytes as number[]
+          return new TextDecoder().decode(new Uint8Array(bytes))
+        }
       case '0x2::object::ID':
+        if (data !== undefined && typeof data !== 'string') {
+          // bcs verified
+          const bytes = (await super.decode(data, type)).bytes as string
+          return normalizeSuiObjectId(bytes)
+        }
+      case '0x2::url::Url':
+        if (data !== undefined && typeof data !== 'string') {
+          // bcs
+          return (await super.decode(data, type)).url
+        }
       case '0x2::coin::Coin':
+        if (data !== undefined && typeof data !== 'string') {
+          // bcs
+          const bytes = (await super.decode(data, type)).id.id.bytes as number[]
+          return new TextDecoder().decode(new Uint8Array(bytes))
+        }
         return data
       case '0x2::balance::Balance':
+        if (data.value) {
+          // bcs verfied
+          const balance = await super.decode(data, type)
+          return balance.value
+        }
         return BigInt(data)
       case '0x1::option::Option':
         if (data === null) {
           return data
         }
+        if (data.vec) {
+          // bcs verifed
+          let vec = await super.decode(data, type)
+          vec = vec.vec
+          if (vec.length === 0) {
+            return null
+          }
+          return vec[0]
+        }
         return this.decode(data, type.typeArgs[0])
+      case 'Address':
+        const str = data as string
+        return normalizeSuiAddress(str)
+      case '0x1::string::String':
+        if (typeof data !== 'string') {
+          // bcs
+          return new TextDecoder().decode(new Uint8Array(data.bytes))
+        }
       default:
         return super.decode(data, type)
     }
@@ -115,8 +166,45 @@ export class MoveCoder extends AbstractMoveCoder<
     const argumentsTyped = await this.decodeArray(args, params, false)
     return {
       ...payload,
-      arguments_decoded: argumentsTyped,
+      arguments_decoded: argumentsTyped
     } as TypedFunctionPayload<any>
+  }
+
+  private async _registerBCSType(qname: string): Promise<void> {
+    if (this.bcs.hasType(qname)) {
+      return
+    }
+    const moveStruct = await this.getMoveStruct(qname)
+    const structDef: StructTypeDefinition = {}
+
+    for (const field of moveStruct.fields) {
+      structDef[field.name] = field.type.getNormalizedSignature()
+    }
+    let typeName = qname
+    const generics = moveStruct.typeParams.map((p, idx) => 'T' + idx).join(', ')
+    if (generics) {
+      typeName = typeName + '<' + generics + '>'
+    }
+
+    this.bcs.registerStructType(typeName, structDef)
+
+    for (const field of moveStruct.fields) {
+      await this.registerBCSTypes(field.type)
+    }
+  }
+
+  async registerBCSTypes(type: TypeDescriptor): Promise<void> {
+    // TODO maybe can we get rid of this
+    await this._registerBCSType('0x1::string::String')
+
+    for (const typeArg of type.dependedTypes()) {
+      await this._registerBCSType(typeArg)
+    }
+  }
+
+  async decodeBCS(type: TypeDescriptor, data: Uint8Array | string, encoding?: Encoding): Promise<any> {
+    await this.registerBCSTypes(type)
+    return this.bcs.de(type.getNormalizedSignature(), data, encoding)
   }
 }
 

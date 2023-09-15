@@ -5,7 +5,7 @@ import {
   ChainAdapter,
   moduleQname,
   SPLITTER,
-  TypeDescriptor,
+  TypeDescriptor
 } from '@typemove/move'
 
 import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui.js/client'
@@ -32,7 +32,7 @@ export class SuiChainAdapter extends ChainAdapter<
   ): Promise<SuiMoveNormalizedModule[]> {
     const client = getRpcClient(this.endpoint)
     const modules = await client.getNormalizedMoveModulesByPackage({
-      package: account,
+      package: account
     })
     return Object.values(modules)
   }
@@ -73,6 +73,9 @@ export class SuiChainAdapter extends ChainAdapter<
     // if (val.parsedJson) {
     //   return val.parsedJson as any
     // }
+    if (val === undefined) {
+      throw Error('val is undefined')
+    }
     if ('parsedJson' in val) {
       return val.parsedJson as any
     }

@@ -2,21 +2,28 @@ import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519'
 import {
   // TransactionBlock,
   SuiClient,
-  getFullnodeUrl,
+  getFullnodeUrl
 } from '@mysten/sui.js/client'
 import { clob_v2 } from './types/testnet/0xdee9.js'
 import { TransactionBlock } from '@mysten/sui.js/transactions'
+import { BCS } from '@mysten/bcs'
+import { InternalMoveStruct, parseMoveType } from '@typemove/move'
+import { defaultMoveCoder } from '@typemove/sui'
+// import { BCS, getSuiMoveConfig } from "@mysten/bcs";
 
 export const SENDER = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
+function registerBCSType(type: InternalMoveStruct, bcs: BCS) {}
+
 describe('Test Sui call', () => {
   // const bcs = new BCS(getSuiMoveConfig());
-
   // https://github.com/MystenLabs/sui/tree/main/sdk/typescript#move-call
   test('movex call', async () => {
     // Generate a new Keypair
     const keypair = new Ed25519Keypair()
     const provider = new SuiClient({ url: getFullnodeUrl('testnet') })
+    const conf = await provider.getProtocolConfig()
+    const coder = defaultMoveCoder(getFullnodeUrl('testnet'))
     // const signer = new RawSigner(keypair, provider)
     const packageObjectId = '0x3'
     const tx = new TransactionBlock()
@@ -31,7 +38,7 @@ describe('Test Sui call', () => {
 
     const result = await provider.devInspectTransactionBlock({
       transactionBlock: tx,
-      sender: '0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd',
+      sender: '0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd'
     })
 
     const result2 = await clob_v2.view.getMarketPrice(
@@ -40,12 +47,23 @@ describe('Test Sui call', () => {
       ['0x2::sui::SUI', '0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT']
     )
 
-    // const returnValues = result.results![0]!.returnValues!
+    const returnValues = result.results![0]!.returnValues!
+
+    const type = parseMoveType(returnValues[0][1])
+    // await coder.registerBCSTypes(parseMoveType(type))
+
+    // const bcs = new BCS(getSuiMoveConfig());
+
+    // console.log(bcs.hasType("u8"))
     //
-    // const deData = bcs.de(
-    //   returnValues[0][1],
-    //   Uint8Array.from(returnValues[0][0])
-    // )
+    const deData = await coder.decodeBCS(type, Uint8Array.from(returnValues[0][0]))
+
+    const deData2 = await coder.decodedType(deData, type)
+    //
+    console.log(deData)
+    // // bcs.registerType()
+
+    // bcs.registerType()
     //
     // console.log(JSON.stringify(result))
     //
