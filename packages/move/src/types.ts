@@ -54,6 +54,28 @@ export class TypeDescriptor<T = any> {
     return this.qname
   }
 
+  // Make U8, U16, etc => u8, u16
+  getNormalizedSignature(): string {
+    let qname = this.qname
+    switch (qname) {
+      case 'U8':
+      case 'U16':
+      case 'U32':
+      case 'U64':
+      case 'U128':
+      case 'U256':
+      case 'Vector':
+      case 'Bool':
+      case 'Address':
+        qname = qname.toLowerCase()
+    }
+
+    if (this.typeArgs.length > 0) {
+      return qname + '<' + this.typeArgs.map((t) => t.getNormalizedSignature()).join(', ') + '>'
+    }
+    return qname
+  }
+
   // Replace T0, T1 with more concrete type
   applyTypeArgs(ctx: Map<string, TypeDescriptor>): TypeDescriptor {
     const replace = ctx.get(this.qname)
@@ -127,6 +149,11 @@ export class TypeDescriptor<T = any> {
       }
     }
     return false
+  }
+
+  name(): string {
+    const parts = this.qname.split(SPLITTER)
+    return parts[parts.length - 1]
   }
 }
 

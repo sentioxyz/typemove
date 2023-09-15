@@ -260,7 +260,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     return {
       ...typeStruct,
       data_decoded: dataTyped,
-      type_arguments: typeArguments,
+      type_arguments: typeArguments
     }
   }
   async decodedType<T, ST>(typeStruct: ST, type: TypeDescriptor<T>): Promise<T | undefined> {
