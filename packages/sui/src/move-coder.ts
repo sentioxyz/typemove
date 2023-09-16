@@ -1,4 +1,4 @@
-import { TypedEventInstance, TypedFunctionPayload } from './models.js'
+import { TypedDevInspectResults, TypedEventInstance, TypedFunctionPayload } from './models.js'
 import {
   AbstractMoveCoder,
   ANY_TYPE,
@@ -13,7 +13,9 @@ import {
   SuiCallArg,
   SuiEvent,
   SuiMoveNormalizedModule,
-  SuiMoveObject
+  SuiMoveObject,
+  DevInspectResults,
+  SuiClient
 } from '@mysten/sui.js/client'
 import { toInternalModule } from './to-internal.js'
 import { SuiChainAdapter } from './sui-chain-adapter.js'
@@ -28,8 +30,8 @@ export class MoveCoder extends AbstractMoveCoder<
 > {
   bcs = new BCS(getSuiMoveConfig())
 
-  constructor(network: string) {
-    super(new SuiChainAdapter(network))
+  constructor(client: SuiClient) {
+    super(new SuiChainAdapter(client))
   }
 
   load(module: SuiMoveNormalizedModule): InternalMoveModule {
@@ -193,8 +195,15 @@ export class MoveCoder extends AbstractMoveCoder<
     }
   }
 
+  private bcsRegistered = new Set<string>()
+
   async registerBCSTypes(type: TypeDescriptor): Promise<void> {
-    // TODO maybe can we get rid of this
+    const sig = type.getNormalizedSignature()
+    if (this.bcsRegistered.has(sig)) {
+      return
+    }
+    this.bcsRegistered.add(sig)
+
     await this._registerBCSType('0x1::string::String')
 
     for (const typeArg of type.dependedTypes()) {
@@ -206,16 +215,58 @@ export class MoveCoder extends AbstractMoveCoder<
     await this.registerBCSTypes(type)
     return this.bcs.de(type.getNormalizedSignature(), data, encoding)
   }
+
+  async decodeDevInspectResult<T extends any[]>(insepctRes: DevInspectResults): Promise<TypedDevInspectResults<T>> {
+    const returnValues = []
+    if (insepctRes.results != null) {
+      for (const r of insepctRes.results) {
+        if (r.returnValues) {
+          const type = parseMoveType(r.returnValues[0][1])
+          const value = r.returnValues[0][0]
+          const bcsDecoded = await this.decodeBCS(type, new Uint8Array(value))
+          const decoded = await this.decodedType(bcsDecoded, type)
+          returnValues.push(decoded)
+        } else {
+          returnValues.push(null)
+        }
+      }
+    }
+    return { ...insepctRes, results_decoded: returnValues as any }
+  }
 }
 
 const DEFAULT_ENDPOINT = 'https://fullnode.mainnet.sui.io/'
 const CODER_MAP = new Map<string, MoveCoder>()
+const CHAIN_ID_CODER_MAP = new Map<string, MoveCoder>()
 
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
-    coder = new MoveCoder(DEFAULT_ENDPOINT)
+    coder = new MoveCoder(new SuiClient({ url: DEFAULT_ENDPOINT }))
     CODER_MAP.set(endpoint, coder)
+  }
+  return coder
+}
+
+const PROVIDER_CODER_MAP = new Map<SuiClient, MoveCoder>()
+
+let DEFAULT_CHAIN_ID: string | undefined
+
+export async function getMoveCoder(client: SuiClient): Promise<MoveCoder> {
+  let coder = PROVIDER_CODER_MAP.get(client)
+  if (!coder) {
+    coder = new MoveCoder(client)
+    // TODO how to dedup
+    const id = await client.getChainIdentifier()
+    const defaultCoder = defaultMoveCoder()
+    if (!DEFAULT_CHAIN_ID) {
+      DEFAULT_CHAIN_ID = await defaultCoder.adapter.getChainId()
+    }
+    if (id === DEFAULT_CHAIN_ID) {
+      coder = defaultCoder
+    }
+
+    PROVIDER_CODER_MAP.set(client, coder)
   }
   return coder
 }
