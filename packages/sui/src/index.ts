@@ -1,3 +1,3 @@
 export * from './models.js'
 
-export { MoveCoder, defaultMoveCoder } from './move-coder.js'
+export { MoveCoder, defaultMoveCoder, getMoveCoder } from './move-coder.js'

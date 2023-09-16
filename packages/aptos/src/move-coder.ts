@@ -3,10 +3,11 @@ import { Event, MoveModuleBytecode, MoveResource, TransactionPayload_EntryFuncti
 import { TypedEventInstance, TypedFunctionPayload, TypedMoveResource } from './models.js'
 import { AptosChainAdapter } from './aptos-chain-adapter.js'
 import { toInternalModule } from './to-internal.js'
+import { AptosClient } from 'aptos'
 
 export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | MoveResource> {
-  constructor(network: string) {
-    super(new AptosChainAdapter(network))
+  constructor(client: AptosClient) {
+    super(new AptosChainAdapter(client))
   }
 
   load(module: MoveModuleBytecode): InternalMoveModule {
@@ -56,7 +57,7 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
 
     return {
       ...payload,
-      arguments_decoded: argumentsDecoded,
+      arguments_decoded: argumentsDecoded
     } as TypedFunctionPayload<any>
   }
 }
@@ -77,7 +78,7 @@ const CODER_MAP = new Map<string, MoveCoder>()
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
-    coder = new MoveCoder(DEFAULT_ENDPOINT)
+    coder = new MoveCoder(new AptosClient(endpoint))
     CODER_MAP.set(endpoint, coder)
   }
   return coder

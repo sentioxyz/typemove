@@ -1,4 +1,4 @@
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject } from '@mysten/sui.js/client'
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui.js/client'
 
 import * as fs from 'fs'
 import chalk from 'chalk'
@@ -10,7 +10,7 @@ import {
   InternalMoveFunction,
   InternalMoveFunctionVisibility,
   normalizeToJSName,
-  camel,
+  camel
 } from '@typemove/move'
 import { join } from 'path'
 import { SuiChainAdapter } from '../sui-chain-adapter.js'
@@ -46,7 +46,7 @@ export class SuiCodegen extends AbstractCodegen<
   PAYLOAD_OPTIONAL = true
 
   constructor(endpoint: string) {
-    super(new SuiChainAdapter(endpoint))
+    super(new SuiChainAdapter(new SuiClient({ url: endpoint })))
   }
 
   readModulesFile(fullPath: string) {
@@ -113,7 +113,7 @@ export class SuiCodegen extends AbstractCodegen<
       if (arg.reference) {
         args.push({
           paramType: `${this.ADDRESS_TYPE} | ObjectCallArg | TransactionArgument`,
-          callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.object(args[${idx}]))`,
+          callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.object(args[${idx}]))`
         })
       } else if (arg.isVector()) {
         args.push({
@@ -121,12 +121,12 @@ export class SuiCodegen extends AbstractCodegen<
           callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.makeMoveVec({
             objects: args[${idx}].map((a: any) => tx.object(a))
             // type: TODO
-          }))`,
+          }))`
         })
       } else {
         args.push({
           paramType: `${this.generateTypeForDescriptor(arg, module.address)} | TransactionArgument`,
-          callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.pure(args[${idx}]))`,
+          callValue: `_args.push(TransactionArgument.is(args[${idx}]) ? args[${idx}] : tx.pure(args[${idx}]))`
         })
       }
     }
@@ -146,18 +146,22 @@ export class SuiCodegen extends AbstractCodegen<
       .join(',')
 
     const args = this.generateArgs(module, func)
+    const returnType = `${this.generateFunctionReturnTypeParameters(func, module.address)}`
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
       client: SuiClient,
       args: [${args.map((a) => a.paramType).join(',')}],
-      ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ) {
+      ${
+        typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``
+      } ): Promise<TypedDevInspectResults<${returnType}>> {
       const tx = new TransactionBlock()
       builder.${camel(normalizeToJSName(func.name))}(tx, args ${typeParamArg.length > 0 ? `, typeArguments` : ''})
-      const res = await client.devInspectTransactionBlock({
+      const insepctRes = await client.devInspectTransactionBlock({
         transactionBlock: tx,
         sender: ZERO_ADDRESS
       })
-      return res
+      
+      return (await getMoveCoder(client)).decodeDevInspectResult<${returnType}>(insepctRes)
     }`
   }
 
@@ -200,7 +204,7 @@ export class SuiCodegen extends AbstractCodegen<
   generateImports(): string {
     return `
       ${super.generateImports()}
-      import { ZERO_ADDRESS } from '@typemove/sui'
+      import { ZERO_ADDRESS, TypedDevInspectResults, getMoveCoder } from '@typemove/sui'
       import { TransactionBlock } from '@mysten/sui.js/transactions'
       import { ObjectCallArg, TransactionArgument } from '@mysten/sui.js'
       import { SuiClient } from '@mysten/sui.js/client'

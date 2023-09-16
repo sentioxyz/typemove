@@ -15,23 +15,30 @@ export class SuiChainAdapter extends ChainAdapter<
   SuiMoveNormalizedModule,
   SuiEvent | SuiMoveObject
 > {
+  async getChainId() {
+    return this.client.getChainIdentifier()
+  }
   // static INSTANCE = new SuiChainAdapter()
+
+  client: SuiClient
+  constructor(client: SuiClient) {
+    super()
+    this.client = client
+  }
 
   async fetchModule(
     account: string,
     module: string
     // network: SuiNetwork
   ): Promise<SuiMoveNormalizedModule> {
-    const client = getRpcClient(this.endpoint)
-    return await client.getNormalizedMoveModule({ package: account, module })
+    return await this.client.getNormalizedMoveModule({ package: account, module })
   }
 
   async fetchModules(
     account: string
     // network: SuiNetwork
   ): Promise<SuiMoveNormalizedModule[]> {
-    const client = getRpcClient(this.endpoint)
-    const modules = await client.getNormalizedMoveModulesByPackage({
+    const modules = await this.client.getNormalizedMoveModulesByPackage({
       package: account
     })
     return Object.values(modules)

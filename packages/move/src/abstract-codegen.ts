@@ -97,7 +97,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 
     while (loader.pendingAccounts.size > 0) {
       for (const account of loader.pendingAccounts) {
-        console.log(`download dependent module for account ${account} at ${this.chainAdapter.endpoint}`)
+        const id = await this.chainAdapter.getChainId()
+        console.log(`download dependent module for account ${account} at ${id}`)
 
         try {
           const rawModules = await this.chainAdapter.fetchModules(
@@ -130,8 +131,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     }
 
     for (const output of outputs) {
-      // const content = output.fileContent
-      const content = await format(output.fileContent, { parser: 'typescript' })
+      let content = output.fileContent
+      content = await format(output.fileContent, { parser: 'typescript' })
       fs.writeFileSync(path.join(outputDir, output.fileName), content)
     }
 
@@ -261,6 +262,18 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
       genericString = `<${params}>`
     }
     return genericString
+  }
+
+  generateFunctionReturnTypeParameters(func: InternalMoveFunction, currentAddress: string) {
+    let returnType = ''
+    if (func.return && func.return.length > 0) {
+      returnType = func.return
+        .map((v, idx) => {
+          return this.generateTypeForDescriptor(v, currentAddress)
+        })
+        .join(',')
+    }
+    return '[' + returnType + ']'
   }
 
   generateStructTypeParameters(struct: InternalMoveStruct, useAny = false) {

@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import { join } from 'path'
 import { AptosChainAdapter } from '../aptos-chain-adapter.js'
 import { AbstractCodegen, camel, InternalMoveFunction, InternalMoveModule, normalizeToJSName } from '@typemove/move'
+import { AptosClient } from 'aptos'
 
 export async function codegen(
   abisDir: string,
@@ -26,7 +27,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
   SYSTEM_PACKAGE = '@typemove/aptos'
 
   constructor(endpoint: string) {
-    super(new AptosChainAdapter(endpoint))
+    super(new AptosChainAdapter(new AptosClient(endpoint)))
   }
 
   generateImports(): string {
@@ -122,8 +123,8 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
       const coder = defaultMoveCoder(client.nodeUrl)
       const builder = new TransactionBuilderRemoteABI(client, { sender: account.address(), ...extraArgs });
       const txn = await builder.build("${module.address}::${module.name}::${
-      func.name
-    }", request.type_arguments, coder.encodeArray(request.arguments))
+        func.name
+      }", request.type_arguments, coder.encodeArray(request.arguments))
       const bcsTxn = AptosClient.generateBCSTransaction(account, txn)
       return await client.submitSignedBCSTransaction(bcsTxn)
     }`

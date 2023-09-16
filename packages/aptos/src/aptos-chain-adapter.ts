@@ -4,30 +4,27 @@ import {
   SPLITTER,
   TypeDescriptor,
   InternalMoveModule,
-  InternalMoveStruct,
+  InternalMoveStruct
 } from '@typemove/move'
 import { AptosClient } from 'aptos'
 
 import { Event, MoveModuleBytecode, MoveResource } from './move-types.js'
 import { toInternalModule } from './to-internal.js'
 
-export class AptosChainAdapter extends ChainAdapter<
-  MoveModuleBytecode,
-  Event | MoveResource
-> {
+export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | MoveResource> {
   // static INSTANCE = new AptosChainAdapter()
-
-  async fetchModules(account: string): Promise<MoveModuleBytecode[]> {
-    const client = getRpcClient(this.endpoint)
-    return await client.getAccountModules(account)
+  client: AptosClient
+  constructor(client: AptosClient) {
+    super()
+    this.client = client
   }
 
-  async fetchModule(
-    account: string,
-    module: string
-  ): Promise<MoveModuleBytecode> {
-    const client = getRpcClient(this.endpoint)
-    return await client.getAccountModule(account, module)
+  async fetchModules(account: string): Promise<MoveModuleBytecode[]> {
+    return await this.client.getAccountModules(account)
+  }
+
+  async fetchModule(account: string, module: string): Promise<MoveModuleBytecode> {
+    return await this.client.getAccountModule(account, module)
   }
 
   toInternalModules(modules: MoveModuleBytecode[]): InternalMoveModule[] {
@@ -81,11 +78,11 @@ export class AptosChainAdapter extends ChainAdapter<
     }
     return data
   }
+
+  async getChainId(): Promise<string> {
+    return (await this.client.getChainId()).toString()
+  }
   // validateAndNormalizeAddress(address: string): string {
   //   return validateAndNormalizeAddress(address)
   // }
-}
-
-function getRpcClient(network: string): AptosClient {
-  return new AptosClient(network)
 }
