@@ -1,4 +1,4 @@
-import type { SuiEvent, MoveCallSuiTransaction, SuiMoveObject } from '@mysten/sui.js/client'
+import type { SuiEvent, MoveCallSuiTransaction, SuiMoveObject, DevInspectResults } from '@mysten/sui.js/client'
 import { DecodedStruct } from '@typemove/move'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'
@@ -13,6 +13,9 @@ export type TypedFunctionPayload<T extends Array<any>> = MoveCallSuiTransaction 
   arguments_decoded: T
 }
 
-// export interface TypedExecutionResultType<T> extends ExecutionResultType {
-//
-// }
+export type TypedDevInspectResults<T extends Array<any>> = DevInspectResults & {
+  /**
+   * Decoded return values using ABI, undefined if there is decoding error, usually because the ABI/data mismatch
+   */
+  results_decoded?: T
+}
