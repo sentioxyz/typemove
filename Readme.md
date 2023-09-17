@@ -10,13 +10,13 @@ Developed by [Sentio](sentio.xyz).
  - Automatically manage depended modules
  - Easy to extend for your own code generator
 
-|                       | Aptos | SUI         |
-|-----------------------|-------|-------------|
-| Type Generate         | Done  | Done        |     
-| Decoding/Encoding     | Done  | Done        |
-| View Function         | Done  | In Progress |
-| Transaction Building  | Done  | Done        |
-| Resource/Object Utils | Done  | In Progress |
+|                       | Aptos | SUI  |
+|-----------------------|-------|------|
+| Type Generate         | Done  | Done |     
+| Decoding/Encoding     | Done  | Done |
+| View Function         | Done  | Done |
+| Transaction Building  | Done  | Done |
+| Resource/Object Utils | Done  | Done |
 
 ## Details:
  - [@typemove/aptos](packages/aptos/Readme.md)

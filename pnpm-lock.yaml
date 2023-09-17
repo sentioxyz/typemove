@@ -105,14 +105,14 @@ importers:
         specifier: workspace:*
         version: link:../../packages/move
       aptos:
-        specifier: ^1.17.0
-        version: 1.17.0
+        specifier: '*'
+        version: 1.19.0
 
   examples/sui:
     dependencies:
       '@mysten/sui.js':
-        specifier: ^0.39.0
-        version: 0.39.0
+        specifier: '*'
+        version: 0.41.2
       '@typemove/move':
         specifier: workspace:*
         version: link:../../packages/move
@@ -861,36 +861,10 @@ packages:
     hasBin: true
     dev: true
 
-  /@mysten/bcs@0.7.3:
-    resolution: {integrity: sha512-fbusBfsyc2MpTACi72H5edWJ670T84va+qn9jSPpb5BzZ+pzUM1Q0ApPrF5OT+mB1o5Ng+mxPQpBCZQkfiV2TA==}
-    dependencies:
-      bs58: 5.0.0
-    dev: false
-
   /@mysten/bcs@0.7.4:
     resolution: {integrity: sha512-6DKzM4L10Au3Og5EJRBqJZmXWZ7hS/clVjbVUH4sA0aFtS3AZo2xc+r5fUFfdJbaWZUxVaDiQ8BNiEZWkAnEOw==}
     dependencies:
       bs58: 5.0.0
-    dev: false
-
-  /@mysten/sui.js@0.39.0:
-    resolution: {integrity: sha512-fJu6k7+Qb1z2h9i5Jai0sTWmaGP1UT6d/JIXhEwMZ6cz+13GT/8zRp8kUhP7Oq9Z2hxmwfy1ROptbsrv/x9V8A==}
-    engines: {node: '>=16'}
-    dependencies:
-      '@mysten/bcs': 0.7.3
-      '@noble/curves': 1.1.0
-      '@noble/hashes': 1.3.1
-      '@open-rpc/client-js': 1.8.1
-      '@scure/bip32': 1.3.1
-      '@scure/bip39': 1.2.1
-      '@suchipi/femver': 1.0.0
-      events: 3.3.0
-      superstruct: 1.0.3
-      tweetnacl: 1.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
     dev: false
 
   /@mysten/sui.js@0.41.2:
@@ -913,12 +887,6 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@noble/curves@1.1.0:
-    resolution: {integrity: sha512-091oBExgENk/kGj3AZmtBDMpxQPDtxQABR2B9lb1JbVTs6ytdzZNwvhxQ4MWasRNEzlbEH8jCWFCwhF/Obj5AA==}
-    dependencies:
-      '@noble/hashes': 1.3.1
-    dev: false
-
   /@noble/curves@1.2.0:
     resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
     dependencies:
@@ -927,11 +895,6 @@ packages:
 
   /@noble/hashes@1.1.3:
     resolution: {integrity: sha512-CE0FCR57H2acVI5UOzIGSSIYxZ6v/HOhDR0Ro9VLyhnzLwx0o8W1mmgaqlEUx4049qJDlIBRztv5k+MM8vbO3A==}
-    dev: false
-
-  /@noble/hashes@1.3.1:
-    resolution: {integrity: sha512-EbqwksQwz9xDRGfDST86whPBgM65E0OH/pCgqW0GBVzO22bNE+NuIbeTb714+IfSjU3aRk47EUvXIb5bTsenKA==}
-    engines: {node: '>= 16'}
     dev: false
 
   /@noble/hashes@1.3.2:
@@ -1104,20 +1067,8 @@ packages:
       config-chain: 1.1.13
     dev: true
 
-  /@scure/base@1.1.1:
-    resolution: {integrity: sha512-ZxOhsSyxYwLJj3pLZCefNitxsj093tb2vq90mp2txoYeBqbcjDjqFhyM8eUjq/uFm6zJ+mUuqxlS2FkuSY1MTA==}
-    dev: false
-
   /@scure/base@1.1.3:
     resolution: {integrity: sha512-/+SgoRjLq7Xlf0CWuLHq2LUZeL/w65kfzAPG5NH9pcmBhs+nunQTn4gvdwgMTIXnt9b2C/1SeL2XiysZEyIC9Q==}
-    dev: false
-
-  /@scure/bip32@1.3.1:
-    resolution: {integrity: sha512-osvveYtyzdEVbt3OfwwXFr4P2iVBL5u1Q3q4ONBfDY/UpOuXmOlbgwc1xECEboY8wIays8Yt6onaWMUdUbfl0A==}
-    dependencies:
-      '@noble/curves': 1.1.0
-      '@noble/hashes': 1.3.1
-      '@scure/base': 1.1.1
     dev: false
 
   /@scure/bip32@1.3.2:
@@ -1319,7 +1270,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.1
       '@types/keyv': 3.1.4
-      '@types/node': 20.6.0
+      '@types/node': 18.17.15
       '@types/responselike': 1.0.0
     dev: false
 
@@ -1380,7 +1331,6 @@ packages:
 
   /@types/node@18.17.15:
     resolution: {integrity: sha512-2yrWpBk32tvV/JAd3HNHWuZn/VDN1P+72hWirHnvsvTGSqbANi+kSeuQR9yAHnbvaBvHDsoTdXV0Fe+iRtHLKA==}
-    dev: true
 
   /@types/node@20.6.0:
     resolution: {integrity: sha512-najjVq5KN2vsH2U/xyh2opaSEz6cZMR2SetLIlxlj08nOcmPOemJmUK2o4kUzfLqfrWE0PIrNeE16XhYDd3nqg==}
@@ -1401,7 +1351,7 @@ packages:
   /@types/responselike@1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 20.6.0
+      '@types/node': 18.17.15
     dev: false
 
   /@types/semver@7.5.1:
@@ -1738,20 +1688,6 @@ packages:
       normalize-path: 3.0.0
       picomatch: 2.3.1
     dev: true
-
-  /aptos@1.17.0:
-    resolution: {integrity: sha512-C+jNub8Sgg32F2t4TwYqMfHHWyuxLjNwoJGlRz5CTR52V4fTFjGvP6nlqE4MphwAWrIQnHKo93Thai7kNe3OvA==}
-    engines: {node: '>=11.0.0'}
-    dependencies:
-      '@aptos-labs/aptos-client': 0.0.2
-      '@noble/hashes': 1.1.3
-      '@scure/bip39': 1.1.0
-      eventemitter3: 5.0.1
-      form-data: 4.0.0
-      tweetnacl: 1.0.3
-    transitivePeerDependencies:
-      - debug
-    dev: false
 
   /aptos@1.19.0:
     resolution: {integrity: sha512-IEvEfBFndhDce1HCMdow24Dh52sFFuRcgDpjTbH3Fi4TQpCD9s7zX+C5eCzTNiWQmEH/dfL2uDw5dbREGQxsbQ==}
