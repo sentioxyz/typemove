@@ -96,33 +96,42 @@ console.log(decodedObjects[0].value.info.delivery_info?.price)
 IDE could infer result type correctly.
 ![dynamic_fields.png](../../images/dynamic_fields.png)
 
+### View Function
+With type move, you could, call view functions and get decoded result very easily, e.g.
+```typescript
+import { _0x2 } from '@typemove/sui/builtin'
+
+res = (await _0x2.math.view.min(client, [20n, 4n]))
+
+console.log(res?.results_decoded[0])
+```
+
+Typemove's generated view function stubs wraps the `devInspectTransactionBlock` API and decode the result,
+it adds an fully typed `results_decoded` field to the result object. e.g. the above `min` function generated has type annotation as below: 
+
+```typescript
+module math {
+  export async function min(
+      client: SuiClient,
+      args: [bigint | TransactionArgument, bigint | TransactionArgument],
+  ): Promise<TypedDevInspectResults<[bigint]>> {
+  ...
+  }
+}
+```
+
 ### Building transaction
+Similar to original transaction building process, but you could use generated builder function to replace the 
+`txb.moveCall`.
+
 ```typescript
-import { clob_v2 } from './types/0xdee9.js'
+import { clob_v2 } from './types/testnet/0xdee9.js'
 
-clob_v2.builder.getMarketPrice(
-    tx,
-    ['0x5d2687b354f2ad4bce90c828974346d91ac1787ff170e5d09cb769e5dbcdefae'],
-    [
-      '0x2::sui::SUI',
-      '0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT',
-    ]
-)
-
-const result = await provider.devInspectTransactionBlock({
-  transactionBlock: tx
-})
-```
-If you just want to call `devInspectTransactionBlock` for single function, you can simply do
-```typescript
-import { clob_v2 } from './types/0xdee9.js'
-
-await clob_v2.view.getMarketPrice(provider, 
-    ['0x5d2687b354f2ad4bce90c828974346d91ac1787ff170e5d09cb769e5dbcdefae'],
-    [
-      '0x2::sui::SUI',
-      '0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT',
-  ])
+const client = new SuiClient({ url: getFullnodeUrl('testnet') })
+const tx = new TransactionBlock()
+clob_v2.builder.createAccount(tx, ["0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd"])
+    ... more tx build 
+client.signAndExecuteTransactionBlock({transactionBlock: tx, signer: keypair})
 ```
 
-Checkout our [example](./examples/sui) for full codes。
+Checkout our [tests](./src/tests/move-call.test.ts) for more examples.
