@@ -20,7 +20,11 @@ import {
 import { toInternalModule } from './to-internal.js'
 import { SuiChainAdapter } from './sui-chain-adapter.js'
 import { dynamic_field } from './builtin/0x2.js'
-import { BCS, getSuiMoveConfig, StructTypeDefinition, Encoding } from '@mysten/bcs'
+import { BCS, getSuiMoveConfig, StructTypeDefinition } from '@mysten/bcs'
+
+// import { Encoding } from '@mysten/bcs/types', this doesn't get exported correctly
+export type Encoding = 'base58' | 'base64' | 'hex'
+
 import { normalizeSuiObjectId, normalizeSuiAddress } from '@mysten/sui.js/utils'
 
 export class MoveCoder extends AbstractMoveCoder<
