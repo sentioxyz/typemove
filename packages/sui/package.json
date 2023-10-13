@@ -38,8 +38,8 @@
   },
   "types": "./dist/cjs/index.d.ts",
   "dependencies": {
-    "@mysten/bcs": "^0.7.4",
-    "@mysten/sui.js": "~0.42.0",
+    "@mysten/bcs": "^0.8.0",
+    "@mysten/sui.js": "~0.44.0",
     "@typemove/move": "workspace:*",
     "chalk": "^5.3.0",
     "radash": "^11.0.0"
