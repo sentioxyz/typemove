@@ -43,29 +43,43 @@ export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | 
 
   getAllEventStructs(modules: InternalMoveModule[]) {
     const eventMap = new Map<string, InternalMoveStruct>()
-    const structMap = new Map<string, InternalMoveStruct>()
-    for (const module of modules) {
-      const qname = moduleQname(module)
-      for (const struct of module.structs) {
-        structMap.set(qname + SPLITTER + struct.name, struct)
-      }
-    }
 
     for (const module of modules) {
+      const qname = moduleQname(module)
+
       for (const struct of module.structs) {
-        for (const field of struct.fields) {
-          const t = field.type
-          if (t.qname === '0x1::event::EventHandle') {
-            const event = t.typeArgs[0].qname
-            const eventStruct = structMap.get(event)
-            if (eventStruct) {
-              eventMap.set(event, eventStruct)
-            }
-          }
+        const abilities = new Set(struct.abilities)
+        if (abilities.has('drop') && abilities.has('store')) {
+          eventMap.set(qname + SPLITTER + struct.name, struct)
         }
       }
     }
     return eventMap
+
+    // const eventMap = new Map<string, InternalMoveStruct>()
+    // const structMap = new Map<string, InternalMoveStruct>()
+    // for (const module of modules) {
+    //   const qname = moduleQname(module)
+    //   for (const struct of module.structs) {
+    //     structMap.set(qname + SPLITTER + struct.name, struct)
+    //   }
+    // }
+    //
+    // for (const module of modules) {
+    //   for (const struct of module.structs) {
+    //     for (const field of struct.fields) {
+    //       const t = field.type
+    //       if (t.qname === '0x1::event::EventHandle') {
+    //         const event = t.typeArgs[0].qname
+    //         const eventStruct = structMap.get(event)
+    //         if (eventStruct) {
+    //           eventMap.set(event, eventStruct)
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    // return eventMap
   }
 
   getType(data: Event | MoveResource): string {
