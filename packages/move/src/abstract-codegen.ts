@@ -98,7 +98,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     while (loader.pendingAccounts.size > 0) {
       for (const account of loader.pendingAccounts) {
         const id = await this.chainAdapter.getChainId()
-        console.log(`download dependent module for account ${account} at ${id}`)
+        console.log(`download dependent module for account ${account}, chain ID: ${id}`)
 
         try {
           const rawModules = await this.chainAdapter.fetchModules(
