@@ -7,13 +7,18 @@ import * as fs from 'fs'
 import { Command } from 'commander'
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
-const pkg = require('../../package.json')
+let pkg = undefined
+try {
+  pkg = require('../../package.json')
+} catch (e) {
+  pkg = require('../../../package.json')
+}
 
 const program = new Command()
 
 program
-  .name(pkg.name)
-  .description('CLI to generate typescript types from aptos ABIs')
+  .name('typemove-aptos')
+  .description('CLI to generate typescript types from Aptos ABIs')
   .showHelpAfterError()
   .version(pkg.version)
   .argument('<location>', 'Directory of ABI json files or address of account to generate types for')
@@ -21,7 +26,7 @@ program
   .option('-t, --target-dir <dir>', 'Directory to output generated files', './types')
   .option(
     '-n, --network <mainnet|testnet|$url>',
-    'Aptos network to use, could be either "mainnet", "testnet" or any aptos node endpoint url',
+    'Aptos network to use, could be either "mainnet", "testnet" or any Aptos node endpoint url',
     'mainnet'
   )
   .action(async (location, options) => {

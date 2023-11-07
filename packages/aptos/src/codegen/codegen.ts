@@ -21,7 +21,7 @@ export async function codegen(
   try {
     const numFiles = await gen.generate(abisDir, outDir, builtin)
     if (numFiles > 0) {
-      console.log(chalk.green(`Generated for ${numFiles} accounts for Aptos`))
+      console.log(chalk.green(`Generated for ${numFiles} accounts for Aptos to ${outDir}`))
     } else {
       console.error(chalk.red(`No account found`))
     }
