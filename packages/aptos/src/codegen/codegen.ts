@@ -14,11 +14,23 @@ export async function codegen(
   builtin = false
 ) {
   if (!fs.existsSync(abisDir)) {
-    return
+    console.error(chalk.red(`ABIs directory ${abisDir} does not exist`))
+    return 0
   }
   const gen = new AptosCodegen(endpoint)
-  const numFiles = await gen.generate(abisDir, outDir, builtin)
-  console.log(chalk.green(`Generated ${numFiles} for Aptos`))
+  try {
+    const numFiles = await gen.generate(abisDir, outDir, builtin)
+    if (numFiles > 0) {
+      console.log(chalk.green(`Generated for ${numFiles} accounts for Aptos`))
+    } else {
+      console.error(chalk.red(`No account found`))
+    }
+    return numFiles
+  } catch (e) {
+    console.error(chalk.red(`Failed to generate for ${abisDir}, please check if ABI json files are valid`))
+    console.log(e)
+    return 0
+  }
 }
 
 export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResource> {

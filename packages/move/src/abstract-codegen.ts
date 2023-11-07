@@ -149,7 +149,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     }
     fs.writeFileSync(rootFile, rootFileContent)
 
-    return outputs.length + 1
+    return outputs.length
   }
 
   protected generateExtra(module: InternalMoveModule) {
