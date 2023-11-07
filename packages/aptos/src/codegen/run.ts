@@ -1,4 +1,4 @@
-// #!/usr/bin/env node
+#!/usr/bin/env node
 
 import { codegen } from './codegen.js'
 import { AptosClient } from 'aptos'
