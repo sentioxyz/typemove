@@ -17,13 +17,28 @@ pnpm add @typemove/aptos
 
 ### Code Generation
 ```typescript
-yarn typemove-aptos <abi-address | path-of-entry-abi-file> <path-of-target-ts-directory> <testnet|mainnet>
+yarn typemove-aptos [--target-dir] [--network] [--abi-dir] <location>
 ```
+- `location`: Directory of ABI json files or address of account to generate types for
+- `target-dir`: Directory to output generated files (default: "./types")
+- `network`:  Network to use, could be either "mainnet", "testnet" or any node URL (default: "mainnet")
+- `abi-dir`:  Directory to store downloaded ABI. Only useful if <location> is address (default: "./abis")
 
-e.g.
-```typescript
-yarn typemove-aptos 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af ./src/types mainnet
-```
+Use `yarn typemove-aptos --help` to see detail description.
+
+A few examples:
+- generate types for an address on mainnet:
+    ```typescript
+    yarn typemove-aptos --target-dir ./src/types --abi-dir ./src/abis 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af 
+    ```
+- generate types for local ABI files stored in `./src/abis`:
+    ```typescript
+    yarn typemove-aptos --target-dir ./src/types ./src/abis
+    ```
+- generate types using local node:
+    ```typescript
+    yarn typemove-aptos --network http://localhost:8080 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af
+  ```
 
 ### Decode object
 

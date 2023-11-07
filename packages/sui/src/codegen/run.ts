@@ -25,7 +25,7 @@ program
   .option('-t, --target-dir <dir>', 'Directory to output generated files', './types')
   .option(
     '-n, --network <mainnet|testnet|$url>',
-    'SUI network to use, could be either "mainnet", "testnet" or any SUI node endpoint url',
+    'Network to use, could be either "mainnet", "testnet" or any node URL',
     'mainnet'
   )
   .action(async (location, options) => {
