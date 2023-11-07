@@ -29,15 +29,15 @@ Use `yarn typemove-aptos --help` to see detail description.
 A few examples:
 - generate types for an address on mainnet:
     ```typescript
-    yarn typemove-aptos --target-dir ./src/types --abi-dir ./src/abis 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af 
+    yarn typemove-aptos --target-dir=./src/types --abi-dir=./src/abis 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af 
     ```
 - generate types for local ABI files stored in `./src/abis`:
     ```typescript
-    yarn typemove-aptos --target-dir ./src/types ./src/abis
+    yarn typemove-aptos --target-dir=./src/types ./src/abis
     ```
 - generate types using local node:
     ```typescript
-    yarn typemove-aptos --network http://localhost:8080 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af
+    yarn typemove-aptos --network="http://localhost:8080" 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af
   ```
 
 ### Decode object
