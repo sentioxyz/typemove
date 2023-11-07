@@ -18,8 +18,28 @@ pnpm add @typemove/sui
 
 ### Code Generation
 ```typescript
-yarn typemove-sui <path-of-abi-file> <path-of-target-ts-directory> <testnet|mainnet>
+yarn typemove-sui [--target-dir] [--network] [--abi-dir] <location>
 ```
+- `location`: Directory of ABI json files or address of account to generate types for
+- `target-dir`: Directory to output generated files (default: "./types")
+- `network`:  Network to use, could be either "mainnet", "testnet" or any node URL (default: "mainnet")
+- `abi-dir`:  Directory to store downloaded ABI. Only useful if <location> is address (default: "./abis")
+
+Use `yarn typemove-sui --help` to see detail description.
+
+A few examples:
+- generate types for an address on mainnet:
+    ```typescript
+    yarn typemove-sui --target-dir ./src/types --abi-dir ./src/abis 0x1e2b124f746a339b3cf99b9f969393a96594519aafb1d06517aacfeeae20e7a5 
+    ```
+- generate types for local ABI files stored in `./src/abis`:
+    ```typescript
+    yarn typemove-sui --target-dir ./src/types ./src/abis
+    ```
+- generate types using local node:
+    ```typescript
+    yarn typemove-sui --network http://localhost:8080 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af
+  ```
 
 ### Decode Object
 ```typescript
