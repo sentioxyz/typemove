@@ -29,17 +29,18 @@
     "!{dist,src}/*/tests"
   ],
   "scripts": {
+    "_gen": "pnpm gen:test && ts-node-esm  src/codegen/run.ts -t src/builtin -a src/abis",
     "build": "pnpm gen && tsc && pnpm build:cjs",
     "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
     "build:cjs": "tsc --project tsconfig.cjs.json && cp ../../package.cjs.json ./dist/cjs/package.json",
-    "gen": "pnpm gen:test && ts-node-esm  src/codegen/run.ts -t src/builtin src/abis",
+    "gen": "pnpm _gen 0x1 && pnpm _gen 0x2 && pnpm _gen 0x3",
     "gen:test": "ts-node-esm src/codegen/run.ts -t src/tests/types/testnet -n testnet src/tests/abis/testnet",
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
   "types": "./dist/cjs/index.d.ts",
   "dependencies": {
     "@mysten/bcs": "^0.8.1",
-    "@mysten/sui.js": "~0.45.0",
+    "@mysten/sui.js": "~0.46.1",
     "@typemove/move": "workspace:*",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
