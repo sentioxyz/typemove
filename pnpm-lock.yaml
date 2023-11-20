@@ -156,8 +156,8 @@ importers:
         specifier: ^0.8.1
         version: 0.8.1
       '@mysten/sui.js':
-        specifier: ~0.45.0
-        version: 0.45.0
+        specifier: ~0.46.1
+        version: 0.46.1
       '@typemove/move':
         specifier: workspace:*
         version: link:../move
@@ -905,8 +905,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@mysten/sui.js@0.45.0:
-    resolution: {integrity: sha512-t+LyGWzKTH+TM3c7apvK2aohnx6hj0nxjqrqbk49X/uLxhvDKEIoTGJDQC2cfDTOg6OteYTefCNsfRauh8wAzA==}
+  /@mysten/sui.js@0.46.1:
+    resolution: {integrity: sha512-YSqay1RJbstJt1AILoAcucWhm72ywB//qQrECl1b3CNiuAHG5iYUxlQk7i0a+2+cBnhlVvkOU4PePBMkABqn3w==}
     engines: {node: '>=16'}
     dependencies:
       '@mysten/bcs': 0.8.1
