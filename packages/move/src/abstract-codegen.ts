@@ -26,7 +26,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   PREFIX: string
   STRUCT_FIELD_NAME: string = 'data'
   PAYLOAD_OPTIONAL = false
-  SYSTEM_MODULES = new Set(['0x1', '0x2', '0x3'])
+  SYSTEM_MODULES = new Set(['0x1', '0x2', '0x3', '0x4'])
   ESM = true
 
   chainAdapter: ChainAdapter<ModuleTypes, StructType>
