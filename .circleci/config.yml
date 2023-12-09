@@ -10,7 +10,7 @@ jobs:
   build_and_test:
     executor:
       name: node/default # use the default executor defined within the orb
-      tag: '18.18'
+      tag: '18.19'
     steps:
       - checkout
       - restore_cache:
