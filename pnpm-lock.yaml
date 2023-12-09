@@ -153,11 +153,11 @@ importers:
   packages/sui:
     dependencies:
       '@mysten/bcs':
-        specifier: ^0.8.1
-        version: 0.8.1
+        specifier: ^0.9.0
+        version: 0.9.0
       '@mysten/sui.js':
-        specifier: ~0.46.1
-        version: 0.46.1
+        specifier: ~0.48.0
+        version: 0.48.0
       '@typemove/move':
         specifier: workspace:*
         version: link:../move
@@ -879,8 +879,8 @@ packages:
       bs58: 5.0.0
     dev: false
 
-  /@mysten/bcs@0.8.1:
-    resolution: {integrity: sha512-wSEdP7QEfGQdb34g+7R0f3OdRqrv88iIABfJVDVJ6IsGLYVILreh8dZfNpZNUUyzctiyhX7zB9e/lR5qkddFPA==}
+  /@mysten/bcs@0.9.0:
+    resolution: {integrity: sha512-h56essa8oSS4/J0Dby8k8stMoOSt+QZIEIeZNtgTOWh9HeV69yFg2BUg/+Rk7jzfWzvUmw9lFyKNipXcD5QOTw==}
     dependencies:
       bs58: 5.0.0
     dev: false
@@ -905,24 +905,18 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@mysten/sui.js@0.46.1:
-    resolution: {integrity: sha512-YSqay1RJbstJt1AILoAcucWhm72ywB//qQrECl1b3CNiuAHG5iYUxlQk7i0a+2+cBnhlVvkOU4PePBMkABqn3w==}
+  /@mysten/sui.js@0.48.0:
+    resolution: {integrity: sha512-kGeV5F3IYThiliVbIou3YOOGAr8TdNyub4hGY2gevnphFQF8SukwQk8cyzuEEsAVSDUt0rsA9xxpncSgX+RjMA==}
     engines: {node: '>=16'}
     dependencies:
-      '@mysten/bcs': 0.8.1
+      '@mysten/bcs': 0.9.0
       '@noble/curves': 1.2.0
       '@noble/hashes': 1.3.2
-      '@open-rpc/client-js': 1.8.1
       '@scure/bip32': 1.3.2
       '@scure/bip39': 1.2.1
       '@suchipi/femver': 1.0.0
-      events: 3.3.0
       superstruct: 1.0.3
       tweetnacl: 1.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - encoding
-      - utf-8-validate
     dev: false
 
   /@noble/curves@1.2.0:
