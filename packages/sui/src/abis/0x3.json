@@ -955,7 +955,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -1046,7 +1046,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -1221,7 +1221,7 @@
         "typeParameters": [],
         "parameters": [
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x3",
                 "module": "staking_pool",
@@ -3864,7 +3864,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -3958,7 +3958,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -4015,7 +4015,7 @@
           },
           "U64",
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -4080,7 +4080,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -4155,7 +4155,7 @@
           },
           "U64",
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -6432,7 +6432,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -6692,7 +6692,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -8565,7 +8565,7 @@
           },
           "U64",
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -8629,7 +8629,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
@@ -8722,7 +8722,7 @@
             }
           },
           {
-            "MutableReference": {
+            "Reference": {
               "Struct": {
                 "address": "0x2",
                 "module": "tx_context",
