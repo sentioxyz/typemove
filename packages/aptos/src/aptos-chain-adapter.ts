@@ -6,7 +6,7 @@ import {
   InternalMoveModule,
   InternalMoveStruct
 } from '@typemove/move'
-import { AptosClient } from 'aptos'
+import { Aptos as AptosClient } from '@aptos-labs/ts-sdk'
 
 import { Event, MoveModuleBytecode, MoveResource } from './move-types.js'
 import { toInternalModule } from './to-internal.js'
@@ -20,11 +20,16 @@ export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | 
   }
 
   async fetchModules(account: string): Promise<MoveModuleBytecode[]> {
-    return await this.client.getAccountModules(account)
+    return await this.client.getAccountModules({
+      accountAddress: account
+    })
   }
 
   async fetchModule(account: string, module: string): Promise<MoveModuleBytecode> {
-    return await this.client.getAccountModule(account, module)
+    return await this.client.getAccountModule({
+      accountAddress: account,
+      moduleName: module
+    })
   }
 
   toInternalModules(modules: MoveModuleBytecode[]): InternalMoveModule[] {
