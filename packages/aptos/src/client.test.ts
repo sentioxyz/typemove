@@ -19,10 +19,11 @@ describe('client call of entry or view', () => {
       functionArguments: ['0x5967ebb35647e8a664ea8d2d96276f28cc88e7bfeff46e625c8900d8b541506a'],
       function: '0x1::coin::balance'
     }
+
     const res1 = await client.view({
       payload: data,
       options: {
-        ledgerVersion: 193435152n
+        ledgerVersion: 293435152n
       }
     })
     expect(res1).eql(['99680593'])
