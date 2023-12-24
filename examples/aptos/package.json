@@ -16,9 +16,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
   "dependencies": {
+    "@aptos-labs/ts-sdk": "*",
     "@typemove/aptos": "workspace:*",
-    "@typemove/move": "workspace:*",
-    "aptos": "*"
+    "@typemove/move": "workspace:*"
   },
   "url": "https://github.com/sentioxyz/typemove"
 }

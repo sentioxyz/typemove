@@ -1,10 +1,9 @@
 import * as fs from 'fs'
-import { Event, MoveModuleBytecode, MoveResource } from '../move-types.js'
 import chalk from 'chalk'
 import { join } from 'path'
 import { AptosChainAdapter } from '../aptos-chain-adapter.js'
 import { AbstractCodegen, camel, InternalMoveFunction, InternalMoveModule, normalizeToJSName } from '@typemove/move'
-import { AptosClient } from 'aptos'
+import { Aptos, AptosConfig, Event, MoveModuleBytecode, MoveResource } from '@aptos-labs/ts-sdk'
 
 export async function codegen(
   abisDir: string,
@@ -34,18 +33,18 @@ export async function codegen(
 }
 
 export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | MoveResource> {
-  ADDRESS_TYPE = 'Address'
+  ADDRESS_TYPE = 'MoveAddressType'
   PREFIX = 'Aptos'
   SYSTEM_PACKAGE = '@typemove/aptos'
 
   constructor(endpoint: string) {
-    super(new AptosChainAdapter(new AptosClient(endpoint)))
+    super(new AptosChainAdapter(new Aptos(new AptosConfig({ fullnode: endpoint }))))
   }
 
   generateImports(): string {
     return `
       ${super.generateImports()}
-      import { AptosClient, AptosAccount, TransactionBuilderRemoteABI, Types, TxnBuilderTypes, OptionalTransactionArgs } from 'aptos'
+      import { Aptos, Account as AptosAccount, MoveAddressType, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewRequestData } from '@aptos-labs/ts-sdk'
     `
   }
   protected generateExtra(module: InternalMoveModule) {
@@ -87,20 +86,20 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
     const requestArg = allEmpty
       ? ''
       : `request: {
-      ${func.typeParams.length > 0 ? `type_arguments: [${func.typeParams.map((_) => 'string').join(', ')}],` : ''}
-      ${func.params.length > 0 ? `arguments: [${fields.join(',')}]` : ''}},`
+      ${func.typeParams.length > 0 ? `typeArguments: [${func.typeParams.map((_) => 'MoveStructId').join(', ')}],` : ''}
+      ${func.params.length > 0 ? `functionArguments: [${fields.join(',')}]` : ''}},`
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
-    client: AptosClient,
+    client: Aptos,
     ${requestArg}
     version?: bigint): Promise<[${returns.join(',')}]> {
-      const coder = defaultMoveCoder(client.nodeUrl)
-      const data = { 
-        type_arguments:  ${func.typeParams.length > 0 ? 'request.type_arguments' : '[]'},
-        arguments: ${func.params.length > 0 ? 'coder.encodeArray(request.arguments)' : '[]'},
-        function: "${module.address}::${module.name}::${func.name}"
+      const coder = defaultMoveCoder(client.config.fullnode)        
+      const data: InputViewRequestData = {
+        function: "${module.address}::${module.name}::${func.name}",
+        functionArguments: ${func.params.length > 0 ? 'coder.encodeArray(request.functionArguments)' : '[]'},
+        typeArguments: ${func.typeParams.length > 0 ? 'request.typeArguments' : '[]'},
       }
-      const res = await client.view(data, version?.toString())
+      const res = await client.view({payload: data, options: { ledgerVersion: version } });
       const type = await coder.getMoveFunction("${module.address}::${module.name}::${func.name}")
       return await coder.decodeArray(res, type.return) as any
     }`
@@ -124,21 +123,25 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
     // const args = this.generateArgs(module, func)
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
-      client: AptosClient,
+      client: Aptos,
       account: AptosAccount,
       request: {
-        type_arguments: [${func.typeParams.map((_) => 'string').join(', ')}], 
-        arguments: [${fields.join(',')}]
+        typeArguments: [${func.typeParams.map((_) => 'MoveStructId').join(', ')}], 
+        functionArguments: [${fields.join(',')}]
       },
-      extraArgs?: OptionalTransactionArgs
-    ): Promise<Types.PendingTransaction> {
-      const coder = defaultMoveCoder(client.nodeUrl)
-      const builder = new TransactionBuilderRemoteABI(client, { sender: account.address(), ...extraArgs });
-      const txn = await builder.build("${module.address}::${module.name}::${
-        func.name
-      }", request.type_arguments, coder.encodeArray(request.arguments))
-      const bcsTxn = AptosClient.generateBCSTransaction(account, txn)
-      return await client.submitSignedBCSTransaction(bcsTxn)
+      options?: InputGenerateTransactionOptions
+    ): Promise<PendingTransactionResponse> {
+      const coder = defaultMoveCoder(client.config.fullnode)  
+      const transaction = await client.build.simple({
+        sender: account.accountAddress,
+        data: {
+          function: "${module.address}::${module.name}::${func.name}",
+          functionArguments: ${func.params.length > 0 ? 'coder.encodeArray(request.functionArguments)' : '[]'},
+          typeArguments: ${func.typeParams.length > 0 ? 'request.typeArguments' : '[]'},
+        },
+        options
+      })
+      return await client.signAndSubmitTransaction({ signer: account, transaction });
     }`
   }
 }
