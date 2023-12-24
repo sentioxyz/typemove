@@ -6,8 +6,13 @@ import {
   InternalMoveStructField,
   parseMoveType
 } from '@typemove/move'
-import { MoveFunction, MoveModuleBytecode, MoveStruct, MoveStructField } from './move-types.js'
-import { MoveFunctionVisibility } from '@aptos-labs/ts-sdk'
+import {
+  MoveFunctionVisibility,
+  MoveFunction,
+  MoveModuleBytecode,
+  MoveStruct,
+  MoveStructField
+} from '@aptos-labs/ts-sdk'
 
 export function toInternalModule(module: MoveModuleBytecode): InternalMoveModule {
   if (!module.abi) {

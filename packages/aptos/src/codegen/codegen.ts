@@ -1,10 +1,9 @@
 import * as fs from 'fs'
-import { Event, MoveModuleBytecode, MoveResource } from '../move-types.js'
 import chalk from 'chalk'
 import { join } from 'path'
 import { AptosChainAdapter } from '../aptos-chain-adapter.js'
 import { AbstractCodegen, camel, InternalMoveFunction, InternalMoveModule, normalizeToJSName } from '@typemove/move'
-import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
+import { Aptos, AptosConfig, Event, MoveModuleBytecode, MoveResource } from '@aptos-labs/ts-sdk'
 
 export async function codegen(
   abisDir: string,
@@ -45,7 +44,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
   generateImports(): string {
     return `
       ${super.generateImports()}
-      import { Aptos, Account as AptosAccount, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewRequestData } from '@aptos-labs/ts-sdk'
+      import { Aptos, Account as AptosAccount, MoveAddressType, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewRequestData } from '@aptos-labs/ts-sdk'
     `
   }
   protected generateExtra(module: InternalMoveModule) {

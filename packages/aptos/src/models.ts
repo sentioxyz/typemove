@@ -1,6 +1,5 @@
-import { Event, MoveResource } from './move-types.js'
 import { DecodedStruct } from '@typemove/move'
-import { EntryFunctionPayloadResponse } from '@aptos-labs/ts-sdk'
+import { EntryFunctionPayloadResponse, MoveResource, Event } from '@aptos-labs/ts-sdk'
 
 export type TypedEventInstance<T> = DecodedStruct<Event, T>
 export type TypedMoveResource<T> = DecodedStruct<MoveResource, T>
