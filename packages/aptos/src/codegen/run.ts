@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { codegen } from './codegen.js'
-import { AptosClient } from 'aptos'
+import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
 import * as path from 'path'
 import * as fs from 'fs'
 import { Command } from 'commander'
@@ -32,17 +32,17 @@ program
   .action(async (location, options) => {
     let endpoint = options.network
     if (endpoint == 'mainnet') {
-      endpoint = 'https://mainnet.aptoslabs.com/'
+      endpoint = 'https://mainnet.aptoslabs.com/v1'
     }
     if (endpoint == 'testnet') {
-      endpoint = 'https://testnet.aptoslabs.com/'
+      endpoint = 'https://testnet.aptoslabs.com/v1'
     }
-    const aptosClient = new AptosClient(endpoint)
+    const aptosClient = new Aptos(new AptosConfig({ fullnode: endpoint }))
 
     let abisDir = location
     if (location.startsWith('0x')) {
       const abiAddress = abisDir
-      const abi = await aptosClient.getAccountModules(abiAddress)
+      const abi = await aptosClient.getAccountModules({ accountAddress: abiAddress })
       abisDir = options.abiDir
       if (!fs.existsSync(abisDir)) {
         fs.mkdirSync(abisDir, { recursive: true })

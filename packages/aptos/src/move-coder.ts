@@ -1,12 +1,18 @@
 import { AbstractMoveCoder, InternalMoveModule, parseMoveType, TypeDescriptor } from '@typemove/move'
-import { Event, MoveModuleBytecode, MoveResource, TransactionPayload_EntryFunctionPayload } from './move-types.js'
 import { TypedEventInstance, TypedFunctionPayload, TypedMoveResource } from './models.js'
 import { AptosChainAdapter } from './aptos-chain-adapter.js'
 import { toInternalModule } from './to-internal.js'
-import { AptosClient } from 'aptos'
+import {
+  Aptos,
+  AptosConfig,
+  EntryFunctionPayloadResponse,
+  Event,
+  MoveModuleBytecode,
+  MoveResource
+} from '@aptos-labs/ts-sdk'
 
 export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | MoveResource> {
-  constructor(client: AptosClient) {
+  constructor(client: Aptos) {
     super(new AptosChainAdapter(client))
   }
 
@@ -27,12 +33,14 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
   }
 
   decodeEvent<T>(event: Event): Promise<TypedEventInstance<T> | undefined> {
+    // TODO fix type
     return this.decodedStruct(event)
   }
   filterAndDecodeEvents<T>(type: string | TypeDescriptor<T>, resources: Event[]): Promise<TypedEventInstance<T>[]> {
     if (typeof type === 'string') {
       type = parseMoveType(type)
     }
+    // TODO fix type
     return this.filterAndDecodeStruct(type, resources)
   }
   decodeResource<T>(res: MoveResource): Promise<TypedMoveResource<T> | undefined> {
@@ -48,9 +56,9 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
     return this.filterAndDecodeStruct(type, resources)
   }
 
-  async decodeFunctionPayload(
-    payload: TransactionPayload_EntryFunctionPayload
-  ): Promise<TransactionPayload_EntryFunctionPayload> {
+  async decodeFunctionPayload<T extends Array<any>>(
+    payload: EntryFunctionPayloadResponse
+  ): Promise<TypedFunctionPayload<T>> {
     const func = await this.getMoveFunction(payload.function)
     const params = this.adapter.getMeaningfulFunctionParams(func.params)
     const argumentsDecoded = await this.decodeArray(payload.arguments, params)
@@ -58,7 +66,7 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
     return {
       ...payload,
       arguments_decoded: argumentsDecoded
-    } as TypedFunctionPayload<any>
+    } as TypedFunctionPayload<T>
   }
 }
 
@@ -72,13 +80,14 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
 //   return TESTNET_MOVE_CODER
 // }
 
-const DEFAULT_ENDPOINT = 'https://mainnet.aptoslabs.com/'
+const DEFAULT_ENDPOINT = 'https://mainnet.aptoslabs.com/v1'
 const CODER_MAP = new Map<string, MoveCoder>()
 
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
-    coder = new MoveCoder(new AptosClient(endpoint))
+    const config = new AptosConfig({ fullnode: endpoint })
+    coder = new MoveCoder(new Aptos(config))
     CODER_MAP.set(endpoint, coder)
   }
   return coder

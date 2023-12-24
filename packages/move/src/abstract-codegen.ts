@@ -389,10 +389,10 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   }
 
   generateImports() {
-    let refImports = `import { ${this.ADDRESS_TYPE} } from "${this.SYSTEM_PACKAGE}"`
-    if (this.ADDRESS_TYPE === 'string') {
-      refImports = ''
-    }
+    // let refImports = `import { ${this.ADDRESS_TYPE} } from "${this.SYSTEM_PACKAGE}"`
+    // if (this.ADDRESS_TYPE === 'string') {
+    //   refImports = ''
+    // }
 
     const imports = `
     import { TypeDescriptor, ANY_TYPE } from "@typemove/move"
@@ -401,7 +401,6 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
       
     import { defaultMoveCoder } from "${this.defaultCoderPackage()}"
 
-    ${refImports}
     `
     return imports
   }
