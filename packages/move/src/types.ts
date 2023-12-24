@@ -161,6 +161,10 @@ export function parseMoveType(type: string): TypeDescriptor {
   const stack: TypeDescriptor[] = [new TypeDescriptor('')]
   let buffer = []
 
+  if (type === undefined) {
+    console.log('')
+  }
+
   // xxx:asdf<g1<a,<c,d>>, b, g2<a,b>, e>
   for (let i = 0; i < type.length; i++) {
     const ch = type[i]

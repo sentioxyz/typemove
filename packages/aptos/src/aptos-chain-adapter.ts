@@ -6,15 +6,15 @@ import {
   InternalMoveModule,
   InternalMoveStruct
 } from '@typemove/move'
-import { Aptos as AptosClient } from '@aptos-labs/ts-sdk'
+import { Aptos } from '@aptos-labs/ts-sdk'
 
 import { Event, MoveModuleBytecode, MoveResource } from './move-types.js'
 import { toInternalModule } from './to-internal.js'
 
 export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | MoveResource> {
   // static INSTANCE = new AptosChainAdapter()
-  client: AptosClient
-  constructor(client: AptosClient) {
+  client: Aptos
+  constructor(client: Aptos) {
     super()
     this.client = client
   }

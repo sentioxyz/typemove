@@ -1,9 +1,9 @@
 import { AbstractMoveCoder, InternalMoveModule, parseMoveType, TypeDescriptor } from '@typemove/move'
-import { Event, MoveModuleBytecode, MoveResource, TransactionPayload_EntryFunctionPayload } from './move-types.js'
+import { Event, MoveModuleBytecode, MoveResource } from './move-types.js'
 import { TypedEventInstance, TypedFunctionPayload, TypedMoveResource } from './models.js'
 import { AptosChainAdapter } from './aptos-chain-adapter.js'
 import { toInternalModule } from './to-internal.js'
-import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk'
+import { Aptos, AptosConfig, EntryFunctionPayloadResponse } from '@aptos-labs/ts-sdk'
 
 export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | MoveResource> {
   constructor(client: Aptos) {
@@ -48,9 +48,9 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
     return this.filterAndDecodeStruct(type, resources)
   }
 
-  async decodeFunctionPayload(
-    payload: TransactionPayload_EntryFunctionPayload
-  ): Promise<TransactionPayload_EntryFunctionPayload> {
+  async decodeFunctionPayload<T extends Array<any>>(
+    payload: EntryFunctionPayloadResponse
+  ): Promise<TypedFunctionPayload<T>> {
     const func = await this.getMoveFunction(payload.function)
     const params = this.adapter.getMeaningfulFunctionParams(func.params)
     const argumentsDecoded = await this.decodeArray(payload.arguments, params)
@@ -58,7 +58,7 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
     return {
       ...payload,
       arguments_decoded: argumentsDecoded
-    } as TypedFunctionPayload<any>
+    } as TypedFunctionPayload<T>
   }
 }
 
@@ -72,13 +72,13 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
 //   return TESTNET_MOVE_CODER
 // }
 
-const DEFAULT_ENDPOINT = 'https://mainnet.aptoslabs.com/'
+const DEFAULT_ENDPOINT = 'https://mainnet.aptoslabs.com/v1'
 const CODER_MAP = new Map<string, MoveCoder>()
 
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
-    const config = new AptosConfig({ network: Network.LOCAL, fullnode: endpoint })
+    const config = new AptosConfig({ fullnode: endpoint })
     coder = new MoveCoder(new Aptos(config))
     CODER_MAP.set(endpoint, coder)
   }
