@@ -132,7 +132,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
       options?: InputGenerateTransactionOptions
     ): Promise<PendingTransactionResponse> {
       const coder = defaultMoveCoder(client.config.fullnode)  
-      const transaction = await client.build.simple({
+      const transaction = await client.transaction.build.simple({
         sender: account.accountAddress,
         data: {
           function: "${module.address}::${module.name}::${func.name}",
