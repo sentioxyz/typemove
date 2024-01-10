@@ -39,8 +39,8 @@
   },
   "types": "./dist/cjs/index.d.ts",
   "dependencies": {
-    "@mysten/bcs": "^0.9.0",
-    "@mysten/sui.js": "~0.48.0",
+    "@mysten/bcs": "^0.10.0",
+    "@mysten/sui.js": "~0.49.0",
     "@typemove/move": "workspace:*",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
