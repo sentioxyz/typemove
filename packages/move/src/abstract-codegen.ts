@@ -486,7 +486,7 @@ export class AccountCodegen<ModuleType, StructType> {
     export function loadAllTypes(coder: MoveCoder) {
       ${dependedAccounts.map((a) => `_${a}.loadAllTypes(coder)`).join('\n')}
       for (const m of Object.values(MODULES)) {
-        coder.load(m as any)
+        coder.load(m as any, '${address}')
       }
     }
     
