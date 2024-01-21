@@ -16,7 +16,7 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
     super(new AptosChainAdapter(client))
   }
 
-  load(module: MoveModuleBytecode, address: string): InternalMoveModule {
+  load(module: MoveModuleBytecode): InternalMoveModule {
     if (!module.abi) {
       throw Error('Module without abi')
     }
@@ -28,7 +28,7 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
       return m
     }
     m = toInternalModule(module)
-    this.loadInternal(m, address)
+    this.loadInternal(m)
     return m
   }
 

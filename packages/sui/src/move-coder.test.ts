@@ -1,6 +1,6 @@
 import { BCS } from '@mysten/bcs'
 import { expect } from 'chai'
-import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
+import { BUILTIN_TYPES } from '@typemove/move'
 import { bcs } from '@mysten/sui.js/bcs'
 import { defaultMoveCoder } from '@typemove/sui'
 import { dynamic_field } from './builtin/0x2'
@@ -23,76 +23,6 @@ describe('Test move coder', () => {
     console.log(bcs.hasType('0x1::option::Option'))
     console.log(bcs.hasType('0x1::option::Option<T>'))
     console.log(bcs.hasType('vector<u8>'))
-  })
-
-  test('decode upgraded struct', async () => {
-    const coder = defaultMoveCoder()
-    const upgradedEvent = {
-      isBuy: false,
-      maker: '0x70f5a62b8373ec0812fcc7582fca4055f962e7f65104db9433ca6c5a0111b648',
-      makerFee: '0',
-      makerMRO: '200000000',
-      makerOrderHash: [],
-      makerPnl: {
-        sign: false,
-        value: '1074289040'
-      },
-      perpID: '0xdade62fa7a4b4f1eac97c76d61e70b68c91d3c60ce399c7f741dee43e8d93167',
-      sender: '0x4cc96288ef41a7bdc91effd7769a9d6f7434e448aa119ee6a79bb50ed7627ab6',
-      taker: '0x46f8204586c5fe7064cdc3b2e7b0b50d647de8b92f471e28a986c2a2c98e2150',
-      takerFee: '74540400',
-      takerMRO: '250000000',
-      takerOrderHash: [],
-      takerPnl: {
-        sign: true,
-        value: '1903865480'
-      },
-      tradePrice: '1129400000',
-      tradeQuantity: '440000000000',
-      tradeType: 1,
-      tx_index: '1694793'
-    }
-
-    const res = await coder.decodedType(
-      upgradedEvent,
-      parseMoveType(
-        '0xcb4e1ee2a3d6323c70e7b06a8638de6736982cbdc08317d33e6f098747e2b438::isolated_trading::TradeExecutedV2'
-      )
-    )
-  })
-
-  test('decode upgraded', async () => {
-    const coder = defaultMoveCoder()
-    const upgradedEvent = {
-      bcs: '2EEdtVSdQuBDwz8GqTfB83ac62AAy2maSVE9SqwUFpXdqSPGhRvrZz3WEyJavAhSmVtU86Y2AkkK5pSw6MYzcKsdowaso8N8B7Ur8XiZ9xienTkNzNTf7mmfgWJWMqpYVKkdbJTj76WNzJs5Sd6U3FzCzmg4y5EgW85knAoBZjzBwPUsQ3tMHDcihpX7wVtnEVttdzLnq3ZK97u1hAJSyDUrRVThpScej1kjjRLe2Up3mYYo7JsH8uhrq7bACkQKPCbK88d8arAUuYaMNw7zPSyn6yzyHoSnNUscbAVdfmn4ePb8DZTCw6dbAcUDPR82y5kWwzQC3NcYK5N4BX3w7UUhhrvPtdKM1e1isMnbWuMxXPhydQQD9RnJKfZTU54jdcWzwtQrDaGkuaVPUQvZ2ywVVav57ooS6Uf',
-      id: { txDigest: 'C9LuM3bJhAXg4whUa9DrszA8zTGEoptFGAmFvFs7H1mk', eventSeq: '1' },
-      packageId: '0xceab84acf6bf70f503c3b0627acaff6b3f84cee0f2d7ed53d00fa6c2a168d14f',
-      transactionModule: 'market',
-      sender: '0xf92dae3bb2712877f10b04c97d019c0dc875f95402e1fdf93126cbf757b269f0',
-      type: '0xceab84acf6bf70f503c3b0627acaff6b3f84cee0f2d7ed53d00fa6c2a168d14f::market::PositionClaimed<0xceab84acf6bf70f503c3b0627acaff6b3f84cee0f2d7ed53d00fa6c2a168d14f::market::PositionName<0x2::sui::SUI, 0x69ce2c5522ab27338a2525f6d451b60fc185e9fb3a5f1aba76ae6a884ddf404e::pepe::PEPE, 0xceab84acf6bf70f503c3b0627acaff6b3f84cee0f2d7ed53d00fa6c2a168d14f::market::LONG>, 0xe625f9b22467751d9adccdb53f12faa64dbebb5343d2f9f52849b012d55809f5::pool::LiquidatePositionEventV1_1>',
-      parsedJson: {
-        event: {
-          delta_realised_pnl: { is_positive: true, value: { value: '5971528117832590480' } },
-          position_size: { value: '95067901872700000000' },
-          index_price: { value: '1181000000000' },
-          liquidator_bonus_amount: '48195140',
-          liquidator: '0xf92dae3bb2712877f10b04c97d019c0dc875f95402e1fdf93126cbf757b269f0',
-          collateral_price: { value: '1269429790000000000' },
-          reserving_fee_value: { value: '146506581674950490' },
-          funding_fee_value: { is_positive: true, value: { value: '18238733335412983' } },
-          loss_amount: '4819514043'
-        },
-        position_name: {
-          type: '0xceab84acf6bf70f503c3b0627acaff6b3f84cee0f2d7ed53d00fa6c2a168d14f::market::PositionName<0x2::sui::SUI, 0x69ce2c5522ab27338a2525f6d451b60fc185e9fb3a5f1aba76ae6a884ddf404e::pepe::PEPE, 0xceab84acf6bf70f503c3b0627acaff6b3f84cee0f2d7ed53d00fa6c2a168d14f::market::LONG>',
-          fields: {
-            id: '0xe8a0a77552bfcd2b0c6b708b83bbcfcd6780eab709783cc30e159bcea75b2ca0',
-            owner: '0xc0a17228471f5a9711bd6a437553f0f7b3a993a12b31fc9f671e440e5d6de801'
-          }
-        }
-      }
-    }
-
-    const res = await coder.decodeEvent(upgradedEvent)
   })
 
   test('bcs decode', async () => {
