@@ -40,8 +40,7 @@ export class MoveCoder extends AbstractMoveCoder<
 
   load(module: SuiMoveNormalizedModule): InternalMoveModule {
     let m = this.moduleMapping.get(module.address + '::' + module.name)
-    const mDeclared = this.moduleMapping.get(address + '::' + module.name)
-    if (m && mDeclared) {
+    if (m) {
       return m
     }
     m = toInternalModule(module)
