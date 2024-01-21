@@ -38,14 +38,14 @@ export class MoveCoder extends AbstractMoveCoder<
     super(new SuiChainAdapter(client))
   }
 
-  load(module: SuiMoveNormalizedModule, address: string): InternalMoveModule {
+  load(module: SuiMoveNormalizedModule): InternalMoveModule {
     let m = this.moduleMapping.get(module.address + '::' + module.name)
     const mDeclared = this.moduleMapping.get(address + '::' + module.name)
     if (m && mDeclared) {
       return m
     }
     m = toInternalModule(module)
-    this.loadInternal(m, address)
+    this.loadInternal(m)
     return m
   }
 
