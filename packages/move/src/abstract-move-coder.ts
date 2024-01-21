@@ -19,23 +19,15 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     return this.moduleMapping.has(moduleQname({ address: account, name }))
   }
 
-  abstract load(module: ModuleType, address: string): InternalMoveModule
+  abstract load(module: ModuleType): InternalMoveModule
 
-  protected loadInternal(module: InternalMoveModule, address: string) {
+  protected loadInternal(module: InternalMoveModule) {
     const account = accountAddressString(module.address)
-    const declareAccount = accountAddressString(address)
-
-    this._loadInternal(module, account)
-    if (account !== declareAccount) {
-      this._loadInternal(module, declareAccount)
-    }
-  }
-
-  private _loadInternal(module: InternalMoveModule, account: string) {
     if (this.contains(account, module.name)) {
       return
     }
     this.moduleMapping.set(moduleQname({ address: account, name: module.name }), module)
+
     for (const struct of module.structs) {
       // TODO move to util
       const key = [account, module.name, struct.name].join(SPLITTER)
@@ -77,7 +69,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (!resp) {
       resp = this.adapter.fetchModules(account).then((modules) => {
         for (const m of modules) {
-          this.load(m, account)
+          this.load(m)
         }
       })
       this.requestMap.set(account, resp)
@@ -105,7 +97,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
         .fetchModules(account)
         .then((modules) => {
           for (const m of modules) {
-            this.load(m, account)
+            this.load(m)
           }
         })
         .catch((e) => {
