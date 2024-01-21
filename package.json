@@ -10,7 +10,6 @@
     "lint": "ls-lint && eslint .",
     "test:all": "pnpm --filter \"./packages/*\" test"
   },
-  "resolutions": {},
   "devDependencies": {
     "@jest/globals": "^29.6.4",
     "@jest/types": "^29.6.3",
