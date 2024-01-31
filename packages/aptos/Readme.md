@@ -1,4 +1,8 @@
-# Typemove 
+<p align="center">
+  <img src="../../images/logo.png" width="300" alt="TypeChain">
+</p>
+
+# TypeMove 
 Generate TypeScript bindings for Aptos contracts.
 ## Features
  - Code generation for Aptos smart contract based on ABI
