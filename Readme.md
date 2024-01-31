@@ -1,4 +1,8 @@
-# Typemove 
+<p align="center">
+  <img src="./images/logo.png" width="300" alt="TypeChain">
+</p>
+
+# TypeMove 
 Generate TypeScript bindings for Move smart contracts. (currently support Aptos & SUI).
 Developed by [Sentio](sentio.xyz).
 ## Features

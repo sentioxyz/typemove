@@ -1,4 +1,8 @@
-# Typemove 
+<p align="center">
+  <img src="../../images/logo.png" width="300" alt="TypeChain">
+</p>
+
+# TypeMove 
 Generate TypeScript bindings for Sui contracts.
 ## Features
  - Code generation for SUI smart contract based on ABI
@@ -43,7 +47,7 @@ A few examples:
 
 ### Decode Object
 ```typescript
-import { defaultMoveCoder } from '../move-coder.js'
+import { defaultMoveCoder } from '@typemove/sui'
 import { single_collateral } from './types/testnet/0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2.js'
 
 const res = await defaultMoveCoder().decodedType(
@@ -52,8 +56,8 @@ const res = await defaultMoveCoder().decodedType(
 )
 ```
 
-<details>
-  <summary>Without TypeMove</summary>
+<details open>
+  <summary>Click to see what's like without TypeMove</summary>
 
 ```typescript
 export interface Info {
