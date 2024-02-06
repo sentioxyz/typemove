@@ -6,7 +6,7 @@
 Generate TypeScript bindings for Move smart contracts. (currently support Aptos & SUI).
 Developed by [Sentio](sentio.xyz).
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/sentioxyz/sentio-typemove/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/sentioxyz/sentio-typemove/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/sentioxyz/typemove/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/sentioxyz/typemove/tree/main)
 [![npm version](https://badge.fury.io/js/@typemove%2Fmove.svg)](https://badge.fury.io/js/@typemove%2Fmove)
 ## Features
  - Code generation for move smart contract based on ABI
