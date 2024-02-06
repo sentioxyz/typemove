@@ -175,7 +175,7 @@ export class SuiCodegen extends AbstractCodegen<
   }
 
   protected generateBuilderForFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
-    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
+    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC && func.isEntry !== true) {
       return ''
     }
 
