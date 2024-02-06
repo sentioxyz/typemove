@@ -121,8 +121,11 @@ export class SuiCodegen extends AbstractCodegen<
 
   private generateArgs(module: InternalMoveModule, func: InternalMoveFunction) {
     const args = []
+    const argsLen = func.params.length
     for (const [idx, arg] of func.params.entries()) {
-      if (arg.reference) {
+      if (idx === argsLen - 1 && arg.name() == 'TxContext' && arg.module() == 'tx_context') {
+        continue
+      } else if (arg.reference) {
         args.push({
           paramType: `${this.ADDRESS_TYPE} | ObjectCallArg | TransactionArgument`,
           callValue: `_args.push(transactionArgumentOrObject(args[${idx}], tx))`
@@ -197,7 +200,7 @@ export class SuiCodegen extends AbstractCodegen<
     return `export function ${camel(normalizeToJSName(func.name))}${genericString}(tx: TransactionBlock, 
       args: [${args.map((a) => a.paramType).join(',')}],
       ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ):
-       TransactionArgument & [ ${'TransactionArgument,'.repeat(func.params.length)} ] {
+       TransactionArgument & [ ${'TransactionArgument,'.repeat(args.length)} ] {
       const _args: any[] = []
       ${args.map((a) => a.callValue).join('\n')}
       
