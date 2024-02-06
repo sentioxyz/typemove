@@ -44,6 +44,7 @@ export function accountAddressString(account: string): string {
 }
 
 const KEYWORDS = new Set([
+  'default',
   'package',
   'namespace',
   'volatile',
@@ -53,7 +54,7 @@ const KEYWORDS = new Set([
   'bigint',
   'any',
   'new',
-  'delete',
+  'delete'
 ])
 
 export function normalizeToJSName(name: string) {
@@ -72,13 +73,8 @@ export function moduleQname(module: { address: string; name: string }): string {
   return accountTypeString(module.address) + SPLITTER + module.name
 }
 
-export function structQname(
-  module: InternalMoveModule,
-  struct: InternalMoveStruct
-): string {
-  return [accountTypeString(module.address), module.name, struct.name].join(
-    SPLITTER
-  )
+export function structQname(module: InternalMoveModule, struct: InternalMoveStruct): string {
+  return [accountTypeString(module.address), module.name, struct.name].join(SPLITTER)
 }
 
 export function upperFirst(str: string): string {

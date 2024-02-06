@@ -6,6 +6,19 @@
     "friends": [],
     "structs": {},
     "exposedFunctions": {
+      "from_ascii_bytes": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          }
+        ],
+        "return": ["Address"]
+      },
       "from_bytes": {
         "visibility": "Public",
         "isEntry": false,
@@ -1210,6 +1223,24 @@
         ],
         "return": ["U128"]
       },
+      "peel_u256": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bcs",
+                "name": "BCS",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U256"]
+      },
       "peel_u64": {
         "visibility": "Public",
         "isEntry": false,
@@ -1884,6 +1915,80 @@
           }
         ]
       },
+      "DenyCap": {
+        "abilities": {
+          "abilities": ["Store", "Key"]
+        },
+        "typeParameters": [
+          {
+            "constraints": {
+              "abilities": []
+            },
+            "isPhantom": true
+          }
+        ],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "RegulatedCoinMetadata": {
+        "abilities": {
+          "abilities": ["Key"]
+        },
+        "typeParameters": [
+          {
+            "constraints": {
+              "abilities": []
+            },
+            "isPhantom": true
+          }
+        ],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "coin_metadata_object",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "deny_cap_object",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "ID",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
       "TreasuryCap": {
         "abilities": {
           "abilities": ["Store", "Key"]
@@ -2123,6 +2228,212 @@
             }
           }
         ]
+      },
+      "create_regulated_currency": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": ["Drop"]
+          }
+        ],
+        "parameters": [
+          {
+            "TypeParameter": 0
+          },
+          "U8",
+          {
+            "Vector": "U8"
+          },
+          {
+            "Vector": "U8"
+          },
+          {
+            "Vector": "U8"
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "url",
+                    "name": "Url",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "coin",
+              "name": "TreasuryCap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "coin",
+              "name": "DenyCap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "coin",
+              "name": "CoinMetadata",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "deny_list_add": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "deny_list",
+                "name": "DenyList",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "DenyCap",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "deny_list_contains": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "deny_list",
+                "name": "DenyList",
+                "typeArguments": []
+              }
+            }
+          },
+          "Address"
+        ],
+        "return": ["Bool"]
+      },
+      "deny_list_remove": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "deny_list",
+                "name": "DenyList",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "coin",
+                "name": "DenyCap",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          "Address",
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
       },
       "destroy_zero": {
         "visibility": "Public",
@@ -3201,6 +3512,173 @@
             }
           }
         ]
+      }
+    }
+  },
+  "deny_list": {
+    "fileFormatVersion": 6,
+    "address": "0x2",
+    "name": "deny_list",
+    "friends": [
+      {
+        "address": "0x2",
+        "name": "coin"
+      }
+    ],
+    "structs": {
+      "DenyList": {
+        "abilities": {
+          "abilities": ["Key"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "lists",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "bag",
+                "name": "Bag",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "PerTypeList": {
+        "abilities": {
+          "abilities": ["Store", "Key"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "denied_count",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "table",
+                "name": "Table",
+                "typeArguments": ["Address", "U64"]
+              }
+            }
+          },
+          {
+            "name": "denied_addresses",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "table",
+                "name": "Table",
+                "typeArguments": [
+                  {
+                    "Vector": "U8"
+                  },
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "vec_set",
+                      "name": "VecSet",
+                      "typeArguments": ["Address"]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "add": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "deny_list",
+                "name": "DenyList",
+                "typeArguments": []
+              }
+            }
+          },
+          "U64",
+          {
+            "Vector": "U8"
+          },
+          "Address"
+        ],
+        "return": []
+      },
+      "contains": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "deny_list",
+                "name": "DenyList",
+                "typeArguments": []
+              }
+            }
+          },
+          "U64",
+          {
+            "Vector": "U8"
+          },
+          "Address"
+        ],
+        "return": ["Bool"]
+      },
+      "remove": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "deny_list",
+                "name": "DenyList",
+                "typeArguments": []
+              }
+            }
+          },
+          "U64",
+          {
+            "Vector": "U8"
+          },
+          "Address"
+        ],
+        "return": []
       }
     }
   },
@@ -8308,6 +8786,14 @@
       },
       {
         "address": "0x2",
+        "name": "coin"
+      },
+      {
+        "address": "0x2",
+        "name": "deny_list"
+      },
+      {
+        "address": "0x2",
         "name": "dynamic_field"
       },
       {
@@ -8617,6 +9103,22 @@
         ]
       },
       "randomness_state": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "object",
+              "name": "UID",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "sui_deny_list_object_id": {
         "visibility": "Friend",
         "isEntry": false,
         "typeParameters": [],
@@ -10445,6 +10947,28 @@
           }
         ],
         "return": []
+      }
+    }
+  },
+  "poseidon": {
+    "fileFormatVersion": 6,
+    "address": "0x2",
+    "name": "poseidon",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "poseidon_bn254": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U256"
+            }
+          }
+        ],
+        "return": ["U256"]
       }
     }
   },

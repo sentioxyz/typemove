@@ -1695,6 +1695,24 @@
             }
           }
         ]
+      },
+      "is_primitive": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x1",
+                "module": "type_name",
+                "name": "TypeName",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["Bool"]
       }
     }
   },
