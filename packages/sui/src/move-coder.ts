@@ -221,10 +221,10 @@ export class MoveCoder extends AbstractMoveCoder<
     return this.bcs.de(type.getNormalizedSignature(), data, encoding)
   }
 
-  async decodeDevInspectResult<T extends any[]>(insepctRes: DevInspectResults): Promise<TypedDevInspectResults<T>> {
+  async decodeDevInspectResult<T extends any[]>(inspectRes: DevInspectResults): Promise<TypedDevInspectResults<T>> {
     const returnValues = []
-    if (insepctRes.results != null) {
-      for (const r of insepctRes.results) {
+    if (inspectRes.results != null) {
+      for (const r of inspectRes.results) {
         if (r.returnValues) {
           const type = parseMoveType(r.returnValues[0][1])
           const value = r.returnValues[0][0]
@@ -236,7 +236,7 @@ export class MoveCoder extends AbstractMoveCoder<
         }
       }
     }
-    return { ...insepctRes, results_decoded: returnValues as any }
+    return { ...inspectRes, results_decoded: returnValues as any }
   }
 }
 
