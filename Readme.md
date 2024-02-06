@@ -4,7 +4,7 @@
 
 # TypeMove 
 Generate TypeScript bindings for Move smart contracts. (currently support Aptos & SUI).
-Developed by [Sentio](sentio.xyz).
+Developed by [Sentio](http://sentio.xyz).
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/sentioxyz/typemove/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/sentioxyz/typemove/tree/main)
 [![npm version](https://badge.fury.io/js/@typemove%2Fmove.svg)](https://badge.fury.io/js/@typemove%2Fmove)
@@ -25,9 +25,9 @@ Developed by [Sentio](sentio.xyz).
 | Transaction Building  | Done  | Done |
 | Resource/Object Utils | Done  | Done |
 
-## Details:
- - [@typemove/aptos](packages/aptos/Readme.md)
- - [@typemove/sui](packages/sui/Readme.md)
+## Get Started
+ - [For Aptos](packages/aptos/Readme.md)
+ - [For Sui](packages/sui/Readme.md)
 
 ## Development
 ```shell
