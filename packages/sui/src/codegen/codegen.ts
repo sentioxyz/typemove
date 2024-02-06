@@ -165,12 +165,12 @@ export class SuiCodegen extends AbstractCodegen<
       } ): Promise<TypedDevInspectResults<${returnType}>> {
       const tx = new TransactionBlock()
       builder.${camel(normalizeToJSName(func.name))}(tx, args ${typeParamArg.length > 0 ? `, typeArguments` : ''})
-      const insepctRes = await client.devInspectTransactionBlock({
+      const inspectRes = await client.devInspectTransactionBlock({
         transactionBlock: tx,
         sender: ZERO_ADDRESS
       })
       
-      return (await getMoveCoder(client)).decodeDevInspectResult<${returnType}>(insepctRes)
+      return (await getMoveCoder(client)).decodeDevInspectResult<${returnType}>(inspectRes)
     }`
   }
 
