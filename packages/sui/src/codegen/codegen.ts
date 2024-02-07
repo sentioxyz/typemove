@@ -123,8 +123,8 @@ export class SuiCodegen extends AbstractCodegen<
     const args = []
     const argsLen = func.params.length
     for (const [idx, arg] of func.params.entries()) {
-      if (idx === argsLen - 1 && arg.name() == 'TxContext' && arg.module() == 'tx_context') {
-        continue
+      if (idx === argsLen - 1 && arg.qname === '0x2::tx_context::TxContext') {
+        // no op
       } else if (arg.reference) {
         args.push({
           paramType: `${this.ADDRESS_TYPE} | ObjectCallArg | TransactionArgument`,
