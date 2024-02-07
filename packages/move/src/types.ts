@@ -155,6 +155,11 @@ export class TypeDescriptor<T = any> {
     const parts = this.qname.split(SPLITTER)
     return parts[parts.length - 1]
   }
+
+  module(): string {
+    const parts = this.qname.split(SPLITTER)
+    return parts[parts.length - 2]
+  }
 }
 
 export function parseMoveType(type: string): TypeDescriptor {
