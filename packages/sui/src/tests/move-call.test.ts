@@ -24,8 +24,8 @@ describe('Test Sui call', () => {
     const client = new SuiClient({ url: getFullnodeUrl('testnet') })
     const tx = new TransactionBlock()
     const [coin] = tx.splitCoins(tx.gas, [tx.pure(100)])
-    clob_v2.builder.createAccount(tx, ['0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd'])
-    clob_v2.builder.createAccount(tx, [tx.object('0x2')])
+    clob_v2.builder.createAccount(tx, [])
+    clob_v2.builder.createPool(tx, [1n, 1n, '0x1::coin::USD'], ['coin1', 'coin2'])
 
     // client.signAndExecuteTransactionBlock({transactionBlock: tx, signer: keypair})
 
