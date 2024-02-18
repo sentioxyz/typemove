@@ -120,8 +120,8 @@ importers:
   packages/aptos:
     dependencies:
       '@aptos-labs/ts-sdk':
-        specifier: ~1.6.0
-        version: 1.6.0
+        specifier: ~1.7.0
+        version: 1.7.0
       '@typemove/move':
         specifier: workspace:*
         version: link:../move
@@ -222,8 +222,8 @@ packages:
       - debug
     dev: false
 
-  /@aptos-labs/ts-sdk@1.6.0:
-    resolution: {integrity: sha512-rQxJjiSMUS2PYYvGgxHQLMvC2FR1arh99mfCtXA3z2p0SqeyS06Thxey9kPyycMvs8DnbNfTLM1nFle0kwEakA==}
+  /@aptos-labs/ts-sdk@1.7.0:
+    resolution: {integrity: sha512-mK7NuGtnu8vaNFNZHqMvLu1PSSdvgytPqysszGPsquSFE+cK75cjr82wkbzQSTf4FCzdCohKSGA2NmBnGkiH7A==}
     engines: {node: '>=11.0.0'}
     dependencies:
       '@aptos-labs/aptos-client': 0.1.0
