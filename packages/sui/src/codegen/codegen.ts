@@ -127,12 +127,12 @@ export class SuiCodegen extends AbstractCodegen<
         // no op
       } else if (arg.reference) {
         args.push({
-          paramType: `${this.ADDRESS_TYPE} | ObjectCallArg | TransactionArgument`,
+          paramType: `${this.ADDRESS_TYPE} | TransactionObjectArgument | TransactionArgument`,
           callValue: `_args.push(transactionArgumentOrObject(args[${idx}], tx))`
         })
       } else if (arg.isVector()) {
         args.push({
-          paramType: `(${this.ADDRESS_TYPE} | ObjectCallArg)[] | TransactionArgument`,
+          paramType: `(${this.ADDRESS_TYPE} | TransactionObjectArgument)[] | TransactionArgument`,
           callValue: `_args.push(transactionArgumentOrVec(args[${idx}], tx))`
         })
       } else {
@@ -217,9 +217,8 @@ export class SuiCodegen extends AbstractCodegen<
     return `
       ${super.generateImports()}
       import { ZERO_ADDRESS, TypedDevInspectResults, getMoveCoder } from '@typemove/sui'
-      import { TransactionBlock, TransactionArgument } from '@mysten/sui.js/transactions'
+      import { TransactionBlock, TransactionArgument, TransactionObjectArgument } from '@mysten/sui.js/transactions'
       import { SuiClient } from '@mysten/sui.js/client'
-      import { type ObjectCallArg } from "@mysten/sui.js/dist/esm/builder/Inputs.js";
       import { transactionArgumentOrObject, transactionArgumentOrPure, transactionArgumentOrVec } from '@typemove/sui'
     `
   }
