@@ -1,7 +1,7 @@
 import { _0x1 } from '@typemove/aptos/builtin'
 import { expect } from 'chai'
 import { jest } from '@jest/globals'
-import { Account, Aptos, AptosConfig, ViewRequest } from '@aptos-labs/ts-sdk'
+import { Account, Aptos, AptosConfig, InputViewFunctionData } from '@aptos-labs/ts-sdk'
 
 describe('client call of entry or view', () => {
   const client = new Aptos(
@@ -12,7 +12,7 @@ describe('client call of entry or view', () => {
   jest.setTimeout(100000)
 
   test('call balance', async () => {
-    const data: ViewRequest = {
+    const data: InputViewFunctionData = {
       typeArguments: [
         '0x84d7aeef42d38a5ffc3ccef853e1b82e4958659d16a7de736a29c55fbbeb0114::staked_aptos_coin::StakedAptosCoin'
       ],
