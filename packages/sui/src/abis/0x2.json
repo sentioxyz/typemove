@@ -11193,10 +11193,6 @@
       },
       {
         "address": "0x2",
-        "name": "coin"
-      },
-      {
-        "address": "0x2",
         "name": "deny_list"
       },
       {
@@ -11205,15 +11201,7 @@
       },
       {
         "address": "0x2",
-        "name": "dynamic_object_field"
-      },
-      {
-        "address": "0x2",
         "name": "random"
-      },
-      {
-        "address": "0x2",
-        "name": "transfer"
       }
     ],
     "structs": {
@@ -13684,6 +13672,30 @@
           }
         ]
       },
+      "RandomGenerator": {
+        "abilities": {
+          "abilities": ["Drop"]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "seed",
+            "type": {
+              "Vector": "U8"
+            }
+          },
+          {
+            "name": "counter",
+            "type": "U16"
+          },
+          {
+            "name": "buffer",
+            "type": {
+              "Vector": "U8"
+            }
+          }
+        ]
+      },
       "RandomInner": {
         "abilities": {
           "abilities": ["Store"]
@@ -13711,7 +13723,323 @@
         ]
       }
     },
-    "exposedFunctions": {}
+    "exposedFunctions": {
+      "generate_bool": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["Bool"]
+      },
+      "generate_bytes": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          },
+          "U16"
+        ],
+        "return": [
+          {
+            "Vector": "U8"
+          }
+        ]
+      },
+      "generate_u128": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U128"]
+      },
+      "generate_u128_in_range": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          },
+          "U128",
+          "U128"
+        ],
+        "return": ["U128"]
+      },
+      "generate_u16": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U16"]
+      },
+      "generate_u16_in_range": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          },
+          "U16",
+          "U16"
+        ],
+        "return": ["U16"]
+      },
+      "generate_u256": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U256"]
+      },
+      "generate_u32": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U32"]
+      },
+      "generate_u32_in_range": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          },
+          "U32",
+          "U32"
+        ],
+        "return": ["U32"]
+      },
+      "generate_u64": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U64"]
+      },
+      "generate_u64_in_range": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          },
+          "U64",
+          "U64"
+        ],
+        "return": ["U64"]
+      },
+      "generate_u8": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": ["U8"]
+      },
+      "generate_u8_in_range": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          },
+          "U8",
+          "U8"
+        ],
+        "return": ["U8"]
+      },
+      "new_generator": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "Random",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "random",
+              "name": "RandomGenerator",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
+      "shuffle": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "random",
+                "name": "RandomGenerator",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Vector": {
+                "TypeParameter": 0
+              }
+            }
+          }
+        ],
+        "return": []
+      }
+    }
   },
   "sui": {
     "fileFormatVersion": 6,

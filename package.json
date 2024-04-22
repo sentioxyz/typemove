@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "build:all": "pnpm --filter \"./packages/*\" build",
     "cleanjest": "pnpm jest --clearCache",
@@ -21,7 +22,7 @@
     "@typescript-eslint/parser": "^7.0.0",
     "chai": "^4.4.1",
     "conventional-changelog-conventionalcommits": "^7.0.2",
-    "eslint": "^9.0.0",
+    "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-deprecation": "^2.0.0",
