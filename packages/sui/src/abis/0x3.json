@@ -4939,10 +4939,6 @@
       },
       {
         "address": "0x3",
-        "name": "validator_wrapper"
-      },
-      {
-        "address": "0x3",
         "name": "voting_power"
       }
     ],

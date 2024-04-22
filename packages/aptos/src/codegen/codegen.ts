@@ -44,7 +44,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
   generateImports(): string {
     return `
       ${super.generateImports()}
-      import { Aptos, Account as AptosAccount, MoveAddressType, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewRequestData } from '@aptos-labs/ts-sdk'
+      import { Aptos, Account as AptosAccount, MoveAddressType, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewFunctionData } from '@aptos-labs/ts-sdk'
     `
   }
   protected generateExtra(module: InternalMoveModule) {
@@ -94,7 +94,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
     ${requestArg}
     version?: bigint): Promise<[${returns.join(',')}]> {
       const coder = defaultMoveCoder(client.config.fullnode)        
-      const data: InputViewRequestData = {
+      const data: InputViewFunctionData = {
         function: "${module.address}::${module.name}::${func.name}",
         functionArguments: ${func.params.length > 0 ? 'coder.encodeArray(request.functionArguments)' : '[]'},
         typeArguments: ${func.typeParams.length > 0 ? 'request.typeArguments' : '[]'},

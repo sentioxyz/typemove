@@ -16,7 +16,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
   "dependencies": {
-    "@aptos-labs/ts-sdk": "*",
+    "@aptos-labs/ts-sdk": "~1.13.0",
     "@typemove/aptos": "workspace:*",
     "@typemove/move": "workspace:*"
   },
