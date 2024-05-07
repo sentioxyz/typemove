@@ -146,7 +146,7 @@ export class SuiCodegen extends AbstractCodegen<
   }
 
   protected generateViewFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
-    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC) {
+    if (func.visibility === InternalMoveFunctionVisibility.PRIVATE) {
       return ''
     }
     const genericString = this.generateFunctionTypeParameters(func)
@@ -178,7 +178,7 @@ export class SuiCodegen extends AbstractCodegen<
   }
 
   protected generateBuilderForFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
-    if (func.visibility !== InternalMoveFunctionVisibility.PUBLIC && func.isEntry !== true) {
+    if (func.visibility === InternalMoveFunctionVisibility.PRIVATE && func.isEntry !== true) {
       return ''
     }
 
