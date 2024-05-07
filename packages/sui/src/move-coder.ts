@@ -226,11 +226,12 @@ export class MoveCoder extends AbstractMoveCoder<
     if (inspectRes.results != null) {
       for (const r of inspectRes.results) {
         if (r.returnValues) {
-          const type = parseMoveType(r.returnValues[0][1])
-          const value = r.returnValues[0][0]
-          const bcsDecoded = await this.decodeBCS(type, new Uint8Array(value))
-          const decoded = await this.decodedType(bcsDecoded, type)
-          returnValues.push(decoded)
+          for (const returnValue of r.returnValues) {
+            const type = parseMoveType(returnValue[1])
+            const bcsDecoded = await this.decodeBCS(type, new Uint8Array(returnValue[0]))
+            const decoded = await this.decodedType(bcsDecoded, type)
+            returnValues.push(decoded)
+          }
         } else {
           returnValues.push(null)
         }
