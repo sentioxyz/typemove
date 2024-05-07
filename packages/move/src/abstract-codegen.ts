@@ -2,7 +2,6 @@ import { InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from './
 import path from 'path'
 import fs from 'fs'
 import { AccountModulesImportInfo, AccountRegister } from './account.js'
-import chalk from 'chalk'
 import { format } from 'prettier'
 import { isFrameworkAccount, moduleQname, normalizeToJSName, SPLITTER, VECTOR_STR } from './utils.js'
 import { TypeDescriptor } from './types.js'
@@ -120,9 +119,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
           outputs.push(...codeGen.generate())
         } catch (e) {
           console.error(
-            chalk.red(
-              'Error downloading account module, check if you choose the right network，or download account modules manually into your director'
-            )
+            'Error downloading account module, check if you choose the right network，or download account modules manually into your director'
           )
           console.error(e)
           process.exit(1)
