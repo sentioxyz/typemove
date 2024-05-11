@@ -17,7 +17,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
   },
   "dependencies": {
-    "@mysten/sui.js": "~0.52.0",
+    "@mysten/sui.js": "~0.54.1",
     "@typemove/move": "workspace:*",
     "@typemove/sui": "workspace:*"
   },
