@@ -85,11 +85,23 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
       for (const module of modules) {
         loader.register(module, path.basename(file, '.json'))
       }
-      const codeGen = new AccountCodegen(this, loader, abi, modules, {
-        fileName: path.basename(file, '.json'),
-        outputDir: outputDir
-        // network,
-      })
+
+      const fileName = path.basename(file, '.json')
+      // TODO more reliable way to check if this is sui address
+      const address = fileName.startsWith('0x') ? fileName : undefined
+
+      const codeGen = new AccountCodegen(
+        this,
+        loader,
+        abi,
+        modules,
+        {
+          fileName,
+          outputDir: outputDir
+          // network,
+        },
+        address
+      )
 
       outputs.push(...codeGen.generate())
     }
@@ -110,11 +122,18 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
           for (const module of modules) {
             loader.register(module, account)
           }
-          const codeGen = new AccountCodegen(this, loader, rawModules, modules, {
-            fileName: account,
-            outputDir: outputDir
-            // network,
-          })
+          const codeGen = new AccountCodegen(
+            this,
+            loader,
+            rawModules,
+            modules,
+            {
+              fileName: account,
+              outputDir: outputDir
+              // network,
+            },
+            account
+          )
 
           outputs.push(...codeGen.generate())
         } catch (e) {
@@ -149,13 +168,14 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return outputs.length
   }
 
-  protected generateExtra(module: InternalMoveModule) {
+  protected generateExtra(address: string | undefined, module: InternalMoveModule) {
     return ''
   }
 
   generateModule(
     module: InternalMoveModule,
-    allEventStructs: Map<string, InternalMoveStruct>
+    allEventStructs: Map<string, InternalMoveStruct>,
+    addressOverride?: string
     // network: NetworkType
   ) {
     const qname = moduleQname(module)
@@ -179,7 +199,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   export namespace ${moduleName} {
     ${structs.join('\n')}
     
-    ${this.generateExtra(module)}
+    ${this.generateExtra(addressOverride, module)}
     
     ${events.join('\n')}
     
@@ -409,13 +429,16 @@ export class AccountCodegen<ModuleType, StructType> {
   abi: ModuleType[]
   loader: AccountRegister
   moduleGen: AbstractCodegen<ModuleType, StructType>
+  // Usually it's same as module.address, but in upgraded package, this might be the new address
+  address?: string
 
   constructor(
     moduleGen: AbstractCodegen<ModuleType, StructType>,
     loader: AccountRegister,
     abi: ModuleType[],
     modules: InternalMoveModule[],
-    config: Config
+    config: Config,
+    address: string | undefined
   ) {
     // const json = fs.readFileSync(config.srcFile, 'utf-8')
     this.moduleGen = moduleGen
@@ -423,6 +446,7 @@ export class AccountCodegen<ModuleType, StructType> {
     this.modules = modules
     this.config = config
     this.loader = loader
+    this.address = address
   }
 
   generate(): OutputFile[] {
@@ -470,13 +494,13 @@ export class AccountCodegen<ModuleType, StructType> {
     /* tslint:disable */
     /* eslint-disable */
 
-    /* Generated modules for account ${address} */
+    /* Generated types for ${this.address || address}, original address ${address} */
 
     ${this.moduleGen.generateImports()}
 
     ${moduleImports.join('\n')}
 
-    ${this.modules.map((m) => this.moduleGen.generateModule(m, eventsMap)).join('\n')}
+    ${this.modules.map((m) => this.moduleGen.generateModule(m, eventsMap, this.address)).join('\n')}
 
     const MODULES = JSON.parse('${JSON.stringify(this.abi)}')
 

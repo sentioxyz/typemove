@@ -47,7 +47,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
       import { Aptos, Account as AptosAccount, MoveAddressType, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewFunctionData } from '@aptos-labs/ts-sdk'
     `
   }
-  protected generateExtra(module: InternalMoveModule) {
+  protected generateExtra(address: string, module: InternalMoveModule) {
     const funcs = module.exposedFunctions.map((f) => this.generateEntryForFunction(module, f))
 
     const viewFuncs = module.exposedFunctions.map((f) => this.generateViewFunction(module, f))
