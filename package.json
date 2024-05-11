@@ -21,7 +21,7 @@
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "chai": "^4.4.1",
-    "conventional-changelog-conventionalcommits": "^7.0.2",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -36,8 +36,8 @@
     "prettier-plugin-sh": "^0.14.0",
     "semantic-release": "^23.1.1",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
+    "tsx": "^4.10.0",
     "typedoc": "^0.25.13",
     "typescript": "^5.4.5"
   },
