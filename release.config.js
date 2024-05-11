@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   branches: ['release', 'v1', { name: 'main', prerelease: 'rc' }],
   plugins: [
     [
