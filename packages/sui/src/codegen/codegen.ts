@@ -104,8 +104,10 @@ export class SuiCodegen extends AbstractCodegen<
     return super.generateForEvents(module, struct)
   }
 
-  protected generateExtra(module: InternalMoveModule): string {
-    const funcs = module.exposedFunctions.map((f) => this.generateBuilderForFunction(module, f))
+  protected generateExtra(address: string | undefined, module: InternalMoveModule): string {
+    const funcs = module.exposedFunctions.map((f) =>
+      this.generateBuilderForFunction(address || module.address, module, f)
+    )
 
     const viewFuncs = module.exposedFunctions.map((f) => this.generateViewFunction(module, f))
 
@@ -177,7 +179,11 @@ export class SuiCodegen extends AbstractCodegen<
     }`
   }
 
-  protected generateBuilderForFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
+  protected generateBuilderForFunction(
+    address: string,
+    module: InternalMoveModule,
+    func: InternalMoveFunction
+  ): string {
     if (func.visibility === InternalMoveFunctionVisibility.PRIVATE && func.isEntry !== true) {
       return ''
     }
@@ -206,7 +212,7 @@ export class SuiCodegen extends AbstractCodegen<
       
       // @ts-ignore
       return tx.moveCall({
-        target: "${module.address}::${module.name}::${func.name}",
+        target: "${address}::${module.name}::${func.name}",
         arguments: _args,
         ${typeParamArg.length > 0 ? `typeArguments: [${typeParamToString}]` : ``}
       })
