@@ -248,7 +248,7 @@ const CHAIN_ID_CODER_MAP = new Map<string, MoveCoder>()
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
-    coder = new MoveCoder(new SuiClient({ url: DEFAULT_ENDPOINT }))
+    coder = new MoveCoder(new SuiClient({ url: endpoint }))
     CODER_MAP.set(endpoint, coder)
   }
   return coder
