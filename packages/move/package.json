@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsc && pnpm build:cjs",
     "build:cjs": "tsc --project tsconfig.cjs.json && cp ../../package.cjs.json ./dist/cjs/package.json",
-    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+    "test": "glob -c 'tsx --test' '**/*.test.ts'"
   },
   "dependencies": {
     "radash": "^12.0.0"
