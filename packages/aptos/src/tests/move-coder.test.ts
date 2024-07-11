@@ -1,3 +1,5 @@
+import assert from 'assert'
+import { describe, test } from 'node:test'
 import { stable_pool } from './types/0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af'
 import { defaultMoveCoder } from '@typemove/aptos'
 import { MoveStructId } from '@aptos-labs/ts-sdk'
@@ -11,10 +13,10 @@ describe('move-coder', () => {
     // const resources = await aptosClient.getAccountResources("0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af")
     const pool = await coder.decodeResource<stable_pool.StablePool<any, any, any, any>>(resource)
 
-    expect(pool?.data_decoded.asset_1.value).toEqual(2828506n)
+    assert.equal(pool?.data_decoded.asset_1.value, 2828506n)
 
     const encoded = coder.encode(pool)
-    expect(encoded.data.asset_1.value).toEqual('2828506')
+    assert.equal(encoded.data.asset_1.value, '2828506')
   })
 })
 

@@ -4,5 +4,5 @@
     "module": "commonjs",
     "outDir": "dist/cjs"
   },
-  "exclude": ["dist", "jest.config.ts", "src/codegen/run.ts"]
+  "exclude": ["dist", "src/codegen/run.ts"]
 }
