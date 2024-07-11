@@ -1,6 +1,6 @@
+import { describe, test } from 'node:test'
 import { _0x1 } from '@typemove/aptos/builtin'
 import { expect } from 'chai'
-import { jest } from '@jest/globals'
 import { Account, Aptos, AptosConfig, InputViewFunctionData } from '@aptos-labs/ts-sdk'
 
 describe('client call of entry or view', () => {
@@ -9,7 +9,6 @@ describe('client call of entry or view', () => {
       fullnode: 'https://mainnet.aptoslabs.com/v1'
     })
   )
-  jest.setTimeout(100000)
 
   test('call balance', async () => {
     const data: InputViewFunctionData = {

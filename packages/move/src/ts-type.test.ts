@@ -1,3 +1,4 @@
+import { describe, test } from 'node:test'
 import { assert } from 'chai'
 import { parseMoveType } from './types.js'
 
@@ -25,8 +26,7 @@ describe('type gen', () => {
     const deps = res.dependedTypes()
     assert(deps.length === 2)
     assert(
-      deps[0] ===
-        '0xd5f9f2b1c24faee8f07b790e570c75dfa1b7d8c1e9a60162fbd92ade03ea29e4::iterable_table::IterableValue'
+      deps[0] === '0xd5f9f2b1c24faee8f07b790e570c75dfa1b7d8c1e9a60162fbd92ade03ea29e4::iterable_table::IterableValue'
     )
     assert(deps[1] === '0x1::table_with_length::TableWithLength')
 

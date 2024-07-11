@@ -12,8 +12,7 @@
   "scripts": {
     "build": "pnpm gen && tsc",
     "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
-    "gen": "typemove-aptos -t ./src/types -a src/abis 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af",
-    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+    "gen": "typemove-aptos -t ./src/types -a src/abis 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af"
   },
   "dependencies": {
     "@aptos-labs/ts-sdk": "~1.14.0",

@@ -7,6 +7,6 @@
       "@typemove/move": ["./index.ts"]
     }
   },
-  "exclude": ["dist", "jest.config.ts"],
+  "exclude": ["dist"],
   "extends": "../../tsconfig.json"
 }

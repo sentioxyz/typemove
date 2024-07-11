@@ -1,3 +1,4 @@
+import { describe, test } from 'node:test'
 import { BCS } from '@mysten/bcs'
 import { expect } from 'chai'
 import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'

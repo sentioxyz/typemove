@@ -13,8 +13,7 @@
     "build": "pnpm gen && tsc",
     "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
     "build:cjs": "pnpm gen && tsc --project tsconfig.cjs.json",
-    "gen": "typemove-sui -t ./src/types ./src/abis",
-    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+    "gen": "typemove-sui -t ./src/types ./src/abis"
   },
   "dependencies": {
     "@mysten/sui.js": "~0.54.1",

@@ -18749,6 +18749,56 @@
       }
     }
   },
+  "vdf": {
+    "fileFormatVersion": 6,
+    "address": "0x2",
+    "name": "vdf",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "hash_to_input": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          }
+        ],
+        "return": [
+          {
+            "Vector": "U8"
+          }
+        ]
+      },
+      "vdf_verify": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          },
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          },
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          },
+          "U64"
+        ],
+        "return": ["Bool"]
+      }
+    }
+  },
   "vec_map": {
     "fileFormatVersion": 6,
     "address": "0x2",
@@ -18910,6 +18960,47 @@
           }
         ],
         "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "vec_map",
+              "name": "VecMap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                },
+                {
+                  "TypeParameter": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "from_keys_values": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": ["Copy"]
+          },
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "Vector": {
+              "TypeParameter": 0
+            }
+          },
+          {
+            "Vector": {
+              "TypeParameter": 1
+            }
+          }
+        ],
         "return": [
           {
             "Struct": {
@@ -19612,6 +19703,36 @@
           }
         ],
         "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "vec_set",
+              "name": "VecSet",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "from_keys": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": ["Copy", "Drop"]
+          }
+        ],
+        "parameters": [
+          {
+            "Vector": {
+              "TypeParameter": 0
+            }
+          }
+        ],
         "return": [
           {
             "Struct": {

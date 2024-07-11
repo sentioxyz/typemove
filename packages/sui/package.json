@@ -35,7 +35,7 @@
     "build:cjs": "tsc --project tsconfig.cjs.json && cp ../../package.cjs.json ./dist/cjs/package.json",
     "gen": "pnpm _gen 0x1 && pnpm _gen 0x2 && pnpm _gen 0x3",
     "gen:test": "tsx src/codegen/run.ts -t src/tests/types/testnet -n testnet src/tests/abis/testnet",
-    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+    "test": "glob -c 'tsx --test' '**/*.test.ts'"
   },
   "types": "./dist/cjs/index.d.ts",
   "dependencies": {

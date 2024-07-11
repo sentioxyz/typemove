@@ -35,7 +35,7 @@
     "gen": "pnpm _gen 0x1 && pnpm _gen 0x3 && pnpm _gen 0x4",
     "gen:test": "tsx src/codegen/run.ts -t src/tests/types src/tests/abis",
     "gen-with-address": "tsx src/codegen/run.ts -t ./src/tests/types 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af",
-    "test": "NODE_OPTIONS=--experimental-vm-modules pnpm jest"
+    "test": "glob -c 'tsx --test' '**/*.test.ts'"
   },
   "types": "./dist/cjs/index.d.ts",
   "dependencies": {
