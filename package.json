@@ -33,7 +33,7 @@
     "prettier": "^3.2.5",
     "prettier-package-json": "^2.8.0",
     "prettier-plugin-sh": "^0.14.0",
-    "semantic-release": "^23.1.1",
+    "semantic-release": "^24.0.0",
     "tslib": "^2.6.2",
     "tsx": "^4.10.0",
     "typedoc": "^0.26.5",
