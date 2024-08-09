@@ -144,8 +144,8 @@ importers:
   packages/sui:
     dependencies:
       '@mysten/bcs':
-        specifier: ^0.11.1
-        version: 0.11.1
+        specifier: ^1.0.0
+        version: 1.0.3
       '@mysten/sui.js':
         specifier: ~0.54.1
         version: 0.54.1(svelte@4.2.18)(typescript@5.5.3)
@@ -453,11 +453,15 @@ packages:
 
   '@ls-lint/ls-lint@2.2.3':
     resolution: {integrity: sha512-ekM12jNm/7O2I/hsRv9HvYkRdfrHpiV1epVuI2NP+eTIcEgdIdKkKCs9KgQydu/8R5YXTov9aHdOgplmCHLupw==}
+    cpu: [x64, arm64, s390x]
     os: [darwin, linux, win32]
     hasBin: true
 
   '@mysten/bcs@0.11.1':
     resolution: {integrity: sha512-xP85isNSYUCHd3O/g+TmZYmg4wK6cU8q/n/MebkIGP4CYVJZz2wU/G24xIZ3wI+0iTop4dfgA5kYrg/DQKCUzA==}
+
+  '@mysten/bcs@1.0.3':
+    resolution: {integrity: sha512-fc2xDj8eteP18zCNr6WStlE0Hxi7kYeY9yAzAN8oyz5EYOLas0JwScR9pAd9VR61BfIThJ+5vxQ6K7Y22lHDVQ==}
 
   '@mysten/sui.js@0.54.1':
     resolution: {integrity: sha512-TSmGIX7U9O/uS9EKIQdv7/S69KTbBhMJVelXCafJE6IJw8iB9cN9uLu0+uklkBSDrbRmLSEY70jMr3uRFjReIg==}
@@ -848,6 +852,9 @@ packages:
   base-x@4.0.0:
     resolution: {integrity: sha512-FuwxlW4H5kh37X/oW59pwTzzTKRzfrrQwhmyspRM7swOEZcHtDZSCt45U6oKgtuFE+WYPblePMVIPR4RZrh/hw==}
 
+  base-x@5.0.0:
+    resolution: {integrity: sha512-sMW3VGSX1QWVFA6l8U62MLKz29rRfpTlYdCqLdpLo1/Yd4zZwSbnUaDfciIAowAqvq7YFnWq9hrhdg1KYgc1lQ==}
+
   bech32@2.0.0:
     resolution: {integrity: sha512-LcknSilhIGatDAsY1ak2I8VtGaHNhgMSYVxFrGLXv+xLHytaKZKcaUJJUE7qmBr7h33o5YQwP55pMI0xmkpJwg==}
 
@@ -869,6 +876,9 @@ packages:
 
   bs58@5.0.0:
     resolution: {integrity: sha512-r+ihvQJvahgYT50JD05dyJNKlmmSlMoOGwn1lCcEzanPglg7TxYjioQUYehQ9mAR/+hOSd2jRc/Z2y5UxBymvQ==}
+
+  bs58@6.0.0:
+    resolution: {integrity: sha512-PD0wEnEYg6ijszw/u8s+iI3H17cTymlrwkKhDhPZq+Sokl3AU4htyBFTjAeNAlCCmg0f53g6ih3jATyCKftTfw==}
 
   cacheable-lookup@5.0.4:
     resolution: {integrity: sha512-2/kNscPhpcxrOigMZzbiWF7dz8ilhb/nIHU3EyZiXWXpeq/au8qJ8VhdftMkty3n7Gj6HIGalQG8oiBNB3AJgA==}
@@ -3194,6 +3204,10 @@ snapshots:
     dependencies:
       bs58: 5.0.0
 
+  '@mysten/bcs@1.0.3':
+    dependencies:
+      bs58: 6.0.0
+
   '@mysten/sui.js@0.54.1(svelte@4.2.18)(typescript@5.5.3)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
@@ -3698,6 +3712,8 @@ snapshots:
 
   base-x@4.0.0: {}
 
+  base-x@5.0.0: {}
+
   bech32@2.0.0: {}
 
   before-after-hook@3.0.2: {}
@@ -3720,6 +3736,10 @@ snapshots:
   bs58@5.0.0:
     dependencies:
       base-x: 4.0.0
+
+  bs58@6.0.0:
+    dependencies:
+      base-x: 5.0.0
 
   cacheable-lookup@5.0.4: {}
 
