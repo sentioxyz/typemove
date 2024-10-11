@@ -1,4 +1,4 @@
-import type { SuiEvent, MoveCallSuiTransaction, SuiMoveObject, DevInspectResults } from '@mysten/sui.js/client'
+import type { SuiEvent, MoveCallSuiTransaction, SuiMoveObject, DevInspectResults } from '@mysten/sui/client'
 import { DecodedStruct } from '@typemove/move'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000000000000000000000000000'

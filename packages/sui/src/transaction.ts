@@ -1,4 +1,4 @@
-import { TransactionBlock } from '@mysten/sui.js/transactions'
+import { Transaction } from '@mysten/sui/transactions'
 
 export function isTransactionArgument(value: any): boolean {
   if (typeof value !== 'object') return false
@@ -7,25 +7,25 @@ export function isTransactionArgument(value: any): boolean {
   return value.kind === 'GasCoin' || value.kind === 'Result' || value.kind === 'NestedResult' || value.kind === 'Input'
 }
 
-export function transactionArgumentOrObject(value: any, transactionBlock: TransactionBlock): any {
+export function transactionArgumentOrObject(value: any, transactionBlock: Transaction): any {
   if (isTransactionArgument(value)) {
     return value
   }
   return transactionBlock.object(value)
 }
 
-export function transactionArgumentOrPure(value: any, transactionBlock: TransactionBlock): any {
+export function transactionArgumentOrPure(value: any, transactionBlock: Transaction): any {
   if (isTransactionArgument(value)) {
     return value
   }
-  return transactionBlock.pure(value)
+  return typeof value == 'string' ? transactionBlock.pure.string(value) : transactionBlock.pure.u64(value)
 }
 
-export function transactionArgumentOrVec(value: any, transactionBlock: TransactionBlock): any {
+export function transactionArgumentOrVec(value: any, transactionBlock: Transaction): any {
   if (isTransactionArgument(value)) {
     return value
   }
   return transactionBlock.makeMoveVec({
-    objects: value.map((a: any) => transactionBlock.object(a))
+    elements: value.map((a: any) => transactionBlock.object(a))
   })
 }

@@ -5,7 +5,7 @@ import { Command } from 'commander'
 import { createRequire } from 'module'
 import fs from 'fs'
 import path from 'path'
-import { SuiClient } from '@mysten/sui.js/client'
+import { SuiClient } from '@mysten/sui/client'
 const require = createRequire(import.meta.url)
 let pkg = undefined
 try {

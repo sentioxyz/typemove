@@ -1,4 +1,4 @@
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui.js/client'
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui/client'
 
 import * as fs from 'fs'
 import chalk from 'chalk'
@@ -168,13 +168,13 @@ export class SuiCodegen extends AbstractCodegen<
       ${
         typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``
       } ): Promise<TypedDevInspectResults<${returnType}>> {
-      const tx = new TransactionBlock()
+      const tx = new Transaction()
       builder.${camel(normalizeToJSName(func.name))}(tx, args ${typeParamArg.length > 0 ? `, typeArguments` : ''})
       const inspectRes = await client.devInspectTransactionBlock({
         transactionBlock: tx,
         sender: ZERO_ADDRESS
       })
-      
+
       return (await getMoveCoder(client)).decodeDevInspectResult<${returnType}>(inspectRes)
     }`
   }
@@ -203,13 +203,13 @@ export class SuiCodegen extends AbstractCodegen<
       })
       .join(',')
 
-    return `export function ${camel(normalizeToJSName(func.name))}${genericString}(tx: TransactionBlock, 
+    return `export function ${camel(normalizeToJSName(func.name))}${genericString}(tx: Transaction,
       args: [${args.map((a) => a.paramType).join(',')}],
       ${typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``} ):
        TransactionArgument & [ ${'TransactionArgument,'.repeat(args.length)} ] {
       const _args: any[] = []
       ${args.map((a) => a.callValue).join('\n')}
-      
+
       // @ts-ignore
       return tx.moveCall({
         target: "${address}::${module.name}::${func.name}",
@@ -223,8 +223,8 @@ export class SuiCodegen extends AbstractCodegen<
     return `
       ${super.generateImports()}
       import { ZERO_ADDRESS, TypedDevInspectResults, getMoveCoder } from '@typemove/sui'
-      import { TransactionBlock, TransactionArgument, TransactionObjectArgument } from '@mysten/sui.js/transactions'
-      import { SuiClient } from '@mysten/sui.js/client'
+      import { Transaction, TransactionArgument, TransactionObjectArgument } from '@mysten/sui/transactions'
+      import { SuiClient } from '@mysten/sui/client'
       import { transactionArgumentOrObject, transactionArgumentOrPure, transactionArgumentOrVec } from '@typemove/sui'
     `
   }
