@@ -1,31 +1,11 @@
 import { describe, test } from 'node:test'
-import { BCS } from '@mysten/bcs'
 import { expect } from 'chai'
 import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
-import { bcs } from '@mysten/sui.js/bcs'
 import { defaultMoveCoder } from '@typemove/sui'
 import { dynamic_field } from './builtin/0x2'
 import { sui_system_state_inner } from './builtin/0x3'
 
 describe('Test move coder', () => {
-  // const bcs = new BCS(getSuiMoveConfig());
-
-  test('bcs', async () => {
-    expect(bcs.hasType('u8')).to.true
-    // expect(bcs.hasType("U8")).to.true
-
-    // console.log(bcs.hasType("u512"))
-    // bcs.registerType()
-
-    bcs.registerStructType('0x1::option::Option<T>', {
-      name: BCS.STRING
-    })
-
-    console.log(bcs.hasType('0x1::option::Option'))
-    console.log(bcs.hasType('0x1::option::Option<T>'))
-    console.log(bcs.hasType('vector<u8>'))
-  })
-
   test('decode upgraded struct', async () => {
     const coder = defaultMoveCoder()
     const upgradedEvent = {

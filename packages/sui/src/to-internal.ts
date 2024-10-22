@@ -3,8 +3,8 @@ import type {
   SuiMoveNormalizedFunction,
   SuiMoveNormalizedModule,
   SuiMoveNormalizedStruct,
-  SuiMoveNormalizedType,
-} from '@mysten/sui.js/client'
+  SuiMoveNormalizedType
+} from '@mysten/sui/client'
 import {
   InternalMoveFunction,
   InternalMoveFunctionVisibility,
@@ -12,7 +12,7 @@ import {
   InternalMoveStruct,
   InternalMoveStructField,
   SPLITTER,
-  TypeDescriptor,
+  TypeDescriptor
 } from '@typemove/move'
 
 export function toInternalModule(module: SuiMoveNormalizedModule): InternalMoveModule {
@@ -20,7 +20,7 @@ export function toInternalModule(module: SuiMoveNormalizedModule): InternalMoveM
     address: module.address,
     exposedFunctions: Object.entries(module.exposedFunctions).map(([n, f]) => toInternalFunction(n, f)),
     name: module.name,
-    structs: Object.entries(module.structs).map(([n, s]) => toInternalStruct(n, s)),
+    structs: Object.entries(module.structs).map(([n, s]) => toInternalStruct(n, s))
   }
 }
 
@@ -47,7 +47,7 @@ function toInternalFunction(name: string, func: SuiMoveNormalizedFunction): Inte
     name: name,
     params: func.parameters.map(toTypeDescriptor),
     return: func.return.map(toTypeDescriptor),
-    visibility: visibility,
+    visibility: visibility
   }
 }
 
@@ -59,14 +59,14 @@ function toInternalStruct(name: string, struct: SuiMoveNormalizedStruct): Intern
       return { constraints: p.constraints.abilities }
     }),
     isNative: false,
-    name: name,
+    name: name
   }
 }
 
 function toInternalField(module: SuiMoveNormalizedField): InternalMoveStructField {
   return {
     name: module.name,
-    type: toTypeDescriptor(module.type),
+    type: toTypeDescriptor(module.type)
   }
 }
 

@@ -8,7 +8,7 @@ import {
   TypeDescriptor
 } from '@typemove/move'
 
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui.js/client'
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui/client'
 
 export class SuiChainAdapter extends ChainAdapter<
   // SuiNetwork,
