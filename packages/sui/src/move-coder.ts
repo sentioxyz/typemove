@@ -16,24 +16,22 @@ import {
   SuiMoveObject,
   DevInspectResults,
   SuiClient
-} from '@mysten/sui.js/client'
+} from '@mysten/sui/client'
 import { toInternalModule } from './to-internal.js'
 import { SuiChainAdapter } from './sui-chain-adapter.js'
 import { dynamic_field } from './builtin/0x2.js'
-import { BCS, getSuiMoveConfig, StructTypeDefinition } from '@mysten/bcs'
+import { BcsType, bcs } from '@mysten/sui/bcs'
 
 // import { Encoding } from '@mysten/bcs/types', this doesn't get exported correctly
 export type Encoding = 'base58' | 'base64' | 'hex'
 
-import { normalizeSuiObjectId, normalizeSuiAddress } from '@mysten/sui.js/utils'
+import { normalizeSuiObjectId, normalizeSuiAddress } from '@mysten/sui/utils'
 
 export class MoveCoder extends AbstractMoveCoder<
   // SuiNetwork,
   SuiMoveNormalizedModule,
   SuiEvent | SuiMoveObject
 > {
-  bcs = new BCS(getSuiMoveConfig())
-
   constructor(client: SuiClient) {
     super(new SuiChainAdapter(client))
   }
@@ -177,30 +175,62 @@ export class MoveCoder extends AbstractMoveCoder<
     } as TypedFunctionPayload<any>
   }
 
-  private async _registerBCSType(qname: string): Promise<void> {
-    if (this.bcs.hasType(qname)) {
-      return
-    }
-    const moveStruct = await this.getMoveStruct(qname)
-    const structDef: StructTypeDefinition = {}
+  private bcsRegistered = new Set<string>()
+  private bcsRegistry = new Map<string, BcsType<any>>()
 
+  private async getBCSTypeWithArgs(type: TypeDescriptor, args: BcsType<any>[] = []): Promise<BcsType<any>> {
+    const qname = type.qname
+    const sig = type.getNormalizedSignature()
+    const cached = this.bcsRegistry.get(sig)
+    if (cached) {
+      return cached
+    }
+    const lowerQname = qname.toLowerCase()
+    switch (lowerQname) {
+      case 'u8':
+      case 'u16':
+      case 'u32':
+      case 'u64':
+      case 'u128':
+      case 'u256':
+      case 'bool':
+        return bcs[lowerQname]()
+      case 'address':
+        return bcs.Address
+      case 'vector':
+        return bcs.vector(args[0])
+      default:
+        if (!qname.includes('::')) {
+          throw `Unimplemented builtin type ${qname}`
+        }
+    }
+    let moveStruct
+    try {
+      moveStruct = await this.getMoveStruct(qname)
+    } catch (e) {
+      console.error('Invalid move address', qname)
+      throw e
+    }
+    const structDef: Record<string, any> = {}
     for (const field of moveStruct.fields) {
-      structDef[field.name] = field.type.getNormalizedSignature()
+      if (field.type.qname.startsWith('T') && args.length) {
+        const index = +field.type.qname.slice(1)
+        structDef[field.name] = args[index]
+      } else if (field.type.typeArgs.length && args.length) {
+        structDef[field.name] = await this.getBCSTypeWithArgs(field.type, args)
+      } else {
+        structDef[field.name] = await this.getBCSType(field.type)
+      }
     }
-    let typeName = qname
-    const generics = moveStruct.typeParams.map((p, idx) => 'T' + idx).join(', ')
-    if (generics) {
-      typeName = typeName + '<' + generics + '>'
-    }
-
-    this.bcs.registerStructType(typeName, structDef)
-
-    for (const field of moveStruct.fields) {
-      await this.registerBCSTypes(field.type)
-    }
+    return bcs.struct(qname, structDef)
   }
 
-  private bcsRegistered = new Set<string>()
+  async getBCSType(type: TypeDescriptor): Promise<BcsType<any>> {
+    const args = await Promise.all(type.typeArgs.map((x) => this.getBCSType(x)))
+    const bcsType = await this.getBCSTypeWithArgs(type, args)
+    this.bcsRegistry.set(type.getNormalizedSignature(), bcsType)
+    return bcsType
+  }
 
   async registerBCSTypes(type: TypeDescriptor): Promise<void> {
     const sig = type.getNormalizedSignature()
@@ -209,16 +239,18 @@ export class MoveCoder extends AbstractMoveCoder<
     }
     this.bcsRegistered.add(sig)
 
-    await this._registerBCSType('0x1::string::String')
-
-    for (const typeArg of type.dependedTypes()) {
-      await this._registerBCSType(typeArg)
-    }
+    const bcsType = await this.getBCSType(type)
+    this.bcsRegistry.set(type.getNormalizedSignature(), bcsType)
   }
 
   async decodeBCS(type: TypeDescriptor, data: Uint8Array | string, encoding?: Encoding): Promise<any> {
     await this.registerBCSTypes(type)
-    return this.bcs.de(type.getNormalizedSignature(), data, encoding)
+    if (typeof data == 'string') {
+      const buf = Buffer.from(data, encoding as any)
+      data = new Uint8Array(buf, buf.byteOffset, buf.byteLength)
+    }
+    const bcsType = this.bcsRegistry.get(type.getNormalizedSignature())
+    return bcsType?.parse(data)
   }
 
   async decodeDevInspectResult<T extends any[]>(inspectRes: DevInspectResults): Promise<TypedDevInspectResults<T>> {
