@@ -1,5 +1,11 @@
-import { DecodedStruct } from '@typemove/move'
-import { EntryFunctionPayloadResponse, MoveResource, Event } from '@aptos-labs/ts-sdk'
+import { DecodedStruct, NestedDecodedStruct } from '@typemove/move'
+import {
+  EntryFunctionPayloadResponse,
+  MoveResource,
+  Event,
+  WriteSetChangeWriteResource,
+  WriteSetChangeDeleteResource
+} from '@aptos-labs/ts-sdk'
 
 export type TypedEventInstance<T> = DecodedStruct<Event, T>
 export type TypedMoveResource<T> = DecodedStruct<MoveResource, T>
@@ -11,3 +17,7 @@ export type TypedFunctionPayload<T extends Array<any>> = EntryFunctionPayloadRes
    */
   arguments_decoded: T
 }
+
+export type ResourceChange<T> =
+  | NestedDecodedStruct<MoveResource, WriteSetChangeWriteResource, T>
+  | WriteSetChangeDeleteResource
