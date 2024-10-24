@@ -8,6 +8,10 @@ export type DecodedStruct<B, T> = B & {
   type_arguments: string[]
 }
 
+export type NestedDecodedStruct<A, B extends { data: A }, T> = B & {
+  data: DecodedStruct<A, T>
+}
+
 export class TypeDescriptor<T = any> {
   qname: string
   reference: boolean
