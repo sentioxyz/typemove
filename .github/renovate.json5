@@ -1,20 +1,14 @@
 {
-  "extends": [
-    "config:base",
-    ":preserveSemverRanges"
-  ],
-  "labels": ["dependencies"],
-  "groupName": "all",
-  "separateMajorMinor": false,
-  "packageRules": [
+  extends: ["config:recommended", ":preserveSemverRanges"],
+  labels: ["dependencies"],
+  groupName: "all",
+  separateMajorMinor: false,
+  packageRules: [
     {
-      "matchPackageNames": [
-        "node",
-        "chai"
-      ],
-      "enabled": false
-    }
+      matchPackageNames: ["node", "chai"],
+      enabled: false,
+    },
   ],
-  "timezone": "America/Los_Angeles",
-  "schedule": ["after 9pm on sunday"]
+  timezone: "America/Los_Angeles",
+  schedule: ["after 9pm on sunday"],
 }
