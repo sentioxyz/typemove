@@ -5,13 +5,13 @@ import chalk from 'chalk'
 import {
   InternalMoveModule,
   InternalMoveStruct,
-  AbstractCodegen,
   structQname,
   InternalMoveFunction,
   InternalMoveFunctionVisibility,
   normalizeToJSName,
   camel
 } from '@typemove/move'
+import { AbstractCodegen } from '@typemove/move/codegen'
 import { join } from 'path'
 import { SuiChainAdapter } from '../sui-chain-adapter.js'
 
