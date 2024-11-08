@@ -5,7 +5,8 @@
     "outDir": "dist/esm",
     "paths": {
       "@typemove/aptos": ["./index.ts"],
-      "@typemove/aptos/*": ["./*/index.ts"]
+      "@typemove/aptos/*": ["./*/index.ts"],
+      "@typemove/aptos/builtin/*": ["./builtin/*.ts"]
     }
   },
   "exclude": ["dist"],
