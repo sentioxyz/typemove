@@ -43,7 +43,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
   }
 
   protected defaultCoderPackage() {
-    return `@typemove/${this.PREFIX.toLowerCase()}`
+    return this.SYSTEM_PACKAGE
   }
 
   generateLoadAll(isSystem: boolean): string {
@@ -474,9 +474,9 @@ export class AccountCodegen<ModuleType, StructType> {
         // Remap to user's filename if possible, TODO codepath not well tested
         const tsAccountModule = './' + (this.loader.accountImports.get(account)?.moduleName || account)
         if (isFrameworkAccount(account) && !isFrameworkAccount(address)) {
-          // Decide where to find runtime library
+          // Decide where to find builtin library
           moduleImports.push(
-            `import { _${account} } from "@typemove/${this.moduleGen.PREFIX.toLowerCase()}/builtin"`
+            `import * as _${account} from "${this.moduleGen.SYSTEM_PACKAGE}/builtin/${account}"`
             // `import _${account} = builtin._${account} `
           )
         } else {
