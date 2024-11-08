@@ -5,7 +5,7 @@
   separateMajorMinor: false,
   packageRules: [
     {
-      matchPackageNames: ["node", "chai"],
+      matchPackageNames: ["node":],
       enabled: false,
     },
   ],
