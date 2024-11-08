@@ -5,7 +5,7 @@
   separateMajorMinor: false,
   packageRules: [
     {
-      matchPackageNames: ["node":],
+      matchPackageNames: ["node"],
       enabled: false,
     },
   ],
