@@ -2,7 +2,8 @@ import * as fs from 'fs'
 import chalk from 'chalk'
 import { join } from 'path'
 import { AptosChainAdapter } from '../aptos-chain-adapter.js'
-import { AbstractCodegen, camel, InternalMoveFunction, InternalMoveModule, normalizeToJSName } from '@typemove/move'
+import { camel, InternalMoveFunction, InternalMoveModule, normalizeToJSName } from '@typemove/move'
+import { AbstractCodegen } from '@typemove/move/codegen'
 import { Aptos, AptosConfig, Event, MoveModuleBytecode, MoveResource } from '@aptos-labs/ts-sdk'
 
 export async function codegen(

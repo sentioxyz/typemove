@@ -1,11 +1,11 @@
-import { InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from './internal-models.js'
+import { InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from '../internal-models.js'
 import path from 'path'
 import fs from 'fs'
-import { AccountModulesImportInfo, AccountRegister } from './account.js'
+import { AccountModulesImportInfo, AccountRegister } from '../account.js'
 import { format } from 'prettier'
-import { isFrameworkAccount, moduleQname, normalizeToJSName, SPLITTER, VECTOR_STR } from './utils.js'
-import { TypeDescriptor } from './types.js'
-import { ChainAdapter } from './chain-adapter.js'
+import { isFrameworkAccount, moduleQname, normalizeToJSName, SPLITTER, VECTOR_STR } from '../utils.js'
+import { TypeDescriptor } from '../types.js'
+import { ChainAdapter } from '../chain-adapter.js'
 
 interface OutputFile {
   fileName: string
