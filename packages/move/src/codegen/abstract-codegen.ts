@@ -343,7 +343,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
         return 'string'
       case 'bool':
       case 'Bool':
-        return 'Boolean'
+        return 'boolean'
       case 'u8':
       case 'U8':
       case 'u16':
