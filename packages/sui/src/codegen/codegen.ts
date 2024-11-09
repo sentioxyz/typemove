@@ -133,14 +133,55 @@ export class SuiCodegen extends AbstractCodegen<
           callValue: `_args.push(transactionArgumentOrObject(args[${idx}], tx))`
         })
       } else if (arg.isVector()) {
+        // TODO fix pure vector
         args.push({
           paramType: `(${this.ADDRESS_TYPE} | TransactionObjectArgument)[] | TransactionArgument`,
           callValue: `_args.push(transactionArgumentOrVec(args[${idx}], tx))`
         })
       } else {
+        // Handle pure type
+        let pureFunction = ''
+        const paramType = `${this.generateTypeForDescriptor(arg, module.address)} | TransactionArgument`
+
+        switch (arg.qname.toLowerCase()) {
+          case 'u8':
+            pureFunction = `transactionArgumentOrPureU8`
+            break
+          case 'u16':
+            pureFunction = `transactionArgumentOrPureU16`
+            break
+          case 'u32':
+            pureFunction = `transactionArgumentOrPureU32`
+            break
+          case 'u64':
+            pureFunction = `transactionArgumentOrPureU64`
+            break
+          case 'u128':
+            pureFunction = `transactionArgumentOrPureU128`
+            break
+          case 'u256':
+            pureFunction = `transactionArgumentOrPureU256`
+            break
+          case 'bool':
+            pureFunction = `transactionArgumentOrPureBool`
+            break
+          case 'string':
+            pureFunction = `transactionArgumentOrPureString`
+            break
+          case 'address':
+            pureFunction = `transactionArgumentOrPureAddress`
+            break
+          // case 'vector':
+          // case 'option':
+          default:
+            pureFunction = `transactionArgumentOrPure`
+          //   paramType = 'TransactionArgument'
+        }
+        const callValue = pureFunction ? `_args.push(${pureFunction}(args[${idx}], tx))` : `_args.push(args[${idx}])`
+
         args.push({
-          paramType: `${this.generateTypeForDescriptor(arg, module.address)} | TransactionArgument`,
-          callValue: `_args.push(transactionArgumentOrPure(args[${idx}], tx))`
+          paramType,
+          callValue
         })
       }
     }
@@ -225,7 +266,19 @@ export class SuiCodegen extends AbstractCodegen<
       import { ZERO_ADDRESS, TypedDevInspectResults, getMoveCoder } from '@typemove/sui'
       import { Transaction, TransactionArgument, TransactionObjectArgument } from '@mysten/sui/transactions'
       import { SuiClient } from '@mysten/sui/client'
-      import { transactionArgumentOrObject, transactionArgumentOrPure, transactionArgumentOrVec } from '@typemove/sui'
+      import {  transactionArgumentOrObject, 
+                transactionArgumentOrVec,
+                transactionArgumentOrPure,
+                transactionArgumentOrPureU8,
+                transactionArgumentOrPureU16,
+                transactionArgumentOrPureU32,
+                transactionArgumentOrPureU64,
+                transactionArgumentOrPureU128,
+                transactionArgumentOrPureU256,
+                transactionArgumentOrPureBool,
+                transactionArgumentOrPureString,
+                transactionArgumentOrPureAddress,
+      } from '@typemove/sui'
     `
   }
 }
