@@ -121,7 +121,7 @@ export class SuiCodegen extends AbstractCodegen<
     `
   }
 
-  private generateArgs(module: InternalMoveModule, func: InternalMoveFunction) {
+  private generateArgs(module: InternalMoveModule, func: InternalMoveFunction, isView: boolean) {
     const args = []
     const argsLen = func.params.length
     for (const [idx, arg] of func.params.entries()) {
@@ -129,19 +129,25 @@ export class SuiCodegen extends AbstractCodegen<
         // no op
       } else if (arg.reference) {
         args.push({
-          paramType: `${this.ADDRESS_TYPE} | TransactionObjectArgument | TransactionArgument`,
+          paramType: isView
+            ? this.ADDRESS_TYPE
+            : `${this.ADDRESS_TYPE} | TransactionObjectArgument | TransactionArgument`,
           callValue: `_args.push(transactionArgumentOrObject(args[${idx}], tx))`
         })
       } else if (arg.isVector()) {
         // TODO fix pure vector
         args.push({
-          paramType: `(${this.ADDRESS_TYPE} | TransactionObjectArgument)[] | TransactionArgument`,
+          paramType: isView
+            ? `${this.ADDRESS_TYPE}[]`
+            : `(${this.ADDRESS_TYPE} | TransactionObjectArgument)[] | TransactionArgument`,
           callValue: `_args.push(transactionArgumentOrVec(args[${idx}], tx))`
         })
       } else {
         // Handle pure type
         let pureFunction = ''
-        const paramType = `${this.generateTypeForDescriptor(arg, module.address)} | TransactionArgument`
+        const paramType = isView
+          ? this.generateTypeForDescriptor(arg, module.address)
+          : `${this.generateTypeForDescriptor(arg, module.address)} | TransactionArgument`
 
         switch (arg.qname.toLowerCase()) {
           case 'u8':
@@ -200,7 +206,7 @@ export class SuiCodegen extends AbstractCodegen<
       })
       .join(',')
 
-    const args = this.generateArgs(module, func)
+    const args = this.generateArgs(module, func, true)
     const returnType = `${this.generateFunctionReturnTypeParameters(func, module.address)}`
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
@@ -229,7 +235,7 @@ export class SuiCodegen extends AbstractCodegen<
       return ''
     }
 
-    const args = this.generateArgs(module, func)
+    const args = this.generateArgs(module, func, false)
 
     const genericString = this.generateFunctionTypeParameters(func)
 
