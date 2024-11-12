@@ -50,9 +50,9 @@ export class AccountRegister {
 
   private registerFunctions(module: InternalMoveModule, accountModuleImports: AccountModulesImportInfo): void {
     for (const func of module.exposedFunctions) {
-      if (!func.isEntry) {
-        continue
-      }
+      // if (!func.isEntry) {
+      //   continue
+      // }
       for (const param of func.params.concat(func.return)) {
         for (const type of param.dependedTypes()) {
           const [account, module] = moduleQnameForType(type)
