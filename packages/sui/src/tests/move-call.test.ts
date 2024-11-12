@@ -48,5 +48,19 @@ describe('Test Sui call', () => {
     ])
 
     console.log(JSON.stringify(res, null, 2))
+
+    const tx = new Transaction()
+
+    const arg = airdrop.builder.authorizeApi(tx, [
+      tx.object('0x080c14c97f457e8d40036109e647376beef62d3de35b51a3b9d183295fc8dc1c'),
+      tx.object('0x53a38614e77a540d037c3edea864d0fc5bbe8f5049230b6e1ce173f76596357f'),
+      tx.pure.address(SENDER)
+    ])
+
+    const keypair = new Ed25519Keypair()
+    const res2 = await client.devInspectTransactionBlock({ transactionBlock: tx, sender: SENDER })
+    // client.devInspectTransactionBlock()
+
+    console.log(JSON.stringify(res2, null, 2))
   })
 })

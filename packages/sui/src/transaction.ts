@@ -4,7 +4,9 @@ export function isTransactionArgument(value: any): boolean {
   if (typeof value !== 'object') return false
   if (value === null || value === undefined) return false
 
-  return value.kind === 'GasCoin' || value.kind === 'Result' || value.kind === 'NestedResult' || value.kind === 'Input'
+  return (
+    value.$kind === 'GasCoin' || value.$kind === 'Result' || value.$kind === 'NestedResult' || value.$kind === 'Input'
+  )
 }
 
 export function transactionArgumentOrObject(
