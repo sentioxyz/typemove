@@ -30,18 +30,12 @@ export class AccountRegister {
   accountImports = new Map<string, AccountModulesImportInfo>()
   pendingAccounts = new Set<string>()
 
-  register(
-    module: InternalMoveModule,
-    tsModuleName: string
-  ): AccountModulesImportInfo {
+  register(module: InternalMoveModule, tsModuleName: string): AccountModulesImportInfo {
     const currentModuleFqn = moduleQname(module)
 
     let accountModuleImports = this.accountImports.get(module.address)
     if (!accountModuleImports) {
-      accountModuleImports = new AccountModulesImportInfo(
-        module.address,
-        tsModuleName
-      )
+      accountModuleImports = new AccountModulesImportInfo(module.address, tsModuleName)
       this.accountImports.set(module.address, accountModuleImports)
       // the account has already be processed, delete pending task
       this.pendingAccounts.delete(module.address)
@@ -54,15 +48,12 @@ export class AccountRegister {
     return accountModuleImports
   }
 
-  private registerFunctions(
-    module: InternalMoveModule,
-    accountModuleImports: AccountModulesImportInfo
-  ): void {
+  private registerFunctions(module: InternalMoveModule, accountModuleImports: AccountModulesImportInfo): void {
     for (const func of module.exposedFunctions) {
       if (!func.isEntry) {
         continue
       }
-      for (const param of func.params) {
+      for (const param of func.params.concat(func.return)) {
         for (const type of param.dependedTypes()) {
           const [account, module] = moduleQnameForType(type)
           accountModuleImports.addImport(account, module)
@@ -74,10 +65,7 @@ export class AccountRegister {
     }
   }
 
-  private registerStruct(
-    module: InternalMoveModule,
-    accountModuleImports: AccountModulesImportInfo
-  ): void {
+  private registerStruct(module: InternalMoveModule, accountModuleImports: AccountModulesImportInfo): void {
     for (const struct of module.structs) {
       for (const field of struct.fields) {
         for (const type of field.type.dependedTypes()) {
