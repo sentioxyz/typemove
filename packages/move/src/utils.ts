@@ -54,12 +54,13 @@ const KEYWORDS = new Set([
   'bigint',
   'any',
   'new',
-  'delete'
+  'delete',
+  'symbol'
 ])
 
 export function normalizeToJSName(name: string) {
   if (KEYWORDS.has(name)) {
-    return name + '_'
+    return name + '$'
   }
   return name
 }
