@@ -20,6 +20,7 @@ export interface InternalMoveFunction {
 export interface InternalMoveStruct {
   name: string
   isNative: boolean
+  isEvent: boolean
   abilities: string[]
   typeParams: InternalMoveTypeParam[]
   fields: InternalMoveStructField[]
@@ -33,7 +34,7 @@ export interface InternalMoveStructField {
 export enum InternalMoveFunctionVisibility {
   PRIVATE = 'private',
   PUBLIC = 'public',
-  FRIEND = 'friend',
+  FRIEND = 'friend'
 }
 
 export type InternalMoveTypeParam = {

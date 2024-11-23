@@ -59,6 +59,7 @@ function toInternalStruct(name: string, struct: SuiMoveNormalizedStruct): Intern
       return { constraints: p.constraints.abilities }
     }),
     isNative: false,
+    isEvent: false,
     name: name
   }
 }
