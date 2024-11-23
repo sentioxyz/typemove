@@ -66,6 +66,11 @@ export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | 
       const qname = moduleQname(module)
       for (const struct of module.structs) {
         const typeName = qname + SPLITTER + struct.name
+        // deprecated v2 event
+        if (typeName == '0x1::coin::Deposit' || typeName == '0x1::coin::Withdraw') {
+          continue
+        }
+
         if (struct.isEvent) {
           eventMap.set(typeName, struct)
         }
