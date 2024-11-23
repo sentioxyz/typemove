@@ -57,6 +57,7 @@ export function toInternalStruct(struct: MoveStruct): InternalMoveStruct {
     fields: struct.fields.map(toInternalField),
     typeParams: struct.generic_type_params,
     isNative: struct.is_native,
+    isEvent: struct.is_event,
     name: struct.name
   }
 }
