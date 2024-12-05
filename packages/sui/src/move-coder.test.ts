@@ -34,7 +34,7 @@ describe('Test move coder', () => {
       tx_index: '1694793'
     }
 
-    const res = await coder.decodedType(
+    const res = await coder.decodeType(
       upgradedEvent,
       parseMoveType(
         '0xcb4e1ee2a3d6323c70e7b06a8638de6736982cbdc08317d33e6f098747e2b438::isolated_trading::TradeExecutedV2'
@@ -88,10 +88,10 @@ describe('Test move coder', () => {
     const rawDecode = await coder.decodeBCS(type, bcsData, 'base64')
     // console.log(JSON.stringify(rawDecode, null, 2))
 
-    const res = await coder.decodedType(rawDecode, type)
+    const res = await coder.decodeType(rawDecode, type)
     console.log(res)
 
-    const res2 = await coder.decodedType(nonBcsData, type)
+    const res2 = await coder.decodeType(nonBcsData, type)
     expect(res2).to.deep.eq(res)
   })
 })

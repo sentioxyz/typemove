@@ -12,7 +12,7 @@ describe('Test Sui coder', () => {
   // loadAllTypes(coder)
 
   test('decode string', async () => {
-    const res = await coder.decodedType('mystring', ascii.String.type())
+    const res = await coder.decodeType('mystring', ascii.String.type())
     expect(res).equals('mystring')
   })
 
@@ -36,7 +36,7 @@ describe('Test Sui coder', () => {
         round: '11'
       }
     }
-    const res = await coder.decodedType(data, single_collateral.Info.type())
+    const res = await coder.decodeType(data, single_collateral.Info.type())
     expect(res?.delivery_info?.price).equals(603716059n)
     // console.log(res)
   })
@@ -101,7 +101,7 @@ describe('Test Sui coder', () => {
         }
       }
     }
-    const res = await coder.decodedType(data, parseMoveType(data.type))
+    const res = await coder.decodeType(data, parseMoveType(data.type))
     expect(res.performance_fee_sub_vault.balance).equals(0n)
     // console.log(res)
   })

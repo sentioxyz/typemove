@@ -278,7 +278,8 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
       type_arguments: typeArguments
     }
   }
-  async decodedType<T, ST>(typeStruct: ST, type: TypeDescriptor<T>): Promise<T | undefined> {
+
+  public async decodeType<T, ST>(typeStruct: ST, type: TypeDescriptor<T>): Promise<T | undefined> {
     if (typeStruct === null || typeStruct == undefined) {
       return typeStruct as any
     }

@@ -2,7 +2,14 @@ import * as fs from 'fs'
 import chalk from 'chalk'
 import { join } from 'path'
 import { AptosChainAdapter } from '../aptos-chain-adapter.js'
-import { camel, InternalMoveFunction, InternalMoveModule, normalizeToJSName } from '@typemove/move'
+import {
+  camel,
+  InternalMoveFunction,
+  InternalMoveModule,
+  InternalMoveStruct,
+  normalizeToJSName,
+  structQname
+} from '@typemove/move'
 import { AbstractCodegen } from '@typemove/move/codegen'
 import { Aptos, AptosConfig, Event, MoveModuleBytecode, MoveResource } from '@aptos-labs/ts-sdk'
 
@@ -63,6 +70,16 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
     `
   }
 
+  generateStructs(module: InternalMoveModule, struct: InternalMoveStruct, events: Set<string>): string {
+    let content = ''
+    switch (structQname(module, struct)) {
+      case '0x1::object::Object':
+        content += `export type ${struct.name}<T> = MoveAddressType`
+        break
+    }
+    return content + super.generateStructs(module, struct, events, content !== '')
+  }
+
   protected generateViewFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
     if (!func.isView) {
       return ''
@@ -94,7 +111,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
     client: Aptos,
     ${requestArg}
     version?: bigint): Promise<[${returns.join(',')}]> {
-      const coder = defaultMoveCoder(client.config.fullnode)        
+      const coder = ${this.getGetDefaultCoder()}        
       const data: InputViewFunctionData = {
         function: "${module.address}::${module.name}::${func.name}",
         functionArguments: ${func.params.length > 0 ? 'coder.encodeArray(request.functionArguments)' : '[]'},
@@ -104,6 +121,10 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
       const type = await coder.getMoveFunction("${module.address}::${module.name}::${func.name}")
       return await coder.decodeArray(res, type.return) as any
     }`
+  }
+
+  protected getGetDefaultCoder() {
+    return `defaultMoveCoder(client.config.fullnode)`
   }
 
   protected generateEntryForFunction(module: InternalMoveModule, func: InternalMoveFunction): string {
@@ -132,7 +153,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
       },
       options?: InputGenerateTransactionOptions
     ): Promise<PendingTransactionResponse> {
-      const coder = defaultMoveCoder(client.config.fullnode)  
+      const coder = ${this.getGetDefaultCoder()}
       const transaction = await client.transaction.build.simple({
         sender: account.accountAddress,
         data: {
