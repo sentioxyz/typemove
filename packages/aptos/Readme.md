@@ -54,7 +54,7 @@ You can write code as follows:
 import { defaultMoveCoder } from '@typemove/aptos'
 import { stable_pool } from "./types/0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af";
 
-const pool = await defaultMoveCoder().decodedType(stable_pool.StablePool.type(), object)
+const pool = await defaultMoveCoder().decodeType(stable_pool.StablePool.type(), object)
 ```
 
 Checkout our [tests](./src/tests/move-coder.test.ts) for more examples。

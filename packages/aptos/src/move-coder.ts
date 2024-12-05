@@ -46,6 +46,17 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
   decodeResource<T>(res: MoveResource): Promise<TypedMoveResource<T> | undefined> {
     return this.decodedStruct(res)
   }
+
+  protected async decode(data: any, type: TypeDescriptor): Promise<any> {
+    switch (type.qname) {
+      case '0x1::object::Object':
+        if (data?.inner !== undefined && typeof data?.inner === 'string') {
+          return data.inner
+        }
+    }
+    return super.decode(data, type)
+  }
+
   filterAndDecodeResources<T>(
     type: string | TypeDescriptor<T>,
     resources: MoveResource[]

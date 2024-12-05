@@ -367,8 +367,12 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
         // only for aptos
         return 'string'
       }
+      // if (elementTypeQname.startsWith('T') && !elementTypeQname.includes(SPLITTER)) {
+      //   return  `${elementTypeQname} extends string ? string : ${elementTypeQname}[]`
+      // }
+      // TODO there might be an error here, find the case and get it fixed
       if (elementTypeQname.startsWith('T') && !elementTypeQname.includes(SPLITTER)) {
-        return `${elementTypeQname}[] | string`
+        return `${elementTypeQname}[]`
       }
       return this.generateTypeForDescriptor(type.typeArgs[0], currentAddress) + '[]'
     }
