@@ -74,6 +74,10 @@ export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | 
         if (struct.isEvent) {
           eventMap.set(typeName, struct)
         }
+        if (struct.name.endsWith('Event')) {
+          // this is a hack to support some old events
+          eventMap.set(typeName, struct)
+        }
 
         structMap.set(qname + SPLITTER + struct.name, struct)
       }
