@@ -10,7 +10,7 @@ export function isTransactionArgument(value: any): boolean {
 }
 
 export function transactionArgumentOrObject(
-  value: TransactionArgument | TransactionObjectInput,
+  value: string | TransactionArgument | TransactionObjectInput,
   transactionBlock: Transaction
 ): TransactionArgument {
   if (isTransactionArgument(value)) {
