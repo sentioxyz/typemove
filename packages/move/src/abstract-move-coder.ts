@@ -202,7 +202,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
   }
 
   public encode(data: any): any {
-    if (!data) {
+    if (data === undefined || data === null) {
       return undefined
     }
     if (typeof data === 'bigint') {

@@ -4,9 +4,11 @@ import {
   fees,
   stable_pool
 } from './types/0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af'
+import { farming } from './types/0x6b3720cd988adeaf721ed9d4730da4324d52364871a68eac62b46d21e4d2fa99'
 import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
 import { _0x1 } from '@typemove/aptos/builtin'
 import { expect } from 'chai'
+import { defaultMoveCoder } from '../move-coder'
 
 describe('move-call', () => {
   const client = new Aptos(new AptosConfig({ fullnode: 'https://fullnode.mainnet.aptoslabs.com/v1' }))
@@ -45,5 +47,24 @@ describe('move-call', () => {
     expect(poolBalances.length > 0).equal(true)
     expect(weights > 0n).equal(true)
     expect(supply > 0n).equal(true)
+  })
+
+  test('parameter match', async () => {
+    const res0 = client.view({
+      payload: {
+        function: '0x6b3720cd988adeaf721ed9d4730da4324d52364871a68eac62b46d21e4d2fa99::farming::stake_amount',
+        functionArguments: ['0x6a351a1034edf0fcd405f421e169c46e7466f2569ce2cb491964843a105d1e1', 0n],
+        typeArguments: []
+      }
+    })
+
+    const coder = defaultMoveCoder()
+
+    const arr = coder.encodeArray(['0x6a351a1034edf0fcd405f421e169c46e7466f2569ce2cb491964843a105d1e1', 0n])
+
+    const res1 = await farming.view.stakeAmount(client, {
+      functionArguments: ['0x6a351a1034edf0fcd405f421e169c46e7466f2569ce2cb491964843a105d1e1', 0n]
+    })
+    console.log(res1)
   })
 })
