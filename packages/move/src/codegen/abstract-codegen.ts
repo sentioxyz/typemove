@@ -1,4 +1,4 @@
-import { InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from '../internal-models.js'
+import { InternalMoveEnum, InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from '../internal-models.js'
 import path from 'path'
 import fs from 'fs'
 import { AccountModulesImportInfo, AccountRegister } from '../account.js'
@@ -190,6 +190,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     const events = Array.from(eventStructs.values())
       .map((e) => this.generateForEvents(module, e))
       .filter((s) => s !== '')
+    const enums = module.enums.map((e) => this.generateEnum(module, e))
     const structs = module.structs.map((s) => this.generateStructs(module, s, eventTypes))
     const callArgs = module.exposedFunctions.map((f) => this.generateCallArgsStructs(module, f))
 
@@ -197,6 +198,8 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return `
 
   export namespace ${moduleName} {
+    ${enums.join('\n')}
+  
     ${structs.join('\n')}
     
     ${this.generateExtra(addressOverride, module)}
@@ -205,6 +208,49 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     
     ${callArgs.join('\n')}
   }
+  `
+  }
+
+  generateEnum(module: InternalMoveModule, enumType: InternalMoveEnum): string {
+    const enumName = normalizeToJSName(enumType.name)
+    const enumValues = Object.keys(enumType.variants)
+      .map((v) => `'${v}'`)
+      .join(' | ')
+
+    const typeParams = enumType.typeParams || []
+    const genericString = this.generateStructTypeParameters(enumType)
+    const genericStringAny = this.generateStructTypeParameters(enumType, true)
+
+    const typeParamApplyArg = typeParams
+      .map((v, idx) => {
+        return `arg${idx}: TypeDescriptor<T${idx}> = ANY_TYPE`
+      })
+      .join(',')
+    const typeParamApply = typeParams
+      .map((v, idx) => {
+        return `arg${idx}`
+      })
+      .join(',')
+
+    const typeDescriptor = `
+  export namespace ${enumName}{
+    export const TYPE_QNAME = '${module.address}::${module.name}::${enumType.name}'
+    
+    const TYPE = new TypeDescriptor<${enumName}${genericStringAny}>(${enumName}.TYPE_QNAME)
+
+    export function type${genericString}(${typeParamApplyArg}): TypeDescriptor<${enumName}${genericString}> {
+      return TYPE.apply(${typeParamApply})
+    }
+  }
+`
+    // TODO support fields
+    return `
+  export interface ${enumName} {
+    fields: {}
+    variant: ${enumValues}
+  }
+
+  ${typeDescriptor}
   `
   }
 
@@ -249,8 +295,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     let eventPayload = ''
     if (events.has(moduleQname(module) + SPLITTER + struct.name)) {
       eventPayload = `
-    export interface ${structName}Instance extends
-        TypedEventInstance<${structName}${genericStringAny}> {
+    export type ${structName}Instance = TypedEventInstance<${structName}${genericStringAny}> & {
       ${this.STRUCT_FIELD_NAME}_decoded: ${structName}${genericStringAny}
       type_arguments: [${struct.typeParams.map((_) => 'string').join(', ')}]
     }
@@ -293,7 +338,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
     return '[' + returnType + ']'
   }
 
-  generateStructTypeParameters(struct: InternalMoveStruct, useAny = false) {
+  generateStructTypeParameters(struct: InternalMoveStruct | InternalMoveEnum, useAny = false) {
     let genericString = ''
 
     if (struct.typeParams && struct.typeParams.length > 0) {
