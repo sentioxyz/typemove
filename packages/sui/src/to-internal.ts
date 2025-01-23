@@ -1,4 +1,5 @@
 import type {
+  SuiMoveNormalizedEnum,
   SuiMoveNormalizedField,
   SuiMoveNormalizedFunction,
   SuiMoveNormalizedModule,
@@ -6,6 +7,7 @@ import type {
   SuiMoveNormalizedType
 } from '@mysten/sui/client'
 import {
+  InternalMoveEnum,
   InternalMoveFunction,
   InternalMoveFunctionVisibility,
   InternalMoveModule,
@@ -20,7 +22,8 @@ export function toInternalModule(module: SuiMoveNormalizedModule): InternalMoveM
     address: module.address,
     exposedFunctions: Object.entries(module.exposedFunctions).map(([n, f]) => toInternalFunction(n, f)),
     name: module.name,
-    structs: Object.entries(module.structs).map(([n, s]) => toInternalStruct(n, s))
+    structs: Object.entries(module.structs).map(([n, s]) => toInternalStruct(n, s)),
+    enums: Object.entries(module.enums || {}).map(([n, e]) => toInternalEnum(n, e))
   }
 }
 
@@ -61,6 +64,20 @@ function toInternalStruct(name: string, struct: SuiMoveNormalizedStruct): Intern
     isNative: false,
     isEvent: false,
     name: name
+  }
+}
+
+function toInternalEnum(name: string, enumType: SuiMoveNormalizedEnum): InternalMoveEnum {
+  return {
+    name: name,
+    abilities: enumType.abilities.abilities,
+    typeParams: enumType.typeParameters.map((p: any) => {
+      return { constraints: p.constraints.abilities }
+    }),
+    variants: Object.entries(enumType.variants).reduce((acc: { [key: string]: InternalMoveStructField[] }, [k, v]) => {
+      acc[k] = v.map(toInternalField)
+      return acc
+    }, {})
   }
 }
 

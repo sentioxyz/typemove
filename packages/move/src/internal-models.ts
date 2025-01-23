@@ -5,6 +5,7 @@ export interface InternalMoveModule {
   name: string
   exposedFunctions: InternalMoveFunction[]
   structs: InternalMoveStruct[]
+  enums: InternalMoveEnum[]
 }
 
 export interface InternalMoveFunction {
@@ -24,6 +25,15 @@ export interface InternalMoveStruct {
   abilities: string[]
   typeParams: InternalMoveTypeParam[]
   fields: InternalMoveStructField[]
+}
+
+export interface InternalMoveEnum {
+  name: string
+  abilities: string[]
+  typeParams: InternalMoveTypeParam[]
+  variants: {
+    [key: string]: InternalMoveStructField[]
+  }
 }
 
 export interface InternalMoveStructField {

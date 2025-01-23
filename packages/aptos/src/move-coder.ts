@@ -27,6 +27,7 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
     if (m) {
       return m
     }
+    this.accounts.add(module.abi.address)
     m = toInternalModule(module)
     this.loadInternal(m, address)
     return m

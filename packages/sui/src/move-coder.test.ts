@@ -4,6 +4,7 @@ import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
 import { defaultMoveCoder } from '@typemove/sui'
 import { dynamic_field } from './builtin/0x2'
 import { sui_system_state_inner } from './builtin/0x3'
+import { SuiEvent } from '@mysten/sui/client'
 
 describe('Test move coder', () => {
   test('decode upgraded struct', async () => {
@@ -45,6 +46,7 @@ describe('Test move coder', () => {
   test('decode upgraded', async () => {
     const coder = defaultMoveCoder()
     const upgradedEvent = {
+      bcsEncoding: 'base58',
       bcs: '2EEdtVSdQuBDwz8GqTfB83ac62AAy2maSVE9SqwUFpXdqSPGhRvrZz3WEyJavAhSmVtU86Y2AkkK5pSw6MYzcKsdowaso8N8B7Ur8XiZ9xienTkNzNTf7mmfgWJWMqpYVKkdbJTj76WNzJs5Sd6U3FzCzmg4y5EgW85knAoBZjzBwPUsQ3tMHDcihpX7wVtnEVttdzLnq3ZK97u1hAJSyDUrRVThpScej1kjjRLe2Up3mYYo7JsH8uhrq7bACkQKPCbK88d8arAUuYaMNw7zPSyn6yzyHoSnNUscbAVdfmn4ePb8DZTCw6dbAcUDPR82y5kWwzQC3NcYK5N4BX3w7UUhhrvPtdKM1e1isMnbWuMxXPhydQQD9RnJKfZTU54jdcWzwtQrDaGkuaVPUQvZ2ywVVav57ooS6Uf',
       id: { txDigest: 'C9LuM3bJhAXg4whUa9DrszA8zTGEoptFGAmFvFs7H1mk', eventSeq: '1' },
       packageId: '0xceab84acf6bf70f503c3b0627acaff6b3f84cee0f2d7ed53d00fa6c2a168d14f',
@@ -71,7 +73,7 @@ describe('Test move coder', () => {
           }
         }
       }
-    }
+    } as SuiEvent
 
     const res = await coder.decodeEvent(upgradedEvent)
   })

@@ -1,12 +1,15 @@
 import { accountAddressString, moduleQname, SPLITTER, VECTOR_STR } from './utils.js'
 import { DecodedStruct, matchType, parseMoveType, TypeDescriptor } from './types.js'
-import { InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from './internal-models.js'
+import { InternalMoveEnum, InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from './internal-models.js'
 // import { bytesToBigInt } from '../utils/index.js'
 import { ChainAdapter } from './chain-adapter.js'
 
 export abstract class AbstractMoveCoder<ModuleType, StructType> {
   protected moduleMapping = new Map<string, InternalMoveModule>()
+  protected accounts = new Set<string>()
   private typeMapping = new Map<string, InternalMoveStruct>()
+  private enumMapping = new Map<string, InternalMoveEnum>()
+
   private funcMapping = new Map<string, InternalMoveFunction>()
   // network: string
   adapter: ChainAdapter<ModuleType, StructType>
@@ -36,6 +39,11 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
       return
     }
     this.moduleMapping.set(moduleQname({ address: account, name: module.name }), module)
+    for (const enumType of module.enums) {
+      const key = [account, module.name, enumType.name].join(SPLITTER)
+      this.enumMapping.set(key, enumType)
+    }
+
     for (const struct of module.structs) {
       // TODO move to util
       const key = [account, module.name, struct.name].join(SPLITTER)
@@ -73,6 +81,9 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (struct) {
       return struct
     }
+    if (this.accounts.has(account)) {
+      throw new Error('Failed to load struct ' + type + ' for imported account')
+    }
     let resp = this.requestMap.get(account)
     if (!resp) {
       resp = this.adapter.fetchModules(account).then((modules) => {
@@ -90,6 +101,35 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     throw new Error('Failed to load function ' + type + ' type are not imported anywhere')
   }
 
+  async maybeGetMoveEnum(type: string): Promise<InternalMoveEnum | undefined> {
+    const [account_, module, typeName] = type.split(SPLITTER)
+    const account = accountAddressString(account_)
+    type = [account, module, typeName].join(SPLITTER)
+
+    let enumType = this.enumMapping.get(type)
+    if (enumType) {
+      return enumType
+    }
+    if (this.accounts.has(account)) {
+      return undefined
+    }
+    let resp = this.requestMap.get(account)
+    if (!resp) {
+      resp = this.adapter.fetchModules(account).then((modules) => {
+        for (const m of modules) {
+          this.load(m, account)
+        }
+      })
+      this.requestMap.set(account, resp)
+    }
+    await resp
+    enumType = this.enumMapping.get(type)
+    if (enumType) {
+      return enumType
+    }
+    return undefined
+  }
+
   async getMoveFunction(type: string): Promise<InternalMoveFunction> {
     const [account_, module, typeName] = type.split(SPLITTER)
     const account = accountAddressString(account_)
@@ -98,6 +138,9 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     let func = this.funcMapping.get(type)
     if (func) {
       return func
+    }
+    if (this.accounts.has(account)) {
+      throw new Error('Failed to load function ' + type + ' for imported account')
     }
     let resp = this.requestMap.get(account)
     if (!resp) {
@@ -161,6 +204,12 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
         res.push(await this.decode(entry, type.typeArgs[0]))
       }
       return res as any
+    }
+
+    // try enum type first
+    const enumType = await this.maybeGetMoveEnum(type.qname)
+    if (enumType) {
+      return data
     }
 
     // Process complex type

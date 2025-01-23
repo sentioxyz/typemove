@@ -6,6 +6,7 @@ import { TypedSuiMoveObject } from '../models.js'
 import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
 import { single_collateral } from './types/testnet/0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2.js'
 import { ascii } from '../builtin/0x1.js'
+import { de_token } from './types/testnet/enum'
 
 describe('Test Sui coder', () => {
   const coder = defaultMoveCoder()
@@ -104,6 +105,29 @@ describe('Test Sui coder', () => {
     const res = await coder.decodeType(data, parseMoveType(data.type))
     expect(res.performance_fee_sub_vault.balance).equals(0n)
     // console.log(res)
+  })
+
+  test('decode enum', async () => {
+    const data = {
+      action: {
+        variant: 'LOCK',
+        fields: {}
+      },
+      current_bal: '2000000000000000',
+      current_duration: '30914396059',
+      current_end: '1767614400000',
+      current_raw_voting_weight: '1965964340341353',
+      current_voting_weight: '1965964340341353',
+      escrow_id: '0x376cbdd42d3075519ec3523e1a78bbca1f07a3011f96ea10ebd60e9f65c1075e',
+      prev_bal: '0',
+      prev_duration: '0',
+      prev_end: '0',
+      prev_raw_voting_weight: '0',
+      timestamp: '1736700003941'
+    }
+
+    const res = await coder.decodeType(data, de_token.DeTokenUpdateEvent.type())
+    expect(res?.action.variant).equals('LOCK')
   })
 
   test('decode dynamic fields', async () => {
