@@ -42,6 +42,7 @@ export class MoveCoder extends AbstractMoveCoder<
     if (m && mDeclared) {
       return m
     }
+    this.accounts.add(module.address)
     m = toInternalModule(module)
     this.loadInternal(m, address)
     return m

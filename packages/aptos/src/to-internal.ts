@@ -23,7 +23,8 @@ export function toInternalModule(module: MoveModuleBytecode): InternalMoveModule
     address: abi.address,
     exposedFunctions: abi.exposed_functions.map(toInternalFunction),
     name: abi.name,
-    structs: abi.structs.map(toInternalStruct)
+    structs: abi.structs.map(toInternalStruct),
+    enums: []
   }
 }
 

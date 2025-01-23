@@ -17,8 +17,8 @@
     "@ls-lint/ls-lint": "^2.2.3",
     "@types/chai": "^5.0.1",
     "@types/node": "^22.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "chai": "^5.1.2",
     "conventional-changelog-conventionalcommits": "^8.0.0",
     "eslint": "^9.6.0",
@@ -37,7 +37,7 @@
     "tslib": "^2.6.2",
     "tsx": "^4.10.0",
     "typedoc": "^0.27.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.7.3"
   },
   "engines": {
     "node": ">=20"
