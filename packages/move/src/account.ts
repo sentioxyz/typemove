@@ -37,9 +37,9 @@ export class AccountRegister {
     if (!accountModuleImports) {
       accountModuleImports = new AccountModulesImportInfo(module.address, tsModuleName)
       this.accountImports.set(module.address, accountModuleImports)
-      // the account has already be processed, delete pending task
-      this.pendingAccounts.delete(module.address)
     }
+    // the account has already be processed, delete pending task
+    this.pendingAccounts.delete(module.address)
 
     this.registerStruct(module, accountModuleImports)
     this.registerFunctions(module, accountModuleImports)
