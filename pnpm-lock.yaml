@@ -117,8 +117,8 @@ importers:
   packages/aptos:
     dependencies:
       '@aptos-labs/ts-sdk':
-        specifier: ~2.0.0
-        version: 2.0.0(got@11.8.6)
+        specifier: ~1.39.0
+        version: 1.39.0(axios@1.6.2)(got@11.8.6)
       '@typemove/move':
         specifier: workspace:*
         version: link:../move
@@ -190,19 +190,26 @@ packages:
     resolution: {integrity: sha512-q3s6pPq8H2buGp+tPuIRInWsYOuhSEwuNJPwd2YnsiID3YSLihn2ug39ktDJAcSOprUcp7Nid8WK7hKqnUmSdA==}
     engines: {node: '>=15.10.0'}
 
-  '@aptos-labs/aptos-client@2.0.0':
-    resolution: {integrity: sha512-A23T3zTCRXEKURodp00dkadVtIrhWjC9uo08dRDBkh69OhCnBAxkENmUy/rcBarfLoFr60nRWt7cBkc8wxr1mg==}
-    engines: {node: '>=20.0.0'}
+  '@aptos-labs/aptos-client@1.2.0':
+    resolution: {integrity: sha512-pBlIAT/W+Qa0TOr/318U8r0Gxw/jfyRLcvDGMEXgcVrPqO9Qhwsmozw6LPPIZ963FB7smwIaMeexWFDs3zijcg==}
+    engines: {node: '>=15.10.0'}
     peerDependencies:
+      axios: ^1.8.4
       got: ^11.8.6
+
+  '@aptos-labs/aptos-dynamic-transaction-composer@0.1.3':
+    resolution: {integrity: sha512-bJl+Zq5QbhpcPIJakAkl9tnT3T02mxCYhZThQDhUmjsOZ5wMRlKJ0P7aaq1dmlybSHkVj7vRgOy2t86/NDKKng==}
+
+  '@aptos-labs/script-composer-pack@0.0.9':
+    resolution: {integrity: sha512-Y3kA1rgF65HETgoTn2omDymsgO+fnZouPLrKJZ9sbxTGdOekIIHtGee3A2gk84eCqa02ZKBumZmP+IDCXRtU/g==}
 
   '@aptos-labs/ts-sdk@1.26.0':
     resolution: {integrity: sha512-zScAiEuvADE9PsxgpqR7JAZOMdbTyl5AvgbsGGn56Mc8moa8Y7nyyPDxs83HQnqmZ0V/mghLVAaJ1pa7N+V3IQ==}
     engines: {node: '>=11.0.0'}
     deprecated: <1.30.0 is no longer supported please upgrade to the latest version
 
-  '@aptos-labs/ts-sdk@2.0.0':
-    resolution: {integrity: sha512-2sFX5nQZu70koLKs2AxJI0/P2ggevB0qa6F3i6FK6Zg0fhJXjHKr0TywwTvzM46qmn4vEygw+QTXnfhLGIbgEQ==}
+  '@aptos-labs/ts-sdk@1.39.0':
+    resolution: {integrity: sha512-VFEWZsqb8Mto8XbLK8lDRdUvyHjp+geiwFxRzRcQK6HftMGB4bYuEsOI2Vy6u/TqkUft8DvmpV5yX027R5/SMQ==}
     engines: {node: '>=20.0.0'}
 
   '@babel/code-frame@7.24.2':
@@ -3005,9 +3012,16 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@aptos-labs/aptos-client@2.0.0(got@11.8.6)':
+  '@aptos-labs/aptos-client@1.2.0(axios@1.6.2)(got@11.8.6)':
     dependencies:
+      axios: 1.6.2
       got: 11.8.6
+
+  '@aptos-labs/aptos-dynamic-transaction-composer@0.1.3': {}
+
+  '@aptos-labs/script-composer-pack@0.0.9':
+    dependencies:
+      '@aptos-labs/aptos-dynamic-transaction-composer': 0.1.3
 
   '@aptos-labs/ts-sdk@1.26.0':
     dependencies:
@@ -3025,10 +3039,11 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@aptos-labs/ts-sdk@2.0.0(got@11.8.6)':
+  '@aptos-labs/ts-sdk@1.39.0(axios@1.6.2)(got@11.8.6)':
     dependencies:
       '@aptos-labs/aptos-cli': 1.0.2
-      '@aptos-labs/aptos-client': 2.0.0(got@11.8.6)
+      '@aptos-labs/aptos-client': 1.2.0(axios@1.6.2)(got@11.8.6)
+      '@aptos-labs/script-composer-pack': 0.0.9
       '@noble/curves': 1.6.0
       '@noble/hashes': 1.5.0
       '@scure/bip32': 1.4.0
@@ -3039,6 +3054,7 @@ snapshots:
       jwt-decode: 4.0.0
       poseidon-lite: 0.2.0
     transitivePeerDependencies:
+      - axios
       - got
 
   '@babel/code-frame@7.24.2':
