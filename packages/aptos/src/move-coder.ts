@@ -12,7 +12,10 @@ import {
 } from '@aptos-labs/ts-sdk'
 
 export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | MoveResource> {
-  constructor(client: Aptos) {
+  constructor(
+    client: Aptos,
+    readonly ignoreObjectInnerField: boolean = false
+  ) {
     super(new AptosChainAdapter(client))
   }
 
@@ -51,7 +54,10 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
   protected async decode(data: any, type: TypeDescriptor): Promise<any> {
     switch (type.qname) {
       case '0x1::object::Object':
-        if (data?.inner !== undefined && typeof data?.inner === 'string') {
+        if (this.ignoreObjectInnerField && typeof data === 'string') {
+          return data
+        }
+        if (typeof data === 'object' && data?.inner !== undefined && typeof data?.inner === 'string') {
           return data.inner
         }
     }
