@@ -8,7 +8,8 @@ import {
   EntryFunctionPayloadResponse,
   Event,
   MoveModuleBytecode,
-  MoveResource
+  MoveResource,
+  MoveValue
 } from '@aptos-labs/ts-sdk'
 
 export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | MoveResource> {
@@ -85,6 +86,24 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
       ...payload,
       arguments_decoded: argumentsDecoded
     } as TypedFunctionPayload<T>
+  }
+
+  toMoveValue(value: any): MoveValue {
+    switch (typeof value) {
+      case 'boolean':
+        return value
+      case 'number':
+        return value
+      case 'bigint':
+        return value.toString()
+      case 'object':
+        if (Array.isArray(value)) {
+          return value.map(this.toMoveValue)
+        }
+        return value
+      default:
+        return value.toString()
+    }
   }
 }
 
