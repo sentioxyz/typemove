@@ -45,16 +45,20 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
   PREFIX = 'Aptos'
   SYSTEM_PACKAGE = '@typemove/aptos'
 
-  constructor(endpoint: string) {
+  constructor(
+    endpoint: string,
+    readonly useViewJson = false
+  ) {
     super(new AptosChainAdapter(new Aptos(new AptosConfig({ fullnode: endpoint }))))
   }
 
   generateImports(): string {
     return `
       ${super.generateImports()}
-      import { Aptos, Account as AptosAccount, MoveAddressType, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewFunctionData } from '@aptos-labs/ts-sdk'
+      import { Aptos, Account as AptosAccount, MoveAddressType, PendingTransactionResponse, InputGenerateTransactionOptions, MoveStructId, InputViewFunctionData, InputViewFunctionJsonData } from '@aptos-labs/ts-sdk'
     `
   }
+
   protected generateExtra(address: string | undefined, module: InternalMoveModule) {
     const funcs = module.exposedFunctions.map((f) => this.generateEntryForFunction(module, f))
 
@@ -106,6 +110,23 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
       : `request: {
       ${func.typeParams.length > 0 ? `typeArguments: [${func.typeParams.map((_) => 'MoveStructId').join(', ')}],` : ''}
       ${func.params.length > 0 ? `functionArguments: [${fields.join(',')}]` : ''}},`
+
+    if (this.useViewJson) {
+      return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
+    client: Aptos,
+    ${requestArg}
+    version?: bigint): Promise<[${returns.join(',')}]> {
+      const coder = ${this.getGetDefaultCoder()}        
+      const data: InputViewFunctionJsonData = {
+        function: "${module.address}::${module.name}::${func.name}",
+        functionArguments: ${func.params.length > 0 ? 'request.functionArguments.map(coder.toMoveValue)' : '[]'},
+        typeArguments: ${func.typeParams.length > 0 ? 'request.typeArguments' : '[]'},
+      }
+      const res = await client.viewJson({payload: data, options: { ledgerVersion: version } });
+      const type = await coder.getMoveFunction("${module.address}::${module.name}::${func.name}")
+      return await coder.decodeArray(res, type.return) as any
+    }`
+    }
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
     client: Aptos,
