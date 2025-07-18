@@ -534,6 +534,12 @@ export class AccountCodegen<ModuleType, StructType> {
 
         dependedAccounts.push(account)
       }
+      for (const friend of info.friends) {
+        // shouldn't import self
+        if (!this.modules.find((m) => m.name === friend)) {
+          moduleImports.push(`import { ${friend} } from "./${friend}${this.moduleGen.maybeEsmPrefix()}"`)
+        }
+      }
     }
 
     const eventsMap: Map<string, InternalMoveStruct> = this.moduleGen.chainAdapter.getAllEventStructs(this.modules)
