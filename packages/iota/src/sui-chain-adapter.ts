@@ -8,20 +8,20 @@ import {
   TypeDescriptor
 } from '@typemove/move'
 
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui/client'
+import { IotaMoveNormalizedModule, IotaEvent, IotaMoveObject, IotaClient } from '@iota/iota-sdk/client'
 
-export class SuiChainAdapter extends ChainAdapter<
-  // SuiNetwork,
-  SuiMoveNormalizedModule,
-  SuiEvent | SuiMoveObject
+export class IotaChainAdapter extends ChainAdapter<
+  // IotaNetwork,
+  IotaMoveNormalizedModule,
+  IotaEvent | IotaMoveObject
 > {
   async getChainId() {
     return this.client.getChainIdentifier()
   }
-  // static INSTANCE = new SuiChainAdapter()
+  // static INSTANCE = new IotaChainAdapter()
 
-  client: SuiClient
-  constructor(client: SuiClient) {
+  client: IotaClient
+  constructor(client: IotaClient) {
     super()
     this.client = client
   }
@@ -29,15 +29,15 @@ export class SuiChainAdapter extends ChainAdapter<
   async fetchModule(
     account: string,
     module: string
-    // network: SuiNetwork
-  ): Promise<SuiMoveNormalizedModule> {
+    // network: IotaNetwork
+  ): Promise<IotaMoveNormalizedModule> {
     return await this.client.getNormalizedMoveModule({ package: account, module })
   }
 
   async fetchModules(
     account: string
-    // network: SuiNetwork
-  ): Promise<SuiMoveNormalizedModule[]> {
+    // network: IotaNetwork
+  ): Promise<IotaMoveNormalizedModule[]> {
     const modules = await this.client.getNormalizedMoveModulesByPackage({
       package: account
     })
@@ -52,7 +52,7 @@ export class SuiChainAdapter extends ChainAdapter<
     // return params.slice(0, params.length - 1)
   }
 
-  toInternalModules(modules: SuiMoveNormalizedModule[]): InternalMoveModule[] {
+  toInternalModules(modules: IotaMoveNormalizedModule[]): InternalMoveModule[] {
     return Object.values(modules).map(toInternalModule)
   }
 
@@ -72,11 +72,11 @@ export class SuiChainAdapter extends ChainAdapter<
     return eventMap
   }
 
-  getType(base: SuiEvent | SuiMoveObject): string {
+  getType(base: IotaEvent | IotaMoveObject): string {
     return base.type
   }
 
-  getData(val: SuiEvent | SuiMoveObject) {
+  getData(val: IotaEvent | IotaMoveObject) {
     // if (val.parsedJson) {
     //   return val.parsedJson as any
     // }
@@ -86,13 +86,13 @@ export class SuiChainAdapter extends ChainAdapter<
     if ('parsedJson' in val) {
       return val.parsedJson as any
     }
-    // if (SuiParsedData.is(val)) {
+    // if (IotaParsedData.is(val)) {
     //   return val.fields as any
     // }
     if (val.dataType === 'moveObject') {
       return val.fields as any
     }
-    // if (SuiMoveObject.is(val)) {
+    // if (IotaMoveObject.is(val)) {
     //   return val.fields as any
     // }
     // This may not be perfect, just think everything has
@@ -108,6 +108,6 @@ export class SuiChainAdapter extends ChainAdapter<
   // }
 }
 
-function getRpcClient(endpoint: string): SuiClient {
-  return new SuiClient({ url: endpoint })
+function getRpcClient(endpoint: string): IotaClient {
+  return new IotaClient({ url: endpoint })
 }

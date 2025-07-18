@@ -135,6 +135,27 @@ importers:
         specifier: ^12.0.0
         version: 12.1.0
 
+  packages/iota:
+    dependencies:
+      '@iota/iota-sdk':
+        specifier: ~1.4.0
+        version: 1.4.0(typescript@5.7.3)
+      '@typemove/move':
+        specifier: workspace:*
+        version: link:../move
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
+      commander:
+        specifier: ^13.0.0
+        version: 13.1.0
+      prettier:
+        specifier: ^3.2.4
+        version: 3.2.5
+      radash:
+        specifier: ^12.0.0
+        version: 12.1.0
+
   packages/move:
     dependencies:
       radash:
@@ -441,12 +462,20 @@ packages:
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
 
+  '@iota/bcs@1.1.0':
+    resolution: {integrity: sha512-KUDMbvLilv+AvGVjH9rktyBD2ttYFvx21qyiU5HHiJxX4duKngXjbb7XauICQrss5taz0YgPdK5RqIoHuwntYw==}
+
+  '@iota/iota-sdk@1.4.0':
+    resolution: {integrity: sha512-HcZEq1fJzkus7u+gA2l2/raxyr2736wi9iPw+KJUoieogPOG7p2qTg3HQIa4zJ+rJBuMZcxE7bLJG+TnWd3Q5w==}
+    engines: {node: '>=20'}
+
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
 
   '@ls-lint/ls-lint@2.2.3':
     resolution: {integrity: sha512-ekM12jNm/7O2I/hsRv9HvYkRdfrHpiV1epVuI2NP+eTIcEgdIdKkKCs9KgQydu/8R5YXTov9aHdOgplmCHLupw==}
+    cpu: [x64, arm64, s390x]
     os: [darwin, linux, win32]
     hasBin: true
 
@@ -2811,6 +2840,9 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  tweetnacl@1.0.3:
+    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
+
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -3220,6 +3252,29 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.3.0': {}
+
+  '@iota/bcs@1.1.0':
+    dependencies:
+      bs58: 6.0.0
+
+  '@iota/iota-sdk@1.4.0(typescript@5.7.3)':
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.9.0)
+      '@iota/bcs': 1.1.0
+      '@noble/curves': 1.6.0
+      '@noble/hashes': 1.5.0
+      '@scure/bip32': 1.4.0
+      '@scure/bip39': 1.3.0
+      '@suchipi/femver': 1.0.0
+      bech32: 2.0.0
+      gql.tada: 1.8.10(graphql@16.9.0)(typescript@5.7.3)
+      graphql: 16.9.0
+      tweetnacl: 1.0.3
+      valibot: 0.36.0
+    transitivePeerDependencies:
+      - '@gql.tada/svelte-support'
+      - '@gql.tada/vue-support'
+      - typescript
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -5804,6 +5859,8 @@ snapshots:
       get-tsconfig: 4.7.5
     optionalDependencies:
       fsevents: 2.3.3
+
+  tweetnacl@1.0.3: {}
 
   type-check@0.4.0:
     dependencies:
