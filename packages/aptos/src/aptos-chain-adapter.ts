@@ -13,9 +13,12 @@ import { toInternalModule } from './to-internal.js'
 export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | MoveResource> {
   // static INSTANCE = new AptosChainAdapter()
   client: Aptos
-  constructor(client: Aptos) {
+  private optimisticEventDetection: boolean = true
+
+  constructor(client: Aptos, optimisticEventDetection = true) {
     super()
     this.client = client
+    this.optimisticEventDetection = optimisticEventDetection
   }
 
   async fetchModules(account: string): Promise<MoveModuleBytecode[]> {
@@ -46,43 +49,43 @@ export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | 
   }
 
   getAllEventStructs(modules: InternalMoveModule[]) {
-    // const eventMap = new Map<string, InternalMoveStruct>()
-
-    // for (const module of modules) {
-    //   const qname = moduleQname(module)
-    //
-    //   for (const struct of module.structs) {
-    //     const abilities = new Set(struct.abilities)
-    //     if (abilities.has('drop') && abilities.has('store')) {
-    //       eventMap.set(qname + SPLITTER + struct.name, struct)
-    //     }
-    //   }
-    // }
-    // return eventMap
-
     const eventMap = new Map<string, InternalMoveStruct>()
     const structMap = new Map<string, InternalMoveStruct>()
     for (const module of modules) {
       const qname = moduleQname(module)
       for (const struct of module.structs) {
         const typeName = qname + SPLITTER + struct.name
-        // deprecated v2 event
+
+        // Skip deprecated v2 events
         if (typeName == '0x1::coin::Deposit' || typeName == '0x1::coin::Withdraw') {
           continue
         }
 
+        structMap.set(typeName, struct)
+
+        // Check if struct is explicitly marked as event
         if (struct.isEvent) {
           eventMap.set(typeName, struct)
+          continue
         }
+
         if (struct.name.endsWith('Event')) {
           // this is a hack to support some old events
           eventMap.set(typeName, struct)
+          continue
         }
 
-        structMap.set(qname + SPLITTER + struct.name, struct)
+        // Check for native events: structs with EXACTLY drop and store abilities
+        if (this.optimisticEventDetection) {
+          const abilities = new Set(struct.abilities)
+          if (abilities.size === 2 && abilities.has('drop') && abilities.has('store')) {
+            eventMap.set(typeName, struct)
+          }
+        }
       }
     }
 
+    // Also check for legacy events (in EventHandle fields)
     for (const module of modules) {
       for (const struct of module.structs) {
         for (const field of struct.fields) {
