@@ -129,9 +129,7 @@ export class SuiCodegen extends AbstractCodegen<
         // no op
       } else if (arg.reference) {
         args.push({
-          paramType: isView
-            ? this.ADDRESS_TYPE
-            : `${this.ADDRESS_TYPE} | TransactionObjectArgument | TransactionArgument`,
+          paramType: isView ? this.ADDRESS_TYPE : `${this.ADDRESS_TYPE} | TransactionObjectArgument`,
           callValue: `_args.push(transactionArgumentOrObject(args[${idx}], tx))`
         })
       } else if (arg.isVector()) {
