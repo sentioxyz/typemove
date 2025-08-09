@@ -16,7 +16,7 @@ import { Aptos, AptosConfig, Event, MoveModuleBytecode, MoveResource } from '@ap
 export async function codegen(
   abisDir: string,
   outDir = join('src', 'types', 'aptos'),
-  endpoint: string,
+  config: AptosConfig,
   genExample = false,
   builtin = false
 ) {
@@ -24,7 +24,7 @@ export async function codegen(
     console.error(chalk.red(`ABIs directory ${abisDir} does not exist`))
     return 0
   }
-  const gen = new AptosCodegen(endpoint)
+  const gen = new AptosCodegen(config)
   try {
     const numFiles = await gen.generate(abisDir, outDir, builtin)
     if (numFiles > 0) {
@@ -46,10 +46,10 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
   SYSTEM_PACKAGE = '@typemove/aptos'
 
   constructor(
-    endpoint: string,
+    config: AptosConfig,
     readonly useViewJson = false
   ) {
-    super(new AptosChainAdapter(new Aptos(new AptosConfig({ fullnode: endpoint }))))
+    super(new AptosChainAdapter(new Aptos(config)))
   }
 
   generateImports(): string {
@@ -145,7 +145,7 @@ export class AptosCodegen extends AbstractCodegen<MoveModuleBytecode, Event | Mo
   }
 
   protected getGetDefaultCoder() {
-    return `defaultMoveCoder(client.config.fullnode)`
+    return `defaultMoveCoder(client.config)`
   }
 
   protected generateEntryForFunction(module: InternalMoveModule, func: InternalMoveFunction): string {

@@ -9,7 +9,8 @@ import {
   Event,
   MoveModuleBytecode,
   MoveResource,
-  MoveValue
+  MoveValue,
+  Network
 } from '@aptos-labs/ts-sdk'
 
 export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | MoveResource> {
@@ -107,25 +108,17 @@ export class MoveCoder extends AbstractMoveCoder<MoveModuleBytecode, Event | Mov
   }
 }
 
-// const MOVE_CODER = new MoveCoder(AptosNetwork.MAIN_NET)
-// const TESTNET_MOVE_CODER = new MoveCoder(AptosNetwork.TEST_NET)
-//
-// export function defaultMoveCoder(network: AptosNetwork = AptosNetwork.MAIN_NET): MoveCoder {
-//   if (network == AptosNetwork.MAIN_NET) {
-//     return MOVE_CODER
-//   }
-//   return TESTNET_MOVE_CODER
-// }
+const DEFAULT_CONFIG = new AptosConfig({ network: Network.MAINNET })
 
-const DEFAULT_ENDPOINT = 'https://mainnet.aptoslabs.com/v1'
 const CODER_MAP = new Map<string, MoveCoder>()
 
-export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
-  let coder = CODER_MAP.get(endpoint)
+export function defaultMoveCoder(config = DEFAULT_CONFIG): MoveCoder {
+  const configKey = config.fullnode ? config.fullnode : config.network
+
+  let coder = CODER_MAP.get(configKey)
   if (!coder) {
-    const config = new AptosConfig({ fullnode: endpoint })
     coder = new MoveCoder(new Aptos(config))
-    CODER_MAP.set(endpoint, coder)
+    CODER_MAP.set(configKey, coder)
   }
   return coder
 }

@@ -49,7 +49,7 @@ export class AccountResourceClient {
       type: typeStr,
       data: result
     }
-    return defaultMoveCoder(this.client.config.fullnode).decodeResource<T>(resource)
+    return defaultMoveCoder(this.client.config).decodeResource<T>(resource)
   }
 
   /**
@@ -64,6 +64,6 @@ export class AccountResourceClient {
     options?: PaginationArgs & LedgerVersionArg
   ): Promise<TypedMoveResource<T>[]> {
     const result = await this.client.getAccountResources({ accountAddress, options })
-    return defaultMoveCoder(this.client.config.fullnode).filterAndDecodeResources<T>(resourceType, result)
+    return defaultMoveCoder(this.client.config).filterAndDecodeResources<T>(resourceType, result)
   }
 }

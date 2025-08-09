@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { codegen } from './codegen.js'
-import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
+import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk'
 import * as path from 'path'
 import * as fs from 'fs'
 import { Command } from 'commander'
@@ -30,14 +30,23 @@ program
     'mainnet'
   )
   .action(async (location, options) => {
-    let endpoint = options.network
+    const endpoint = options.network
+    let config: AptosConfig
     if (endpoint == 'mainnet') {
-      endpoint = 'https://mainnet.aptoslabs.com/v1'
+      config = new AptosConfig({
+        network: Network.MAINNET
+      })
+    } else if (endpoint == 'testnet') {
+      config = new AptosConfig({
+        network: Network.TESTNET
+      })
+    } else {
+      config = new AptosConfig({
+        network: Network.CUSTOM,
+        fullnode: endpoint
+      })
     }
-    if (endpoint == 'testnet') {
-      endpoint = 'https://testnet.aptoslabs.com/v1'
-    }
-    const aptosClient = new Aptos(new AptosConfig({ fullnode: endpoint }))
+    const aptosClient = new Aptos(config)
 
     let abisDir = location
     if (location.startsWith('0x')) {
