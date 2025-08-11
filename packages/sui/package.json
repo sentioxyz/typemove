@@ -54,7 +54,7 @@
     "@mysten/sui": "~1.37.1",
     "@typemove/move": "workspace:*",
     "chalk": "^5.3.0",
-    "commander": "^13.0.0",
+    "commander": "^14.0.0",
     "prettier": "^3.2.4",
     "radash": "^12.0.0"
   },
