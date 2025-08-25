@@ -52,15 +52,6 @@ function copyAndReplace(filePath: string) {
   replacedContent = replacedContent.replaceAll('https://fullnode.mainnet.sui.io', 'https://api.mainnet.iota.cafe')
   replacedContent = replacedContent.replaceAll('https://fullnode.testnet.sui.io', 'https://api.testnet.iota.cafe')
 
-  replacedContent = replacedContent.replaceAll(
-    '  load(module: IotaMoveNormalizedModule, address: string)',
-    `  async maybeGetMoveEnum(type: string) {
-    return undefined
-  }
-
-  load(module: IotaMoveNormalizedModule, address: string)`
-  )
-
   ensureDirExist(path.dirname(targetPath))
   fs.writeFileSync(targetPath, replacedContent, 'utf-8')
   console.log(`Copied and transformed: ${relativePath}`)
