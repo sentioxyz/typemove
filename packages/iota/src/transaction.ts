@@ -10,12 +10,12 @@ export function isTransactionArgument(value: any): boolean {
 }
 
 export function transactionArgumentOrObject(
-  value: TransactionArgument | TransactionObjectInput,
+  value: TransactionObjectInput,
   transactionBlock: Transaction
 ): TransactionArgument {
-  if (isTransactionArgument(value)) {
-    return value as TransactionArgument
-  }
+  // if (isTransactionArgument(value)) {
+  //   return value as TransactionArgument
+  // }
   return transactionBlock.object(value)
 }
 
