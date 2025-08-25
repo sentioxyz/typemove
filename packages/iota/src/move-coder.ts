@@ -36,10 +36,6 @@ export class MoveCoder extends AbstractMoveCoder<
     super(new IotaChainAdapter(client))
   }
 
-  async maybeGetMoveEnum(type: string) {
-    return undefined
-  }
-
   load(module: IotaMoveNormalizedModule, address: string): InternalMoveModule {
     let m = this.moduleMapping.get(module.address + '::' + module.name)
     const mDeclared = this.moduleMapping.get(address + '::' + module.name)
