@@ -1,56 +1,45 @@
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import unusedImports from 'eslint-plugin-unused-imports'
-import tsParser from '@typescript-eslint/parser'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
+import { configs } from 'typescript-eslint'
+import { defineConfig } from "eslint/config";
+import { importX } from 'eslint-plugin-import-x'
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-})
-
-export default [
+export default defineConfig([
+  // ...configs.recommendedTypeChecked,
+  ...configs.recommended,
+  importX.flatConfigs.recommended,
+  importX.flatConfigs.typescript,
+  eslintConfigPrettier,
   {
     ignores: [
       '**/,.*',
       '**/*.config.ts',
+      '**/*.config.js',
       '**/*.config.cjs',
+      '**/*.config.mjs',
       '**/dist',
       '**/debug',
       '**/lib',
       '**/docs',
       '**/gen',
       '**/types',
-      '**/builtin'
+      '**/builtin',
     ]
   },
-  ...fixupConfigRules(
-    compat.extends(
-      'plugin:@typescript-eslint/recommended',
-      'plugin:import-x/recommended',
-      'plugin:import-x/typescript',
-      'prettier'
-    )
-  ),
   {
     plugins: {
-      '@typescript-eslint': fixupPluginRules(typescriptEslint),
       'unused-imports': unusedImports
     },
-
     languageOptions: {
-      parser: tsParser,
+      parserOptions: {
+        projectService: true
+      },
       ecmaVersion: 'latest',
       sourceType: 'module'
     },
-
     rules: {
+      '@typescript-eslint/no-deprecated': 'warn',
+
       '@typescript-eslint/no-inferrable-types': ['off'],
       '@typescript-eslint/no-empty-function': ['off'],
       '@typescript-eslint/no-unused-vars': ['off'],
@@ -67,8 +56,9 @@ export default [
       ],
 
       'import-x/no-named-as-default': ['off'],
+      'import-x/no-named-as-default-member': ['off'],
       'import-x/no-unresolved': ['off'],
-      'unused-imports/no-unused-imports': 'error'
+      'unused-imports/no-unused-imports': 'error',
     }
   }
-]
+])
