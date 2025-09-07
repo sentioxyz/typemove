@@ -253,7 +253,7 @@ export class MoveCoder extends AbstractMoveCoder<
     await this.registerBCSTypes(type)
     if (typeof data == 'string') {
       const buf = Buffer.from(data, encoding as any)
-      data = new Uint8Array(buf, buf.byteOffset, buf.byteLength)
+      data = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength)
     }
     const bcsType = this.bcsRegistry.get(type.getNormalizedSignature())
     return bcsType?.parse(data)
