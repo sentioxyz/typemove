@@ -1,4 +1,4 @@
-import { accountAddressString, moduleQname, SPLITTER, VECTOR_STR } from './utils.js'
+import { accountTypeString, moduleQname, SPLITTER, VECTOR_STR } from './utils.js'
 import { DecodedStruct, matchType, parseMoveType, TypeDescriptor } from './types.js'
 import { InternalMoveEnum, InternalMoveFunction, InternalMoveModule, InternalMoveStruct } from './internal-models.js'
 // import { bytesToBigInt } from '../utils/index.js'
@@ -25,8 +25,8 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
   abstract load(module: ModuleType, address: string): InternalMoveModule
 
   protected loadInternal(module: InternalMoveModule, address: string) {
-    const account = accountAddressString(module.address)
-    const declareAccount = accountAddressString(address)
+    const account = module.address
+    const declareAccount = accountTypeString(address)
 
     this._loadInternal(module, account)
     if (account !== declareAccount) {
@@ -74,7 +74,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
 
   async getMoveStruct(type: string): Promise<InternalMoveStruct> {
     const [account_, module, typeName] = type.split(SPLITTER)
-    const account = accountAddressString(account_)
+    const account = accountTypeString(account_)
     type = [account, module, typeName].join(SPLITTER)
 
     let struct = this.typeMapping.get(type)
@@ -103,7 +103,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
 
   async maybeGetMoveEnum(type: string): Promise<InternalMoveEnum | undefined> {
     const [account_, module, typeName] = type.split(SPLITTER)
-    const account = accountAddressString(account_)
+    const account = accountTypeString(account_)
     type = [account, module, typeName].join(SPLITTER)
 
     let enumType = this.enumMapping.get(type)
@@ -132,7 +132,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
 
   async getMoveFunction(type: string): Promise<InternalMoveFunction> {
     const [account_, module, typeName] = type.split(SPLITTER)
-    const account = accountAddressString(account_)
+    const account = accountTypeString(account_)
     type = [account, module, typeName].join(SPLITTER)
 
     let func = this.funcMapping.get(type)
