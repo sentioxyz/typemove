@@ -3,6 +3,7 @@ import {
   AbstractMoveCoder,
   ANY_TYPE,
   DecodedStruct,
+  accountTypeString,
   parseMoveType,
   SPLITTER,
   TypeDescriptor,
@@ -37,6 +38,7 @@ export class MoveCoder extends AbstractMoveCoder<
   }
 
   load(module: IotaMoveNormalizedModule, address: string): InternalMoveModule {
+    address = accountTypeString(address)
     let m = this.moduleMapping.get(module.address + '::' + module.name)
     const mDeclared = this.moduleMapping.get(address + '::' + module.name)
     if (m && mDeclared) {
