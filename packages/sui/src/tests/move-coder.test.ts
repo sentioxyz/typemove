@@ -3,7 +3,7 @@ import { coin, dynamic_field } from '../builtin/0x2.js'
 import { defaultMoveCoder } from '../move-coder.js'
 import { expect } from 'chai'
 import { TypedSuiMoveObject } from '../models.js'
-import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
+import { ANY_TYPE, BUILTIN_TYPES, parseMoveType } from '@typemove/move'
 import { single_collateral } from './types/testnet/0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2.js'
 import { ascii } from '../builtin/0x1.js'
 import { de_token } from './types/testnet/enum'
@@ -141,12 +141,9 @@ describe('Test Sui coder', () => {
     const res2 = (await coder.filterAndDecodeObjects(fieldType, objects as any)).map((e) => e.data_decoded)
     expect(res2.length).eq(objects.length)
 
-    const decodedObjects = await coder.getDynamicFields(
-      objects as any,
-      BUILTIN_TYPES.ADDRESS_TYPE,
-      BUILTIN_TYPES.BOOL_TYPE
-    )
-    expect(res.length).eq(decodedObjects.length)
+    const objectWithAny = await coder.decodeType(objects[0], dynamic_field.Field.type(ANY_TYPE, ANY_TYPE))
+    expect(objectWithAny?.value).eq(true)
+
     // console.log(decodedObjects)
   })
 

@@ -338,6 +338,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
         if (!matchType(type, typeInStruct)) {
           return undefined
         }
+        type = typeInStruct
       }
     }
 
