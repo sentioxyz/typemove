@@ -4,6 +4,8 @@ import { InternalMoveModule } from './internal-models.js'
 export class AccountModulesImportInfo {
   // account to module
   imports: Map<string, Set<string>>
+  // other namespace in the same account
+  friends: Set<string>
   account: string
   moduleName: string
 
@@ -11,10 +13,15 @@ export class AccountModulesImportInfo {
     this.account = account
     this.moduleName = tsModuleName
     this.imports = new Map<string, Set<string>>()
+    this.friends = new Set<string>()
   }
 
   addImport(account: string, module: string) {
     if (account === this.account) {
+      if (this.moduleName != module) {
+        // belongs to the same account, but different module
+        this.friends.add(module)
+      }
       return
     }
     let accountModules = this.imports.get(account)
