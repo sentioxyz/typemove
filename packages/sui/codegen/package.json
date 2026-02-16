@@ -1,5 +1,0 @@
-{
-  "private": true,
-  "main": "../dist/cjs/codegen/index.js",
-  "module": "../dist/esm/codegen/index.js"
-}

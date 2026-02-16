@@ -109,6 +109,17 @@ export class TypeDescriptor<T = any> {
       return []
     }
 
+    // Handle closure/lambda types: |&mut T1|T2 or |T1, T2|T3
+    if (this.qname.startsWith('|')) {
+      // Closure types are function types, not module dependencies
+      // The actual type dependencies are in the typeArgs if any
+      const types = new Set<string>()
+      for (const param of this.typeArgs) {
+        param.dependedTypes().forEach((t) => types.add(t))
+      }
+      return Array.from(types)
+    }
+
     if (this.isVector()) {
       return this.typeArgs[0].dependedTypes()
     }

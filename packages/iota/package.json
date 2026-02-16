@@ -4,33 +4,13 @@
   "license": "Apache-2.0",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./codegen": {
-      "import": "./dist/esm/codegen/index.js",
-      "require": "./dist/cjs/codegen/index.js"
-    },
-    "./builtin": {
-      "import": "./dist/esm/builtin/index.js",
-      "require": "./dist/cjs/builtin/index.js"
-    },
-    "./builtin/0x1": {
-      "import": "./dist/esm/builtin/0x1.js",
-      "require": "./dist/cjs/builtin/0x1.js"
-    },
-    "./builtin/0x2": {
-      "import": "./dist/esm/builtin/0x2.js",
-      "require": "./dist/cjs/builtin/0x2.js"
-    },
-    "./builtin/0x3": {
-      "import": "./dist/esm/builtin/0x3.js",
-      "require": "./dist/cjs/builtin/0x3.js"
-    }
+    ".": "./dist/esm/index.js",
+    "./codegen": "./dist/esm/codegen/index.js",
+    "./builtin": "./dist/esm/builtin/index.js",
+    "./builtin/0x1": "./dist/esm/builtin/0x1.js",
+    "./builtin/0x2": "./dist/esm/builtin/0x2.js",
+    "./builtin/0x3": "./dist/esm/builtin/0x3.js"
   },
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
   "bin": {
     "typemove-iota": "./dist/esm/codegen/run.js"
   },
@@ -42,15 +22,14 @@
   ],
   "scripts": {
     "_gen": "pnpm gen:test && tsx src/codegen/run.ts -t src/builtin -a src/abis",
-    "build": "pnpm gen && tsc && pnpm build:cjs",
+    "build": "pnpm gen && tsc",
     "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
-    "build:cjs": "tsc --project tsconfig.cjs.json && cp ../../package.cjs.json ./dist/cjs/package.json",
     "gen": "pnpm _gen 0x1 && pnpm _gen 0x2 && pnpm _gen 0x3",
     "gen:test": "tsx src/codegen/run.ts -t src/tests/types/testnet -n testnet src/tests/abis/testnet",
     "sync-from-sui": "tsx sync-from-sui.ts",
     "test": "glob -c 'tsx --test' '**/*.test.ts'"
   },
-  "types": "./dist/cjs/index.d.ts",
+  "types": "./dist/esm/index.d.ts",
   "dependencies": {
     "@iota/iota-sdk": "~1.6.1",
     "@typemove/move": "workspace:*",

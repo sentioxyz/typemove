@@ -1,5 +1,5 @@
-import { ResourceChange } from './models'
-import { MoveCoder } from './move-coder'
+import { ResourceChange } from './models.js'
+import { MoveCoder } from './move-coder.js'
 
 export async function decodeResourceChange<T>(
   resources: {
