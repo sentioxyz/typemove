@@ -141,8 +141,8 @@ importers:
   packages/iota:
     dependencies:
       '@iota/iota-sdk':
-        specifier: ~1.6.1
-        version: 1.6.1(typescript@5.9.2)
+        specifier: ~1.10.0
+        version: 1.10.1(typescript@5.9.2)
       '@typemove/move':
         specifier: workspace:*
         version: link:../move
@@ -512,11 +512,11 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
-  '@iota/bcs@1.2.0':
-    resolution: {integrity: sha512-QdRSR0KpJ87tdjVNmM/j0+0DvE0aTxHIa02337iluaOsMqtJ8OdgUCfSyLduC/3qS+8tJE+UB1KOw55tF+sN2w==}
+  '@iota/bcs@1.4.0':
+    resolution: {integrity: sha512-Bpg8uPB3UTweJyFS3G+aycGcTCxaJQi2a9bEy2QXWMBM8a/tLN1KCg4IzKWkAJ4FyMNrZZrdXiBqAzmNK6xdVQ==}
 
-  '@iota/iota-sdk@1.6.1':
-    resolution: {integrity: sha512-V7rx7m9erCn9lr4hNZVMtwmka2NsoTZ9EFSE4ZqEDO44cWdheM61+i/y5HJhvvmYAb/kkDfSmfdmzLaGTbVVYg==}
+  '@iota/iota-sdk@1.10.1':
+    resolution: {integrity: sha512-q0GxOCFzPqIcaw1lFuFljmMDj1ajIK6UZFzOYnnPqfs/nufOZrJQ9Bg/hLj23xbMno/tdND+aIjDWY6GG8MAXw==}
     engines: {node: '>=20'}
 
   '@isaacs/balanced-match@4.0.1':
@@ -3702,14 +3702,14 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iota/bcs@1.2.0':
+  '@iota/bcs@1.4.0':
     dependencies:
       bs58: 6.0.0
 
-  '@iota/iota-sdk@1.6.1(typescript@5.9.2)':
+  '@iota/iota-sdk@1.10.1(typescript@5.9.2)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
-      '@iota/bcs': 1.2.0
+      '@iota/bcs': 1.4.0
       '@noble/curves': 1.9.6
       '@noble/hashes': 1.8.0
       '@scure/bip32': 1.7.0
@@ -3720,7 +3720,7 @@ snapshots:
       gql.tada: 1.8.13(graphql@16.11.0)(typescript@5.9.2)
       graphql: 16.11.0
       tweetnacl: 1.0.3
-      valibot: 0.36.0
+      valibot: 1.2.0(typescript@5.9.2)
     transitivePeerDependencies:
       - '@gql.tada/svelte-support'
       - '@gql.tada/vue-support'
