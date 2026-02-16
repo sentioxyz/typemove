@@ -3,12 +3,12 @@ import {
   base_pool,
   fees,
   stable_pool
-} from './types/0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af'
-import { farming } from './types/0x6b3720cd988adeaf721ed9d4730da4324d52364871a68eac62b46d21e4d2fa99'
+} from './types/0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af.js'
+import { farming } from './types/0x6b3720cd988adeaf721ed9d4730da4324d52364871a68eac62b46d21e4d2fa99.js'
 import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
 import { _0x1 } from '@typemove/aptos/builtin'
 import { expect } from 'chai'
-import { defaultMoveCoder } from '../move-coder'
+import { defaultMoveCoder } from '../move-coder.js'
 
 describe('move-call', () => {
   const client = new Aptos(new AptosConfig({ fullnode: 'https://fullnode.mainnet.aptoslabs.com/v1' }))

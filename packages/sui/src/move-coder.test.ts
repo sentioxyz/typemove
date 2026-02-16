@@ -2,8 +2,8 @@ import { describe, test } from 'node:test'
 import { expect } from 'chai'
 import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
 import { defaultMoveCoder } from '@typemove/sui'
-import { dynamic_field } from './builtin/0x2'
-import { sui_system_state_inner } from './builtin/0x3'
+import { dynamic_field } from './builtin/0x2.js'
+import { sui_system_state_inner } from './builtin/0x3.js'
 import { SuiEvent } from '@mysten/sui/client'
 
 describe('Test move coder', () => {
