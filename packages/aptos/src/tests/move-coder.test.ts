@@ -1,10 +1,10 @@
 import assert from 'assert'
 import { describe, test } from 'node:test'
-import { stable_pool } from './types/0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af'
+import { stable_pool } from './types/0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af.js'
 import { defaultMoveCoder } from '@typemove/aptos'
 import { MoveResource, MoveStructId, WriteSetChangeWriteResource } from '@aptos-labs/ts-sdk'
-import { decodeResourceChange } from '../coder-helpers'
-import { NestedDecodedStruct } from '@typemove/move/dist/esm'
+import { decodeResourceChange } from '../coder-helpers.js'
+import { NestedDecodedStruct } from '@typemove/move'
 
 describe('move-coder', () => {
   // const aptosClient = new AptosClient("https://fullnode.mainnet.aptoslabs.com")
