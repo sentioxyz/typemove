@@ -31,7 +31,7 @@
   },
   "types": "./dist/esm/index.d.ts",
   "dependencies": {
-    "@iota/iota-sdk": "~1.6.1",
+    "@iota/iota-sdk": "~1.10.0",
     "@typemove/move": "workspace:*",
     "chalk": "^5.3.0",
     "commander": "^14.0.0",
