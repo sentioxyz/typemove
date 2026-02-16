@@ -8,7 +8,7 @@ import {
   TypeDescriptor
 } from '@typemove/move'
 
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui/client'
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
 
 export class SuiChainAdapter extends ChainAdapter<
   // SuiNetwork,
@@ -20,8 +20,8 @@ export class SuiChainAdapter extends ChainAdapter<
   }
   // static INSTANCE = new SuiChainAdapter()
 
-  client: SuiClient
-  constructor(client: SuiClient) {
+  client: SuiJsonRpcClient
+  constructor(client: SuiJsonRpcClient) {
     super()
     this.client = client
   }
@@ -108,6 +108,14 @@ export class SuiChainAdapter extends ChainAdapter<
   // }
 }
 
-function getRpcClient(endpoint: string): SuiClient {
-  return new SuiClient({ url: endpoint })
+export function inferNetworkFromUrl(url: string): string {
+  if (url.includes('mainnet')) return 'mainnet'
+  if (url.includes('testnet')) return 'testnet'
+  if (url.includes('devnet')) return 'devnet'
+  if (url.includes('localnet') || url.includes('127.0.0.1') || url.includes('localhost')) return 'localnet'
+  return 'custom'
+}
+
+function getRpcClient(endpoint: string): SuiJsonRpcClient {
+  return new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) })
 }

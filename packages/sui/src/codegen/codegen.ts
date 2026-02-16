@@ -1,4 +1,4 @@
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiClient } from '@mysten/sui/client'
+import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
 
 import * as fs from 'fs'
 import chalk from 'chalk'
@@ -13,7 +13,7 @@ import {
 } from '@typemove/move'
 import { AbstractCodegen } from '@typemove/move/codegen'
 import { join } from 'path'
-import { SuiChainAdapter } from '../sui-chain-adapter.js'
+import { SuiChainAdapter, inferNetworkFromUrl } from '../sui-chain-adapter.js'
 
 export async function codegen(
   abisDir: string,
@@ -58,7 +58,7 @@ export class SuiCodegen extends AbstractCodegen<
   PAYLOAD_OPTIONAL = true
 
   constructor(endpoint: string) {
-    super(new SuiChainAdapter(new SuiClient({ url: endpoint })))
+    super(new SuiChainAdapter(new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) })))
   }
 
   readModulesFile(fullPath: string) {
@@ -208,7 +208,7 @@ export class SuiCodegen extends AbstractCodegen<
     const returnType = `${this.generateFunctionReturnTypeParameters(func, module.address)}`
 
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
-      client: SuiClient,
+      client: SuiJsonRpcClient,
       args: [${args.map((a) => a.paramType).join(',')}],
       ${
         typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``
@@ -269,7 +269,7 @@ export class SuiCodegen extends AbstractCodegen<
       ${super.generateImports()}
       import { ZERO_ADDRESS, TypedDevInspectResults, getMoveCoder } from '@typemove/sui'
       import { Transaction, TransactionArgument, TransactionObjectArgument } from '@mysten/sui/transactions'
-      import { SuiClient } from '@mysten/sui/client'
+      import { SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
       import {  transactionArgumentOrObject, 
                 transactionArgumentOrVec,
                 transactionArgumentOrPure,
