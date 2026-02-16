@@ -3,7 +3,7 @@ import { InternalMoveModule, TypeDescriptor } from '@typemove/move'
 import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
 import { expect } from 'chai'
 
-import { AptosChainAdapter } from '../aptos-chain-adapter'
+import { AptosChainAdapter } from '../aptos-chain-adapter.js'
 
 describe('AptosChainAdapter', () => {
   const adapter = new AptosChainAdapter(new Aptos(new AptosConfig({ fullnode: 'https://mainnet.aptoslabs.com/v1' })))

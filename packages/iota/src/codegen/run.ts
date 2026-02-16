@@ -16,8 +16,8 @@ try {
 
 const program = new Command()
 program
-  .name('typemove-sui')
-  .description('CLI to generate typescript types from SUI ABIs')
+  .name('typemove-iota')
+  .description('CLI to generate typescript types from Iota ABIs')
   .showHelpAfterError()
   .version(pkg.version)
   .argument('<location>', 'Directory of ABI json files or address of account to generate types for')

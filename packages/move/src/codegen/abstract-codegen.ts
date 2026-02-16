@@ -245,7 +245,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 `
     // TODO support fields
     return `
-  export interface ${enumName} {
+  export interface ${enumName}${genericString} {
     fields: {}
     variant: ${enumValues}
   }

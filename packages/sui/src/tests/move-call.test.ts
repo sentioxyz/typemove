@@ -1,6 +1,6 @@
 import { describe, test } from 'node:test'
 import { SuiClient, getFullnodeUrl } from '@mysten/sui/client'
-import { math } from '../builtin/0x2'
+import { math } from '../builtin/0x2.js'
 import { clob_v2 } from './types/testnet/0xdee9.js'
 
 import { expect } from 'chai'

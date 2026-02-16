@@ -1,5 +1,0 @@
-{
-  "private": true,
-  "main": "../dist/cjs/builtin/index.js",
-  "module": "../dist/esm/builtin/index.js"
-}

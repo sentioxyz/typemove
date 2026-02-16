@@ -59,7 +59,7 @@ program
       fs.writeFileSync(path.join(abisDir, abiAddress + '.json'), JSON.stringify(abi, null, 2))
     }
 
-    const num = await codegen(abisDir, options.targetDir, endpoint, true)
+    const num = await codegen(abisDir, options.targetDir, config, true)
     process.exit(num == 0 ? 1 : 0)
   })
 

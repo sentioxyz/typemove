@@ -6,7 +6,7 @@ import { TypedIotaMoveObject } from '../models.js'
 import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
 import { single_collateral } from './types/testnet/0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2.js'
 import { ascii } from '../builtin/0x1.js'
-// import { de_token } from './types/testnet/enum'
+// import { de_token } from './types/testnet/enum.js'
 
 describe('Test Iota coder', () => {
   const coder = defaultMoveCoder()
