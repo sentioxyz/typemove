@@ -1,5 +1,5 @@
 import type {
-  // IotaMoveNormalizedEnum,
+  IotaMoveNormalizedEnum,
   IotaMoveNormalizedField,
   IotaMoveNormalizedFunction,
   IotaMoveNormalizedModule,
@@ -7,7 +7,7 @@ import type {
   IotaMoveNormalizedType
 } from '@iota/iota-sdk/client'
 import {
-  // InternalMoveEnum,
+  InternalMoveEnum,
   InternalMoveFunction,
   InternalMoveFunctionVisibility,
   InternalMoveModule,
@@ -23,7 +23,7 @@ export function toInternalModule(module: IotaMoveNormalizedModule): InternalMove
     exposedFunctions: Object.entries(module.exposedFunctions).map(([n, f]) => toInternalFunction(n, f)),
     name: module.name,
     structs: Object.entries(module.structs).map(([n, s]) => toInternalStruct(n, s)),
-    enums: []
+    enums: Object.entries(module.enums || {}).map(([n, e]) => toInternalEnum(n, e))
   }
 }
 
@@ -67,19 +67,19 @@ function toInternalStruct(name: string, struct: IotaMoveNormalizedStruct): Inter
   }
 }
 
-// function toInternalEnum(name: string, enumType: IotaMoveNormalizedEnum): InternalMoveEnum {
-//   return {
-//     name: name,
-//     abilities: enumType.abilities.abilities,
-//     typeParams: enumType.typeParameters.map((p: any) => {
-//       return { constraints: p.constraints.abilities }
-//     }),
-//     variants: Object.entries(enumType.variants).reduce((acc: { [key: string]: InternalMoveStructField[] }, [k, v]) => {
-//       acc[k] = v.map(toInternalField)
-//       return acc
-//     }, {})
-//   }
-// }
+function toInternalEnum(name: string, enumType: IotaMoveNormalizedEnum): InternalMoveEnum {
+  return {
+    name: name,
+    abilities: enumType.abilities.abilities,
+    typeParams: enumType.typeParameters.map((p: any) => {
+      return { constraints: p.constraints.abilities }
+    }),
+    variants: Object.entries(enumType.variants).reduce((acc: { [key: string]: InternalMoveStructField[] }, [k, v]) => {
+      acc[k] = v.map(toInternalField)
+      return acc
+    }, {})
+  }
+}
 
 function toInternalField(module: IotaMoveNormalizedField): InternalMoveStructField {
   return {
