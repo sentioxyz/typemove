@@ -29,7 +29,7 @@ function ensureDirExist(dir: string) {
 
 function copyAndReplace(filePath: string) {
   const blacklist = new Set<string>([
-    'run.ts',
+    'codegen/run.ts',
     'tests/move-call.test.ts',
     'tests/move-coder.test.ts',
     'move-coder.test.ts'
