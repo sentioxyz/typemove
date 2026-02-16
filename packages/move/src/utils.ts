@@ -110,7 +110,8 @@ const KEYWORDS = new Set([
   'bigint',
   'object',
   'volatile',
-  'namespace'
+  'namespace',
+  'arguments'
 ])
 
 export function normalizeToJSName(name: string) {

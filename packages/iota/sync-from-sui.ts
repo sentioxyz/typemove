@@ -29,7 +29,6 @@ function ensureDirExist(dir: string) {
 
 function copyAndReplace(filePath: string) {
   const blacklist = new Set<string>([
-    'to-internal.ts',
     'run.ts',
     'tests/move-call.test.ts',
     'tests/move-coder.test.ts',
