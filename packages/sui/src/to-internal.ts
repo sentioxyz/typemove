@@ -5,7 +5,7 @@ import type {
   SuiMoveNormalizedModule,
   SuiMoveNormalizedStruct,
   SuiMoveNormalizedType
-} from '@mysten/sui/client'
+} from '@mysten/sui/jsonRpc'
 import {
   InternalMoveEnum,
   InternalMoveFunction,

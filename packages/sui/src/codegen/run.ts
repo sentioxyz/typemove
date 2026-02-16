@@ -5,7 +5,8 @@ import { Command } from 'commander'
 import { createRequire } from 'module'
 import fs from 'fs'
 import path from 'path'
-import { SuiClient } from '@mysten/sui/client'
+import { SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
+import { inferNetworkFromUrl } from '../sui-chain-adapter.js'
 const require = createRequire(import.meta.url)
 let pkg = undefined
 try {
@@ -37,7 +38,7 @@ program
       endpoint = 'https://fullnode.testnet.sui.io/'
     }
 
-    const suiClient = new SuiClient({ url: endpoint })
+    const suiClient = new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) })
 
     let abisDir = location
     if (location.startsWith('0x')) {
