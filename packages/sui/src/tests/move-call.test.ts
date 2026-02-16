@@ -1,5 +1,5 @@
 import { describe, test } from 'node:test'
-import { SuiClient, getFullnodeUrl } from '@mysten/sui/client'
+import { SuiJsonRpcClient, getJsonRpcFullnodeUrl } from '@mysten/sui/jsonRpc'
 import { math } from '../builtin/0x2.js'
 import { clob_v2 } from './types/testnet/0xdee9.js'
 
@@ -13,7 +13,7 @@ export const SENDER = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 describe('Test Sui call', () => {
   test('view functions', async () => {
-    const client = new SuiClient({ url: getFullnodeUrl('testnet') })
+    const client = new SuiJsonRpcClient({ url: getJsonRpcFullnodeUrl('testnet'), network: 'testnet' })
 
     let res = (await math.view.diff(client, [1n, 4n])).results_decoded
     expect(res?.[0]).equals(3n)
@@ -24,7 +24,7 @@ describe('Test Sui call', () => {
 
   test('build transaction', async () => {
     const keypair = new Ed25519Keypair()
-    const client = new SuiClient({ url: getFullnodeUrl('testnet') })
+    const client = new SuiJsonRpcClient({ url: getJsonRpcFullnodeUrl('testnet'), network: 'testnet' })
     const tx = new Transaction()
     const [coin] = tx.splitCoins(tx.gas, [100])
     clob_v2.builder.createAccount(tx, [])
@@ -39,7 +39,7 @@ describe('Test Sui call', () => {
   })
 
   test('build transaction with address param', async () => {
-    const client = new SuiClient({ url: getFullnodeUrl('testnet') })
+    const client = new SuiJsonRpcClient({ url: getJsonRpcFullnodeUrl('testnet'), network: 'testnet' })
 
     const res = await airdrop.view.authorizeApi(client, [
       '0x080c14c97f457e8d40036109e647376beef62d3de35b51a3b9d183295fc8dc1c',

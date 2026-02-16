@@ -16,10 +16,10 @@ import {
   SuiMoveNormalizedModule,
   SuiMoveObject,
   DevInspectResults,
-  SuiClient
-} from '@mysten/sui/client'
+  SuiJsonRpcClient
+} from '@mysten/sui/jsonRpc'
+import { SuiChainAdapter, inferNetworkFromUrl } from './sui-chain-adapter.js'
 import { toInternalModule } from './to-internal.js'
-import { SuiChainAdapter } from './sui-chain-adapter.js'
 import { dynamic_field } from './builtin/0x2.js'
 import { BcsType, bcs } from '@mysten/sui/bcs'
 
@@ -33,7 +33,7 @@ export class MoveCoder extends AbstractMoveCoder<
   SuiMoveNormalizedModule,
   SuiEvent | SuiMoveObject
 > {
-  constructor(client: SuiClient) {
+  constructor(client: SuiJsonRpcClient) {
     super(new SuiChainAdapter(client))
   }
 
@@ -283,17 +283,17 @@ const CHAIN_ID_CODER_MAP = new Map<string, MoveCoder>()
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
-    coder = new MoveCoder(new SuiClient({ url: endpoint }))
+    coder = new MoveCoder(new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) }))
     CODER_MAP.set(endpoint, coder)
   }
   return coder
 }
 
-const PROVIDER_CODER_MAP = new Map<SuiClient, MoveCoder>()
+const PROVIDER_CODER_MAP = new Map<SuiJsonRpcClient, MoveCoder>()
 
 let DEFAULT_CHAIN_ID: string | undefined
 
-export async function getMoveCoder(client: SuiClient): Promise<MoveCoder> {
+export async function getMoveCoder(client: SuiJsonRpcClient): Promise<MoveCoder> {
   let coder = PROVIDER_CODER_MAP.get(client)
   if (!coder) {
     coder = new MoveCoder(client)
