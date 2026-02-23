@@ -27,7 +27,7 @@
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-import-x": "^4.16.1",
     "eslint-plugin-unused-imports": "^4.2.0",
-    "glob": "^11.0.0",
+    "glob": "^13.0.0",
     "json": "^11.0.0",
     "lint-staged": "^16.0.0",
     "prettier": "^3.2.5",
@@ -43,5 +43,5 @@
   "engines": {
     "node": ">=24"
   },
-  "packageManager": "pnpm@10.29.3"
+  "packageManager": "pnpm@10.30.1"
 }
