@@ -118,7 +118,10 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
           )
           const modules = this.chainAdapter.toInternalModules(rawModules)
 
-          fs.writeFileSync(path.resolve(srcDir, account + '.json'), JSON.stringify(rawModules, null, '\t'))
+          fs.writeFileSync(
+            path.resolve(srcDir, account + '.json'),
+            JSON.stringify(this.chainAdapter.toPersistableModules(rawModules), null, '\t')
+          )
           for (const module of modules) {
             loader.register(module, account)
           }
