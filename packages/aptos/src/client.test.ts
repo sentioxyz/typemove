@@ -1,11 +1,12 @@
 import { describe, test } from 'node:test'
 import { _0x1 } from '@typemove/aptos/builtin'
 import { expect } from 'chai'
-import { Account, Aptos, AptosConfig, InputViewFunctionData } from '@aptos-labs/ts-sdk'
+import { Account, Aptos, AptosConfig, InputViewFunctionData, Network } from '@aptos-labs/ts-sdk'
 
 describe('client call of entry or view', () => {
   const client = new Aptos(
     new AptosConfig({
+      network: Network.MAINNET,
       fullnode: 'https://mainnet.aptoslabs.com/v1'
     })
   )

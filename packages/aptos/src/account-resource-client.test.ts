@@ -4,10 +4,10 @@ import { AccountResourceClient } from './account-resource-client.js'
 import { amm, vault } from './tests/types/0xbd35135844473187163ca197ca93b2ab014370587bb0ed3befff9e902d6bb541.js'
 import { aptos_coin } from './builtin/0x1.js'
 import { ANY_TYPE } from '@typemove/move'
-import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
+import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk'
 
 describe('account resource client', () => {
-  const client = new Aptos(new AptosConfig({ fullnode: 'https://mainnet.aptoslabs.com/v1' }))
+  const client = new Aptos(new AptosConfig({ network: Network.MAINNET, fullnode: 'https://mainnet.aptoslabs.com/v1' }))
   const accountResourceClient = new AccountResourceClient(client)
   const ACCOUNT_ADDRESS = '0xbd35135844473187163ca197ca93b2ab014370587bb0ed3befff9e902d6bb541'
 

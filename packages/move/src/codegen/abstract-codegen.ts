@@ -379,6 +379,12 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
       return this.ADDRESS_TYPE
     }
 
+    // Aptos Move closure / function-value types (qname sentinel set by parseMoveType).
+    // Move closures don't have a JSON-serializable runtime shape, so we emit unknown.
+    if (type.qname.startsWith('|')) {
+      return 'unknown'
+    }
+
     switch (type.qname) {
       case 'signer': // TODO check this
       case 'address':
