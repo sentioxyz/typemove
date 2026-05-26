@@ -224,7 +224,7 @@ export class SuiCodegen extends AbstractCodegen<ModuleWithAddress, SuiEventInput
         checksEnabled: false
       } as any)
 
-      return (await getMoveCoder(client)).decodeSimulateResult<${returnType}>(simulateRes, ${returnSignaturesLiteral})
+      return (await getMoveCoder(client)).decodeSimulateResult<${returnType}>(simulateRes, ${returnSignaturesLiteral}${typeParamArg.length > 0 ? `, typeArguments` : ''})
     }`
   }
 

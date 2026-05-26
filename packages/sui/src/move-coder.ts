@@ -174,9 +174,18 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
       if (arg?.type === 'pure') {
         args.push(arg.value)
       } else if (arg?.pure) {
-        // gRPC pure value comes as BCS bytes; without the param type at this
-        // call site we can't decode reliably — surface the raw bytes.
-        args.push(arg.pure)
+        // gRPC pure value comes in as BCS bytes; we know the param's Move type
+        // (params[args.length] — the param index of the slot we're about to
+        // fill), so BCS-decode here. `decodeArray` downstream expects already-
+        // decoded JS values, not raw Uint8Array.
+        const paramType: TypeDescriptor | undefined = params[args.length]
+        try {
+          const bytes = arg.pure instanceof Uint8Array ? arg.pure : new Uint8Array(arg.pure)
+          const decoded: any = paramType ? await this.decodeBCS(paramType, bytes) : bytes
+          args.push(decoded)
+        } catch {
+          args.push(undefined)
+        }
       } else if (arg?.type === 'object' || arg?.objectId != null) {
         args.push(undefined)
       } else {
@@ -277,8 +286,21 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
   // each generated view helper).
   async decodeSimulateResult<T extends any[]>(
     simulateRes: any,
-    returnTypeSignatures: string[]
+    returnTypeSignatures: string[],
+    typeArguments?: (string | TypeDescriptor)[]
   ): Promise<TypedSimulateResults<T>> {
+    // Generic view helpers embed return signatures like "T0" / "vector<T1>"
+    // at codegen time, but the caller supplies concrete type arguments only
+    // at runtime. Substitute them in before BCS decoding — otherwise the BCS
+    // type registry sees the bare type-parameter qname and rejects it as an
+    // unimplemented builtin.
+    const ctx = new Map<string, TypeDescriptor>()
+    if (typeArguments && typeArguments.length > 0) {
+      typeArguments.forEach((t, i) => {
+        ctx.set('T' + i, typeof t === 'string' ? parseMoveType(t) : t)
+      })
+    }
+
     const returnValues: any[] = []
     const commandResults = simulateRes?.commandResults
     if (Array.isArray(commandResults)) {
@@ -292,7 +314,10 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
               returnValues.push(null)
               continue
             }
-            const type = parseMoveType(sig)
+            let type = parseMoveType(sig)
+            if (ctx.size > 0) {
+              type = type.applyTypeArgs(ctx)
+            }
             const bcsBytes = rv?.bcs instanceof Uint8Array ? rv.bcs : new Uint8Array(rv?.bcs ?? [])
             const bcsDecoded = await this.decodeBCS(type, bcsBytes)
             const decoded = await this.decodeType(bcsDecoded, type)
