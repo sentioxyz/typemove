@@ -4,7 +4,8 @@ import { BUILTIN_TYPES, parseMoveType } from '@typemove/move'
 import { defaultMoveCoder } from '@typemove/sui'
 import { dynamic_field } from './builtin/0x2.js'
 import { sui_system_state_inner } from './builtin/0x3.js'
-import { SuiEvent } from '@mysten/sui/jsonRpc'
+import type { SuiClientTypes } from '@mysten/sui/client'
+type SuiEvent = SuiClientTypes.Event
 
 describe('Test move coder', () => {
   test('decode upgraded struct', async () => {
@@ -73,7 +74,7 @@ describe('Test move coder', () => {
           }
         }
       }
-    } as SuiEvent
+    } as unknown as SuiEvent
 
     const res = await coder.decodeEvent(upgradedEvent)
   })

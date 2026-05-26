@@ -9,9 +9,15 @@ import {
   TypeDescriptor,
   InternalMoveModule
 } from '@typemove/move'
-import type { MoveCallSuiTransaction, SuiCallArg, SuiEvent, SuiMoveObject } from '@mysten/sui/jsonRpc'
 import { SuiGrpcClient } from '@mysten/sui/grpc'
-import { SuiChainAdapter, ModuleWithAddress, getGrpcClient } from './sui-chain-adapter.js'
+import type { GrpcTypes } from '@mysten/sui/grpc'
+import {
+  SuiChainAdapter,
+  ModuleWithAddress,
+  getGrpcClient,
+  SuiEventInput,
+  SuiMoveObjectInput
+} from './sui-chain-adapter.js'
 import { toInternalModule } from './to-internal.js'
 import { dynamic_field } from './builtin/0x2.js'
 import { BcsType, bcs } from '@mysten/sui/bcs'
@@ -21,7 +27,7 @@ export type Encoding = 'base58' | 'base64' | 'hex'
 
 import { normalizeSuiObjectId, normalizeSuiAddress } from '@mysten/sui/utils'
 
-export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEvent | SuiMoveObject> {
+export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInput | SuiMoveObjectInput> {
   constructor(client: SuiGrpcClient) {
     super(new SuiChainAdapter(client))
   }
@@ -106,10 +112,13 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEvent | S
     }
   }
 
-  decodeEvent<T>(event: SuiEvent): Promise<TypedEventInstance<T> | undefined> {
+  decodeEvent<T>(event: SuiEventInput): Promise<TypedEventInstance<T> | undefined> {
     return this.decodedStruct(event)
   }
-  filterAndDecodeEvents<T>(type: TypeDescriptor<T> | string, resources: SuiEvent[]): Promise<TypedEventInstance<T>[]> {
+  filterAndDecodeEvents<T>(
+    type: TypeDescriptor<T> | string,
+    resources: SuiEventInput[]
+  ): Promise<TypedEventInstance<T>[]> {
     if (typeof type === 'string') {
       type = parseMoveType(type)
     }
@@ -117,12 +126,10 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEvent | S
   }
 
   async getDynamicFields<T1, T2>(
-    objects: SuiMoveObject[],
+    objects: SuiMoveObjectInput[],
     keyType: TypeDescriptor<T1> = ANY_TYPE,
     valueType: TypeDescriptor<T2> = ANY_TYPE
   ): Promise<dynamic_field.Field<T1, T2>[]> {
-    // const type = dynamic_field.Field.TYPE
-    // Not using the code above to avoid cycle initialize failed
     const type = new TypeDescriptor<dynamic_field.Field<T1, T2>>('0x2::dynamic_field::Field')
     type.typeArgs = [keyType, valueType]
     const res = await this.filterAndDecodeObjects(type, objects)
@@ -131,31 +138,46 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEvent | S
 
   filterAndDecodeObjects<T>(
     type: TypeDescriptor<T>,
-    objects: SuiMoveObject[]
-  ): Promise<DecodedStruct<SuiMoveObject, T>[]> {
+    objects: SuiMoveObjectInput[]
+  ): Promise<DecodedStruct<SuiMoveObjectInput, T>[]> {
     return this.filterAndDecodeStruct(type, objects)
   }
 
-  async decodeFunctionPayload(payload: MoveCallSuiTransaction, inputs: SuiCallArg[]): Promise<MoveCallSuiTransaction> {
-    const functionType = [payload.package, payload.module, payload.function].join(SPLITTER)
+  // decodeFunctionPayload was originally written against JSON-RPC's parsed
+  // MoveCallSuiTransaction + SuiCallArg. The gRPC equivalents (MoveCall +
+  // Input) have a different shape (Input.pure is raw BCS bytes, not a
+  // pre-decoded value). Accept the gRPC proto types here; runtime field
+  // probing makes this also tolerant of the legacy JSON-RPC shape so it stays
+  // working for callers that haven't migrated yet.
+  async decodeFunctionPayload(payload: GrpcTypes.MoveCall, inputs: GrpcTypes.Input[]): Promise<any> {
+    const p = payload as any
+    const functionType = [p.package, p.module, p.function].join(SPLITTER)
     const func = await this.getMoveFunction(functionType)
     const params = this.adapter.getMeaningfulFunctionParams(func.params)
     const args = []
-    for (const value of payload.arguments || []) {
-      const argValue = value as any
-      if ('Input' in (argValue as any)) {
-        const idx = argValue.Input
-        const arg = inputs[idx]
-        if (arg.type === 'pure') {
-          args.push(arg.value)
-        } else if (arg.type === 'object') {
-          // object is not there
-          args.push(undefined)
-        } else {
-          console.error('unexpected function arg value')
-          args.push(undefined)
-        }
-        // args.push(arg) // TODO check why ts not work using arg.push(arg)
+    // Argument shape varies across transports: gRPC proto uses Argument with a
+    // kind discriminator + `input: number` for Input references; JSON-RPC's
+    // SuiArgument uses `{ Input: number } | { GasCoin: true } | ...`. We probe
+    // both shapes so the decoder works regardless of how the parsed
+    // transaction was produced.
+    for (const value of p.arguments ?? []) {
+      const av = value as any
+      const idx: number | undefined = av?.input ?? (av && 'Input' in av ? av.Input : undefined)
+      if (idx == null || idx < 0 || idx >= inputs.length) {
+        args.push(undefined)
+        continue
+      }
+      const arg = inputs[idx] as any
+      // gRPC Input: kind=PURE (1) → pure: Uint8Array; kind=IMMUTABLE_OR_OWNED/SHARED/etc → objectId.
+      // JSON-RPC SuiCallArg: { type: 'pure', value } | { type: 'object', ... }.
+      if (arg?.type === 'pure') {
+        args.push(arg.value)
+      } else if (arg?.pure) {
+        // gRPC pure value comes as BCS bytes; without the param type at this
+        // call site we can't decode reliably — surface the raw bytes.
+        args.push(arg.pure)
+      } else if (arg?.type === 'object' || arg?.objectId != null) {
+        args.push(undefined)
       } else {
         args.push(undefined)
       }

@@ -10,12 +10,15 @@ import {
 
 import type { GrpcTypes } from '@mysten/sui/grpc'
 import { SuiGrpcClient } from '@mysten/sui/grpc'
-import type { SuiEvent, SuiMoveObject } from '@mysten/sui/jsonRpc'
+import type { SuiClientTypes } from '@mysten/sui/client'
 
-// Decoder-input types stay sourced from `/jsonRpc` because they describe the
-// runtime shape of events/objects that upstream processors hand to MoveCoder.
-// We are not migrating the data ingestion path here — only the codegen / ABI
-// fetch path.
+// Decoder-input types now use @mysten/sui/client's unified SuiClientTypes —
+// the same shapes returned by SuiGrpcClient (and that the GraphQL/JSON-RPC
+// clients implement). Per the SDK's own warnings, the `.json` field's exact
+// field names may vary between transports for some payloads; downstream code
+// reading `getData` should treat it as opaque object data.
+export type SuiEventInput = SuiClientTypes.Event
+export type SuiMoveObjectInput = SuiClientTypes.Object<{ json: true }>
 
 // Adapter ModuleType is the proto Module plus the package address (which the
 // proto doesn't carry per-entry — only the wrapping Package has storageId).
@@ -24,7 +27,7 @@ export interface ModuleWithAddress {
   module: GrpcTypes.Module
 }
 
-export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEvent | SuiMoveObject> {
+export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEventInput | SuiMoveObjectInput> {
   client: SuiGrpcClient
 
   constructor(client: SuiGrpcClient) {
@@ -82,23 +85,33 @@ export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEvent | 
     return eventMap
   }
 
-  getType(base: SuiEvent | SuiMoveObject): string {
-    return base.type
+  getType(base: SuiEventInput | SuiMoveObjectInput): string {
+    // Unified Event has `eventType`; unified Object has `type`. Fall back to
+    // legacy JSON-RPC field names if a caller still passes pre-migration data.
+    const v = base as any
+    return v.eventType ?? v.type ?? ''
   }
 
-  getData(val: SuiEvent | SuiMoveObject) {
+  getData(val: SuiEventInput | SuiMoveObjectInput) {
     if (val === undefined) {
       throw Error('val is undefined')
     }
-    if ('parsedJson' in val) {
-      return val.parsedJson as any
+    const v = val as any
+    // Preferred: unified `.json` (already-decoded Move struct content).
+    if (v.json != null) {
+      return v.json as any
     }
-    if (val.dataType === 'moveObject') {
-      return val.fields as any
+    // Legacy JSON-RPC paths kept for back-compat with callers still feeding
+    // pre-migration data shapes (tests, sentio-sdk processors).
+    if (v.parsedJson != null) {
+      return v.parsedJson as any
     }
-    if ('fields' in val) {
-      if ('type' in val && Object.keys(val).length === 2) {
-        return val.fields as any
+    if (v.dataType === 'moveObject') {
+      return v.fields as any
+    }
+    if ('fields' in v) {
+      if ('type' in v && Object.keys(v).length === 2) {
+        return v.fields as any
       }
     }
     return val as any

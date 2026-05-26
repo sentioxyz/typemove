@@ -1,5 +1,3 @@
-import type { SuiEvent, SuiMoveObject } from '@mysten/sui/jsonRpc'
-
 import * as fs from 'fs'
 import chalk from 'chalk'
 import {
@@ -13,7 +11,13 @@ import {
 } from '@typemove/move'
 import { AbstractCodegen } from '@typemove/move/codegen'
 import { join } from 'path'
-import { SuiChainAdapter, ModuleWithAddress, getGrpcClient } from '../sui-chain-adapter.js'
+import {
+  SuiChainAdapter,
+  ModuleWithAddress,
+  getGrpcClient,
+  SuiEventInput,
+  SuiMoveObjectInput
+} from '../sui-chain-adapter.js'
 
 export async function codegen(
   abisDir: string,
@@ -42,7 +46,7 @@ export async function codegen(
   }
 }
 
-export class SuiCodegen extends AbstractCodegen<ModuleWithAddress, SuiEvent | SuiMoveObject> {
+export class SuiCodegen extends AbstractCodegen<ModuleWithAddress, SuiEventInput | SuiMoveObjectInput> {
   ADDRESS_TYPE = 'string'
   SYSTEM_PACKAGE = '@typemove/sui'
   PREFIX = 'Sui'
