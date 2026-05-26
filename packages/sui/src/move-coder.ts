@@ -50,19 +50,15 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
   protected async decode(data: any, type: TypeDescriptor): Promise<any> {
     // UID handled before the switch to avoid the existing fall-through chain
     // (case '0x2::url::Url' / '0x2::coin::Coin' bodies fire on non-string
-    // inputs and corrupt UID output). gRPC's unified Object.json flattens
-    // UID to a bare address string; JSON-RPC's nested it as `{ id: '0x...' }`.
-    // Accept both and normalize to `{ id: '0x<32-byte>' }` so downstream
-    // `.id.id`-style accessors keep working.
+    // inputs and corrupt UID output). gRPC's unified Object.json flattens UID
+    // to a bare address string — re-wrap to `{ id: '0x<32-byte>' }` so
+    // downstream `.id.id`-style accessors keep working. The BCS-shaped path
+    // (`{ id: { bytes: Uint8Array(32) } }`) is delegated to super.decode,
+    // which then hits the inner ID case.
     if (type.qname === '0x2::object::UID') {
       if (typeof data === 'string') {
         return { id: normalizeSuiObjectId(data) } as any
       }
-      if (data !== undefined && typeof data === 'object' && typeof (data as any).id === 'string') {
-        return { id: normalizeSuiObjectId((data as any).id) } as any
-      }
-      // BCS-shaped path: data is { id: { bytes: Uint8Array(32) } } — let
-      // super.decode walk the UID struct and the inner ID case will fire.
       return super.decode(data, type)
     }
     switch (type.qname) {
@@ -161,40 +157,25 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
     return this.filterAndDecodeStruct(type, objects)
   }
 
-  // decodeFunctionPayload was originally written against JSON-RPC's parsed
-  // MoveCallSuiTransaction + SuiCallArg. The gRPC equivalents (MoveCall +
-  // Input) have a different shape (Input.pure is raw BCS bytes, not a
-  // pre-decoded value). Accept the gRPC proto types here; runtime field
-  // probing makes this also tolerant of the legacy JSON-RPC shape so it stays
-  // working for callers that haven't migrated yet.
+  // Decodes a parsed Move call payload against the loaded module ABI.
+  // Inputs are gRPC `Input[]`: kind=PURE carries a Uint8Array of BCS bytes
+  // that we decode using the corresponding parameter's Move type;
+  // object inputs (IMMUTABLE_OR_OWNED / SHARED / receiving) are surfaced as
+  // undefined since their on-chain values aren't part of the payload.
   async decodeFunctionPayload(payload: GrpcTypes.MoveCall, inputs: GrpcTypes.Input[]): Promise<any> {
-    const p = payload as any
-    const functionType = [p.package, p.module, p.function].join(SPLITTER)
+    const functionType = [payload.package, payload.module, payload.function].join(SPLITTER)
     const func = await this.getMoveFunction(functionType)
     const params = this.adapter.getMeaningfulFunctionParams(func.params)
-    const args = []
-    // Argument shape varies across transports: gRPC proto uses Argument with a
-    // kind discriminator + `input: number` for Input references; JSON-RPC's
-    // SuiArgument uses `{ Input: number } | { GasCoin: true } | ...`. We probe
-    // both shapes so the decoder works regardless of how the parsed
-    // transaction was produced.
-    for (const value of p.arguments ?? []) {
+    const args: any[] = []
+    for (const value of payload.arguments ?? []) {
       const av = value as any
-      const idx: number | undefined = av?.input ?? (av && 'Input' in av ? av.Input : undefined)
+      const idx: number | undefined = av?.input
       if (idx == null || idx < 0 || idx >= inputs.length) {
         args.push(undefined)
         continue
       }
-      const arg = inputs[idx] as any
-      // gRPC Input: kind=PURE (1) → pure: Uint8Array; kind=IMMUTABLE_OR_OWNED/SHARED/etc → objectId.
-      // JSON-RPC SuiCallArg: { type: 'pure', value } | { type: 'object', ... }.
-      if (arg?.type === 'pure') {
-        args.push(arg.value)
-      } else if (arg?.pure) {
-        // gRPC pure value comes in as BCS bytes; we know the param's Move type
-        // (params[args.length] — the param index of the slot we're about to
-        // fill), so BCS-decode here. `decodeArray` downstream expects already-
-        // decoded JS values, not raw Uint8Array.
+      const arg = inputs[idx]
+      if (arg?.pure) {
         const paramType: TypeDescriptor | undefined = params[args.length]
         try {
           const bytes = arg.pure instanceof Uint8Array ? arg.pure : new Uint8Array(arg.pure)
@@ -203,9 +184,8 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
         } catch {
           args.push(undefined)
         }
-      } else if (arg?.type === 'object' || arg?.objectId != null) {
-        args.push(undefined)
       } else {
+        // Object inputs (and unknown kinds) — value isn't carried in the payload.
         args.push(undefined)
       }
     }

@@ -86,8 +86,7 @@ export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEventInp
   }
 
   getType(base: SuiEventInput | SuiMoveObjectInput): string {
-    // Unified Event has `eventType`; unified Object has `type`. Fall back to
-    // legacy JSON-RPC field names if a caller still passes pre-migration data.
+    // Unified SuiClientTypes: Event has `eventType`, Object has `type`.
     const v = base as any
     return v.eventType ?? v.type ?? ''
   }
@@ -102,22 +101,11 @@ export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEventInp
       return val as any
     }
     const v = val as any
-    // Preferred: unified `.json` (already-decoded Move struct content).
+    // Unified SuiClientTypes shapes: Event.json / Object<{json:true}>.json
+    // carries the decoded Move struct content. Anything else (a nested
+    // already-flat struct value passed in during recursion) is its own data.
     if (v.json != null) {
       return v.json as any
-    }
-    // Legacy JSON-RPC paths kept for back-compat with callers still feeding
-    // pre-migration data shapes (tests, sentio-sdk processors).
-    if (v.parsedJson != null) {
-      return v.parsedJson as any
-    }
-    if (v.dataType === 'moveObject') {
-      return v.fields as any
-    }
-    if ('fields' in v) {
-      if ('type' in v && Object.keys(v).length === 2) {
-        return v.fields as any
-      }
     }
     return val as any
   }
