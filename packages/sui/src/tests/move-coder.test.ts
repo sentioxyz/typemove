@@ -18,93 +18,47 @@ describe('Test Sui coder', () => {
   })
 
   test('decode object', async () => {
+    // gRPC unified shape: nested struct values are flat — no { type, fields } envelopes.
     const data = {
-      type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::Info',
-      fields: {
-        create_ts_ms: '1680756795894',
-        creator: '0xb6c7e3b1c61ee81516a8317f221daa035f1503e0ac3ae7a50b61834bc7a3ead9',
-        delivery_info: {
-          type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::DeliveryInfo',
-          fields: {
-            premium: '0',
-            price: '603716059',
-            round: '11',
-            size: '0',
-            ts_ms: '1681635628133'
-          }
-        },
-        index: '11',
-        round: '11'
-      }
+      create_ts_ms: '1680756795894',
+      creator: '0xb6c7e3b1c61ee81516a8317f221daa035f1503e0ac3ae7a50b61834bc7a3ead9',
+      delivery_info: {
+        premium: '0',
+        price: '603716059',
+        round: '11',
+        size: '0',
+        ts_ms: '1681635628133'
+      },
+      index: '11',
+      round: '11'
     }
     const res = await coder.decodeType(data, single_collateral.Info.type())
     expect(res?.delivery_info?.price).equals(603716059n)
-    // console.log(res)
   })
 
   test('decode object2', async () => {
-    const data = {
-      type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::BidVault<0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::ManagerCap, 0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::usdc::USDC>',
-      fields: {
-        bidder_sub_vault: {
-          type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::SubVault<0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::usdc::USDC>',
-          fields: {
-            balance: '0',
-            index: '11',
-            share_supply: '0',
-            tag: '4',
-            user_shares: {
-              type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::linked_list::LinkedList<0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::UserShareKey, u64>',
-              fields: {
-                first: null,
-                id: '0xbc2092c8ddddfc1e1bd850879b8e16e4c504fd060d0d2e7e9a5a83117b59a953',
-                last: null,
-                length: '0'
-              }
-            }
-          }
-        },
-        performance_fee_sub_vault: {
-          type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::SubVault<0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::usdc::USDC>',
-          fields: {
-            balance: '0',
-            index: '11',
-            share_supply: '0',
-            tag: '6',
-            user_shares: {
-              type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::linked_list::LinkedList<0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::UserShareKey, u64>',
-              fields: {
-                first: null,
-                id: '0xbc2092c8ddddfc1e1bd850879b8e16e4c504fd060d0d2e7e9a5a83117b59a953',
-                last: null,
-                length: '0'
-              }
-            }
-          }
-        },
-        premium_sub_vault: {
-          type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::SubVault<0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::usdc::USDC>',
-          fields: {
-            balance: '0',
-            index: '11',
-            share_supply: '0',
-            tag: '5',
-            user_shares: {
-              type: '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::linked_list::LinkedList<0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::UserShareKey, u64>',
-              fields: {
-                first: null,
-                id: '0xbc2092c8ddddfc1e1bd850879b8e16e4c504fd060d0d2e7e9a5a83117b59a953',
-                last: null,
-                length: '0'
-              }
-            }
-          }
-        }
+    const bidVaultType =
+      '0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::vault::BidVault<0xebaa2ad3eacc230f309cd933958cc52684df0a41ae7ac214d186b80f830867d2::single_collateral::ManagerCap, 0xd175cff04f1d49574efb6f138bc3b9b7313915a57b5ca04141fb1cb4f66984b2::usdc::USDC>'
+    // gRPC unified shape: nested struct values are flat objects, no envelopes.
+    const subVault = (tag: string) => ({
+      balance: '0',
+      index: '11',
+      share_supply: '0',
+      tag,
+      user_shares: {
+        first: null,
+        id: '0xbc2092c8ddddfc1e1bd850879b8e16e4c504fd060d0d2e7e9a5a83117b59a953',
+        last: null,
+        length: '0'
       }
+    })
+    const data = {
+      bidder_sub_vault: subVault('4'),
+      performance_fee_sub_vault: subVault('6'),
+      premium_sub_vault: subVault('5')
     }
-    const res = await coder.decodeType(data, parseMoveType(data.type))
+    const res = await coder.decodeType(data, parseMoveType(bidVaultType))
     expect(res.performance_fee_sub_vault.balance).equals(0n)
-    // console.log(res)
   })
 
   test('decode enum', async () => {
