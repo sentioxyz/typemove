@@ -14,14 +14,6 @@ export abstract class ChainAdapter<ModuleType, StructType> {
   abstract fetchModules(account: string): Promise<ModuleType[]>
   abstract toInternalModules(modules: ModuleType[]): InternalMoveModule[]
 
-  // Hook called before fetched modules are written to the ABI cache on disk
-  // (src/abis/<account>.json). Chains can strip fields that are not needed for
-  // codegen — e.g. Aptos drops `bytecode` since only `abi` is consumed,
-  // roughly halving the committed + published ABI file size.
-  toPersistableModules(modules: ModuleType[]): unknown {
-    return modules
-  }
-
   // Get all structs that represent Events
   abstract getAllEventStructs(module: InternalMoveModule[]): Map<string, InternalMoveStruct>
 

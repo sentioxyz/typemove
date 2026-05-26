@@ -52,15 +52,12 @@ program
     let abisDir = location
     if (location.startsWith('0x')) {
       const abiAddress = abisDir
-      const abi = await aptosClient.getAccountModules({ accountAddress: abiAddress })
+      const abi = await new AptosChainAdapter(aptosClient).fetchModules(abiAddress)
       abisDir = options.abiDir
       if (!fs.existsSync(abisDir)) {
         fs.mkdirSync(abisDir, { recursive: true })
       }
-      fs.writeFileSync(
-        path.join(abisDir, abiAddress + '.json'),
-        JSON.stringify(new AptosChainAdapter(aptosClient).toPersistableModules(abi), null, 2)
-      )
+      fs.writeFileSync(path.join(abisDir, abiAddress + '.json'), JSON.stringify(abi, null, 2))
     }
 
     const num = await codegen(abisDir, options.targetDir, config, true)
