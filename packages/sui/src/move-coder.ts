@@ -15,6 +15,7 @@ import {
   SuiChainAdapter,
   ModuleWithAddress,
   getGrpcClient,
+  getGrpcFullnodeUrl,
   SuiEventInput,
   SuiMoveObjectInput
 } from './sui-chain-adapter.js'
@@ -306,7 +307,7 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
   }
 }
 
-const DEFAULT_ENDPOINT = 'https://fullnode.mainnet.sui.io/'
+const DEFAULT_ENDPOINT = getGrpcFullnodeUrl('mainnet')
 const CODER_MAP = new Map<string, MoveCoder>()
 
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {

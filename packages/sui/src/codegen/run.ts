@@ -5,7 +5,7 @@ import { Command } from 'commander'
 import { createRequire } from 'module'
 import fs from 'fs'
 import path from 'path'
-import { getGrpcClient, SuiChainAdapter } from '../sui-chain-adapter.js'
+import { getGrpcClient, getGrpcFullnodeUrl, SuiChainAdapter } from '../sui-chain-adapter.js'
 const require = createRequire(import.meta.url)
 let pkg = undefined
 try {
@@ -30,11 +30,8 @@ program
   )
   .action(async (location, options) => {
     let endpoint = options.network
-    if (endpoint == 'mainnet') {
-      endpoint = 'https://fullnode.mainnet.sui.io/'
-    }
-    if (endpoint == 'testnet') {
-      endpoint = 'https://fullnode.testnet.sui.io/'
+    if (endpoint === 'mainnet' || endpoint === 'testnet' || endpoint === 'devnet' || endpoint === 'localnet') {
+      endpoint = getGrpcFullnodeUrl(endpoint)
     }
 
     const suiClient = getGrpcClient(endpoint)

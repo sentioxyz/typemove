@@ -5,17 +5,15 @@ import { clob_v2 } from './types/testnet/0xdee9.js'
 import { expect } from 'chai'
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519'
 import { Transaction } from '@mysten/sui/transactions'
-import { getGrpcClient } from '../sui-chain-adapter.js'
+import { getGrpcClient, getGrpcFullnodeUrl } from '../sui-chain-adapter.js'
 
 import { airdrop } from './types/testnet/0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e.js'
 
 export const SENDER = '0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 
-const TESTNET_GRPC = 'https://fullnode.testnet.sui.io'
-
 describe('Test Sui call', () => {
   test('view functions', async () => {
-    const client = getGrpcClient(TESTNET_GRPC)
+    const client = getGrpcClient(getGrpcFullnodeUrl('testnet'))
 
     let res = (await math.view.diff(client, [1n, 4n])).results_decoded
     expect(res?.[0]).equals(3n)
@@ -36,7 +34,7 @@ describe('Test Sui call', () => {
   })
 
   test('build transaction with address param', async () => {
-    const client = getGrpcClient(TESTNET_GRPC)
+    const client = getGrpcClient(getGrpcFullnodeUrl('testnet'))
 
     const res = await airdrop.view.authorizeApi(client, [
       '0x080c14c97f457e8d40036109e647376beef62d3de35b51a3b9d183295fc8dc1c',

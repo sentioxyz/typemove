@@ -126,6 +126,23 @@ export function inferNetworkFromUrl(url: string): string {
   return 'custom'
 }
 
+// gRPC counterpart of @mysten/sui/jsonRpc's `getJsonRpcFullnodeUrl`. The SDK
+// doesn't ship one under /grpc — Sui's gRPC-Web endpoint is exposed on the
+// same host as JSON-RPC over standard HTTPS, so we mirror the JSON-RPC list
+// (sans the explicit :443 since the transport speaks HTTPS by default).
+export function getGrpcFullnodeUrl(network: 'mainnet' | 'testnet' | 'devnet' | 'localnet'): string {
+  switch (network) {
+    case 'mainnet':
+      return 'https://fullnode.mainnet.sui.io'
+    case 'testnet':
+      return 'https://fullnode.testnet.sui.io'
+    case 'devnet':
+      return 'https://fullnode.devnet.sui.io'
+    case 'localnet':
+      return 'http://127.0.0.1:9000'
+  }
+}
+
 export function getGrpcClient(endpoint: string): SuiGrpcClient {
   const network = inferNetworkFromUrl(endpoint) as any
   return new SuiGrpcClient({ network, baseUrl: endpoint })
