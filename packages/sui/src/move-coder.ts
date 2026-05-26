@@ -48,6 +48,23 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
   }
 
   protected async decode(data: any, type: TypeDescriptor): Promise<any> {
+    // UID handled before the switch to avoid the existing fall-through chain
+    // (case '0x2::url::Url' / '0x2::coin::Coin' bodies fire on non-string
+    // inputs and corrupt UID output). gRPC's unified Object.json flattens
+    // UID to a bare address string; JSON-RPC's nested it as `{ id: '0x...' }`.
+    // Accept both and normalize to `{ id: '0x<32-byte>' }` so downstream
+    // `.id.id`-style accessors keep working.
+    if (type.qname === '0x2::object::UID') {
+      if (typeof data === 'string') {
+        return { id: normalizeSuiObjectId(data) } as any
+      }
+      if (data !== undefined && typeof data === 'object' && typeof (data as any).id === 'string') {
+        return { id: normalizeSuiObjectId((data as any).id) } as any
+      }
+      // BCS-shaped path: data is { id: { bytes: Uint8Array(32) } } — let
+      // super.decode walk the UID struct and the inner ID case will fire.
+      return super.decode(data, type)
+    }
     switch (type.qname) {
       case '0x1::ascii::Char':
         if (data !== undefined && typeof data !== 'string') {

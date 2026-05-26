@@ -96,6 +96,11 @@ export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEventInp
     if (val === undefined) {
       throw Error('val is undefined')
     }
+    // Pass through primitives (e.g. a UID flattened to a bare string) — the
+    // decoder's per-type case handlers know how to interpret them.
+    if (val === null || typeof val !== 'object') {
+      return val as any
+    }
     const v = val as any
     // Preferred: unified `.json` (already-decoded Move struct content).
     if (v.json != null) {
