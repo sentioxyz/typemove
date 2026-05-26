@@ -24,18 +24,43 @@ describe('Test Sui call', () => {
     expect(res?.[0]).equals(4n)
   })
 
-  // The original `build transaction` / `build transaction with address param`
-  // tests called clob_v2 / airdrop testnet contracts. Both have changed
-  // signatures since this test was written (extra args added upstream). They
-  // were smoke tests for transaction-building, not behavioral assertions, so
-  // skip them here rather than couple the suite to the testnet contract
-  // version. The `view functions` test above is the meaningful gRPC-path
-  // exercise; the unused imports remain so the regenerated types stay
-  // type-checked.
-  void clob_v2
-  void airdrop
-  void getGrpcClient
-  void Transaction
-  void Ed25519Keypair
-  void TESTNET_GRPC
+  test('build transaction', async () => {
+    const _keypair = new Ed25519Keypair()
+    const tx = new Transaction()
+    const [_coin] = tx.splitCoins(tx.gas, [100])
+    clob_v2.builder.createAccount(tx, [])
+    clob_v2.builder.createPool(tx, [1n, 1n, '0x1::coin::USD'], ['coin1', 'coin2'])
+
+    const res = await clob_v2.builder.createPool(tx, [1n, 1n, '0x1::coin::USD'], ['coin1', 'coin2'])
+    console.log(JSON.stringify(res))
+  })
+
+  test('build transaction with address param', async () => {
+    const client = getGrpcClient(TESTNET_GRPC)
+
+    const res = await airdrop.view.authorizeApi(client, [
+      '0x080c14c97f457e8d40036109e647376beef62d3de35b51a3b9d183295fc8dc1c',
+      '0x53a38614e77a540d037c3edea864d0fc5bbe8f5049230b6e1ce173f76596357f',
+      SENDER
+    ])
+
+    console.log(JSON.stringify(res, null, 2))
+
+    const tx = new Transaction()
+
+    airdrop.builder.authorizeApi(tx, [
+      tx.object('0x080c14c97f457e8d40036109e647376beef62d3de35b51a3b9d183295fc8dc1c'),
+      tx.object('0x53a38614e77a540d037c3edea864d0fc5bbe8f5049230b6e1ce173f76596357f'),
+      tx.pure.address(SENDER)
+    ])
+
+    const res2 = await client.simulateTransaction({
+      transaction: tx,
+      sender: SENDER,
+      include: { commandResults: true },
+      checksEnabled: false
+    } as any)
+
+    console.log(JSON.stringify(res2, null, 2))
+  })
 })

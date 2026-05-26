@@ -214,10 +214,14 @@ export class SuiCodegen extends AbstractCodegen<ModuleWithAddress, SuiEventInput
       } ): Promise<TypedSimulateResults<${returnType}>> {
       const tx = new Transaction()
       builder.${camel(normalizeToJSName(func.name))}(tx, args ${typeParamArg.length > 0 ? `, typeArguments` : ''})
+      // checksEnabled: false matches the old devInspectTransactionBlock
+      // semantics — allow simulating view calls without validating object
+      // ownership or signer, which view callers obviously can't satisfy.
       const simulateRes = await client.simulateTransaction({
         transaction: tx,
         sender: ZERO_ADDRESS,
-        include: { commandResults: true }
+        include: { commandResults: true },
+        checksEnabled: false
       } as any)
 
       return (await getMoveCoder(client)).decodeSimulateResult<${returnType}>(simulateRes, ${returnSignaturesLiteral})
