@@ -3,7 +3,7 @@
   "name": "@example/aptos",
   "version": "1.0.0-development",
   "license": "Apache-2.0",
-  "type": "commonjs",
+  "type": "module",
   "files": [
     "{dist,src}",
     "!**/*.test.{js,ts}",

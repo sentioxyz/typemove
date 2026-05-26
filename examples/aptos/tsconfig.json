@@ -3,8 +3,8 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "outDir": "dist",
-    "moduleResolution": "bundler",
-    "module": "esnext"
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
   },
   "exclude": ["dist"],
   "extends": "../../tsconfig.json"
