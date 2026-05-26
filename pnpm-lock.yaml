@@ -141,8 +141,8 @@ importers:
   packages/iota:
     dependencies:
       '@iota/iota-sdk':
-        specifier: ~1.10.0
-        version: 1.10.1(typescript@5.9.2)
+        specifier: ~1.13.0
+        version: 1.13.0(typescript@5.9.2)
       '@typemove/move':
         specifier: workspace:*
         version: link:../move
@@ -527,12 +527,12 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
-  '@iota/bcs@1.4.0':
-    resolution: {integrity: sha512-Bpg8uPB3UTweJyFS3G+aycGcTCxaJQi2a9bEy2QXWMBM8a/tLN1KCg4IzKWkAJ4FyMNrZZrdXiBqAzmNK6xdVQ==}
+  '@iota/bcs@1.6.0':
+    resolution: {integrity: sha512-H8I9g+aPBQigSsHkydnnR6wmmTwOwI7iu/TghTOz6tikqVFM09cA2JlDQXRLDTSkW3Qlz6gONyVKzrBhoTkHxQ==}
 
-  '@iota/iota-sdk@1.10.1':
-    resolution: {integrity: sha512-q0GxOCFzPqIcaw1lFuFljmMDj1ajIK6UZFzOYnnPqfs/nufOZrJQ9Bg/hLj23xbMno/tdND+aIjDWY6GG8MAXw==}
-    engines: {node: '>=20'}
+  '@iota/iota-sdk@1.13.0':
+    resolution: {integrity: sha512-ay19PRu0z+1W9tnmGyexIR/Sp0Rpt7H0mUCuEZQ5B+7O6Qf61+Co8TrR1SRIrKwD7Fu90jPy5y5MwFXy/vLwKg==}
+    engines: {node: '>=24'}
 
   '@isaacs/balanced-match@4.0.1':
     resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
@@ -764,9 +764,6 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
-
-  '@suchipi/femver@1.0.0':
-    resolution: {integrity: sha512-bprE8+K5V+DPX7q2e2K57ImqNBdfGHDIWaGI5xHxZoxbKOuQZn4wzPiUxOAHnsUr3w3xHrWXwN7gnG/iIuEMIg==}
 
   '@tybys/wasm-util@0.10.0':
     resolution: {integrity: sha512-VyyPYFlOMNylG45GoAe0xDoLwWuowvf92F9kySqzYh8vmYm7D2u4iUJKa1tOUpS70Ku13ASrOkS4ScXFsTaCNQ==}
@@ -1118,12 +1115,6 @@ packages:
     resolution: {integrity: sha512-x0K50QvKQ97fdEz2kPehIerj+YTeptKF9hyYkKf6egnwmMWAkADiO0QCzSp0R5xN8FTZgYaBfSaue46Ej62nMg==}
     engines: {node: 20 || >=22}
 
-  base-x@5.0.0:
-    resolution: {integrity: sha512-sMW3VGSX1QWVFA6l8U62MLKz29rRfpTlYdCqLdpLo1/Yd4zZwSbnUaDfciIAowAqvq7YFnWq9hrhdg1KYgc1lQ==}
-
-  bech32@2.0.0:
-    resolution: {integrity: sha512-LcknSilhIGatDAsY1ak2I8VtGaHNhgMSYVxFrGLXv+xLHytaKZKcaUJJUE7qmBr7h33o5YQwP55pMI0xmkpJwg==}
-
   before-after-hook@3.0.2:
     resolution: {integrity: sha512-Nik3Sc0ncrMK4UUdXQmAnRtzmNQTAAXmXIopizwZ1W1t8QmfJj+zL4OA2I7XPTPW5z5TDqv4hRo/JzouDJnX3A==}
 
@@ -1150,9 +1141,6 @@ packages:
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
-
-  bs58@6.0.0:
-    resolution: {integrity: sha512-PD0wEnEYg6ijszw/u8s+iI3H17cTymlrwkKhDhPZq+Sokl3AU4htyBFTjAeNAlCCmg0f53g6ih3jATyCKftTfw==}
 
   byte-counter@0.1.0:
     resolution: {integrity: sha512-jheRLVMeUKrDBjVw2O5+k4EvR4t9wtxHL+bo/LxfkxsVeuGMy3a5SEGgXdAFA4FSzTrU8rQXQIrsZ3oBq5a0pQ==}
@@ -3216,9 +3204,6 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  tweetnacl@1.0.3:
-    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
-
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -3742,24 +3727,22 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iota/bcs@1.4.0':
+  '@iota/bcs@1.6.0':
     dependencies:
-      bs58: 6.0.0
+      '@scure/base': 1.2.6
 
-  '@iota/iota-sdk@1.10.1(typescript@5.9.2)':
+  '@iota/iota-sdk@1.13.0(typescript@5.9.2)':
     dependencies:
-      '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
-      '@iota/bcs': 1.4.0
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.12.0)
+      '@iota/bcs': 1.6.0
       '@noble/curves': 1.9.6
       '@noble/hashes': 1.8.0
+      '@scure/base': 1.2.6
       '@scure/bip32': 1.7.0
       '@scure/bip39': 1.6.0
-      '@suchipi/femver': 1.0.0
-      bech32: 2.0.0
       bignumber.js: 9.3.1
-      gql.tada: 1.8.13(graphql@16.11.0)(typescript@5.9.2)
-      graphql: 16.11.0
-      tweetnacl: 1.0.3
+      gql.tada: 1.9.0(graphql@16.12.0)(typescript@5.9.2)
+      graphql: 16.12.0
       valibot: 1.2.0(typescript@5.9.2)
     transitivePeerDependencies:
       - '@gql.tada/svelte-support'
@@ -4077,8 +4060,6 @@ snapshots:
   '@sindresorhus/merge-streams@2.3.0': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
-
-  '@suchipi/femver@1.0.0': {}
 
   '@tybys/wasm-util@0.10.0':
     dependencies:
@@ -4454,10 +4435,6 @@ snapshots:
     dependencies:
       jackspeak: 4.2.3
 
-  base-x@5.0.0: {}
-
-  bech32@2.0.0: {}
-
   before-after-hook@3.0.2: {}
 
   bignumber.js@9.3.1: {}
@@ -4484,10 +4461,6 @@ snapshots:
   braces@3.0.3:
     dependencies:
       fill-range: 7.1.1
-
-  bs58@6.0.0:
-    dependencies:
-      base-x: 5.0.0
 
   byte-counter@0.1.0: {}
 
@@ -6801,8 +6774,6 @@ snapshots:
       get-tsconfig: 4.10.1
     optionalDependencies:
       fsevents: 2.3.3
-
-  tweetnacl@1.0.3: {}
 
   type-check@0.4.0:
     dependencies:
