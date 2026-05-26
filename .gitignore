@@ -6,6 +6,10 @@ types
 .idea
 .run
 
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
+
 # Logs
 logs
 *.log
