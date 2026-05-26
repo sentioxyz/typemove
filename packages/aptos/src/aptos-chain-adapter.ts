@@ -10,6 +10,13 @@ import {
 import { Aptos, Event, MoveModuleBytecode, MoveResource } from '@aptos-labs/ts-sdk'
 import { toInternalModule } from './to-internal.js'
 
+// Drop bytecode — typemove's codegen only reads `m.abi`, and bytecode is
+// ~50% of each Aptos module entry's bytes. Cast is needed because
+// MoveModuleBytecode declares `bytecode: string` as required.
+function stripBytecode({ abi }: MoveModuleBytecode): MoveModuleBytecode {
+  return { abi } as MoveModuleBytecode
+}
+
 export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | MoveResource> {
   // static INSTANCE = new AptosChainAdapter()
   client: Aptos
@@ -22,26 +29,22 @@ export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | 
   }
 
   async fetchModules(account: string): Promise<MoveModuleBytecode[]> {
-    return await this.client.getAccountModules({
+    const modules = await this.client.getAccountModules({
       accountAddress: account
     })
+    return modules.map(stripBytecode)
   }
 
   async fetchModule(account: string, module: string): Promise<MoveModuleBytecode> {
-    return await this.client.getAccountModule({
+    const m = await this.client.getAccountModule({
       accountAddress: account,
       moduleName: module
     })
+    return stripBytecode(m)
   }
 
   toInternalModules(modules: MoveModuleBytecode[]): InternalMoveModule[] {
     return modules.flatMap((m) => (m.abi ? [toInternalModule(m)] : []))
-  }
-
-  // Drop bytecode from cached ABI files — only `abi` is consumed by codegen,
-  // and bytecode is ~50% of each Aptos ABI JSON's bytes.
-  override toPersistableModules(modules: MoveModuleBytecode[]) {
-    return modules.map(({ abi }) => ({ abi }))
   }
 
   getMeaningfulFunctionParams(params: TypeDescriptor[]): TypeDescriptor[] {
