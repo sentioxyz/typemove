@@ -178,12 +178,21 @@ export class TypeDescriptor<T = any> {
 }
 
 export function parseMoveType(type: string): TypeDescriptor {
-  const stack: TypeDescriptor[] = [new TypeDescriptor('')]
-  let buffer = []
-
   if (type === undefined) {
     console.log('')
   }
+
+  // Aptos SDK 7+ exposes Move closure / function-value types in ABIs as
+  // `|param1, param2, ...| ret`. Parse them specially — the inner params and
+  // return type are nested and recursively parsed; the descriptor's qname is
+  // the sentinel `|fn|` (other code in this file branches on qname.startsWith('|')).
+  const closure = tryParseClosure(type)
+  if (closure) {
+    return closure
+  }
+
+  const stack: TypeDescriptor[] = [new TypeDescriptor('')]
+  let buffer = []
 
   // xxx:asdf<g1<a,<c,d>>, b, g2<a,b>, e>
   for (let i = 0; i < type.length; i++) {
@@ -230,6 +239,51 @@ export function parseMoveType(type: string): TypeDescriptor {
     throw Error('Unexpected stack size')
   }
   return res
+}
+
+// Parse `|param1, param2, ...| return_type` (Aptos Move closure / function-value
+// types exposed by SDK 7+). Returns undefined if the input is not a closure.
+// Commas and the closing `|` are matched at angle-bracket depth 0.
+function tryParseClosure(type: string): TypeDescriptor | undefined {
+  let i = 0
+  while (i < type.length && type[i] === ' ') i++
+  if (type[i] !== '|') return undefined
+
+  let depth = 0
+  let close = -1
+  for (let j = i + 1; j < type.length; j++) {
+    const ch = type[j]
+    if (ch === '<') depth++
+    else if (ch === '>') depth--
+    else if (ch === '|' && depth === 0) {
+      close = j
+      break
+    }
+  }
+  if (close < 0) return undefined
+
+  const inner = type.slice(i + 1, close)
+  const ret = type.slice(close + 1).trim()
+
+  const paramTypes: TypeDescriptor[] = []
+  if (inner.trim().length > 0) {
+    let depth2 = 0
+    let start = 0
+    for (let k = 0; k <= inner.length; k++) {
+      const ch = inner[k]
+      if (k === inner.length || (ch === ',' && depth2 === 0)) {
+        const piece = inner.slice(start, k).trim()
+        if (piece.length > 0) paramTypes.push(parseMoveType(piece))
+        start = k + 1
+      } else if (ch === '<') depth2++
+      else if (ch === '>') depth2--
+    }
+  }
+
+  const typeArgs = paramTypes.slice()
+  if (ret.length > 0) typeArgs.push(parseMoveType(ret))
+
+  return new TypeDescriptor('|fn|', typeArgs)
 }
 
 function adjustType(type: TypeDescriptor) {

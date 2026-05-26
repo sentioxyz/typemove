@@ -1,12 +1,14 @@
 import { describe, test } from 'node:test'
 import { InternalMoveModule, TypeDescriptor } from '@typemove/move'
-import { Aptos, AptosConfig } from '@aptos-labs/ts-sdk'
+import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk'
 import { expect } from 'chai'
 
 import { AptosChainAdapter } from '../aptos-chain-adapter.js'
 
 describe('AptosChainAdapter', () => {
-  const adapter = new AptosChainAdapter(new Aptos(new AptosConfig({ fullnode: 'https://mainnet.aptoslabs.com/v1' })))
+  const adapter = new AptosChainAdapter(
+    new Aptos(new AptosConfig({ network: Network.MAINNET, fullnode: 'https://mainnet.aptoslabs.com/v1' }))
+  )
 
   test('should detect native events with drop+store abilities', () => {
     const modules: InternalMoveModule[] = [
@@ -215,11 +217,11 @@ describe('AptosChainAdapter', () => {
 
   test('should respect optimisticEventDetection flag', () => {
     const optimisticAdapter = new AptosChainAdapter(
-      new Aptos(new AptosConfig({ fullnode: 'https://mainnet.aptoslabs.com/v1' })),
+      new Aptos(new AptosConfig({ network: Network.MAINNET, fullnode: 'https://mainnet.aptoslabs.com/v1' })),
       true
     )
     const conservativeAdapter = new AptosChainAdapter(
-      new Aptos(new AptosConfig({ fullnode: 'https://mainnet.aptoslabs.com/v1' })),
+      new Aptos(new AptosConfig({ network: Network.MAINNET, fullnode: 'https://mainnet.aptoslabs.com/v1' })),
       false
     )
 

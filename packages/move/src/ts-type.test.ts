@@ -41,6 +41,58 @@ describe('type gen', () => {
     const deps = res.dependedTypes()
     assert(deps.length === 2)
   })
+
+  // Aptos SDK 7+ ABI exposes Move closure / function-value types as `|args|ret`.
+  // parseMoveType used to crash on `|` — these tests guard the closure parser.
+  test('parse closure with single param and return', async () => {
+    const res = parseMoveType('|T1|T2')
+
+    assert(res.qname === '|fn|')
+    assert(res.typeArgs.length === 2)
+    assert(res.typeArgs[0].qname === 'T1')
+    assert(res.typeArgs[1].qname === 'T2')
+  })
+
+  test('parse closure with mutable reference param (big_ordered_map::iter_modify)', async () => {
+    const res = parseMoveType('|&mut T1|T2')
+
+    assert(res.qname === '|fn|')
+    assert(res.typeArgs.length === 2)
+    const [param, ret] = res.typeArgs
+    assert(param.qname === 'T1')
+    assert(param.reference === true)
+    assert(param.mutable === true)
+    assert(ret.qname === 'T2')
+  })
+
+  test('parse closure with multiple params and qualified types (sigma_protocol_homomorphism::Homomorphism)', async () => {
+    const typeString =
+      '|&0x1::sigma_protocol_statement::Statement<T0>,&0x1::sigma_protocol_witness::Witness|0x1::sigma_protocol_representation_vec::RepresentationVec'
+    const res = parseMoveType(typeString)
+
+    assert(res.qname === '|fn|')
+    assert(res.typeArgs.length === 3)
+    const [p1, p2, ret] = res.typeArgs
+    assert(p1.qname === '0x1::sigma_protocol_statement::Statement')
+    assert(p1.reference === true)
+    assert(p1.typeArgs.length === 1)
+    assert(p1.typeArgs[0].qname === 'T0')
+    assert(p2.qname === '0x1::sigma_protocol_witness::Witness')
+    assert(p2.reference === true)
+    assert(ret.qname === '0x1::sigma_protocol_representation_vec::RepresentationVec')
+  })
+
+  test('closure dependedTypes walks params and return, excludes type parameters', async () => {
+    const typeString =
+      '|&0x1::sigma_protocol_statement::Statement<T0>|0x1::sigma_protocol_representation_vec::RepresentationVec'
+    const res = parseMoveType(typeString)
+    const deps = res.dependedTypes().sort()
+
+    assert.deepEqual(deps, [
+      '0x1::sigma_protocol_representation_vec::RepresentationVec',
+      '0x1::sigma_protocol_statement::Statement'
+    ])
+  })
   // test('type type gen', async () => {
   //
   //   const res = parseGenericType('x<g1<a,g2<c,d>>,b,g3<a,b>,e>')
