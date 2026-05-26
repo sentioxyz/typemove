@@ -1,6 +1,6 @@
 {
   "accumulator": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "accumulator",
     "friends": [
@@ -558,7 +558,7 @@
     }
   },
   "accumulator_metadata": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "accumulator_metadata",
     "friends": [],
@@ -675,7 +675,7 @@
     "exposedFunctions": {}
   },
   "accumulator_settlement": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "accumulator_settlement",
     "friends": [],
@@ -708,7 +708,7 @@
     "exposedFunctions": {}
   },
   "address": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "address",
     "friends": [],
@@ -834,7 +834,7 @@
     }
   },
   "address_alias": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "address_alias",
     "friends": [],
@@ -1006,7 +1006,7 @@
     }
   },
   "authenticator_state": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "authenticator_state",
     "friends": [],
@@ -1195,7 +1195,7 @@
     "exposedFunctions": {}
   },
   "bag": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "bag",
     "friends": [],
@@ -1536,7 +1536,7 @@
     }
   },
   "balance": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "balance",
     "friends": [
@@ -2121,7 +2121,7 @@
     }
   },
   "bcs": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "bcs",
     "friends": [],
@@ -2842,7 +2842,7 @@
     }
   },
   "bls12381": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "bls12381",
     "friends": [],
@@ -4930,7 +4930,7 @@
     }
   },
   "borrow": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "borrow",
     "friends": [],
@@ -5155,7 +5155,7 @@
     }
   },
   "clock": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "clock",
     "friends": [],
@@ -5210,7 +5210,7 @@
     }
   },
   "coin": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "coin",
     "friends": [
@@ -10047,7 +10047,7 @@
     }
   },
   "config": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "config",
     "friends": [
@@ -10703,7 +10703,7 @@
     }
   },
   "deny_list": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "deny_list",
     "friends": [
@@ -11440,10 +11440,15 @@
     }
   },
   "display": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "display",
-    "friends": [],
+    "friends": [
+      {
+        "address": "0x2",
+        "name": "display_registry"
+      }
+    ],
     "structs": {
       "Display": {
         "abilities": {
@@ -11725,6 +11730,32 @@
                 "name": "TxContext",
                 "typeArguments": []
               }
+            }
+          }
+        ],
+        "return": []
+      },
+      "destroy": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
             }
           }
         ],
@@ -12066,8 +12097,931 @@
       }
     }
   },
+  "display_registry": {
+    "fileFormatVersion": 7,
+    "address": "0x2",
+    "name": "display_registry",
+    "friends": [],
+    "structs": {
+      "Display": {
+        "abilities": {
+          "abilities": [
+            "Key"
+          ]
+        },
+        "typeParameters": [
+          {
+            "constraints": {
+              "abilities": []
+            },
+            "isPhantom": true
+          }
+        ],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "name": "fields",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "vec_map",
+                "name": "VecMap",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x1",
+                      "module": "string",
+                      "name": "String",
+                      "typeArguments": []
+                    }
+                  },
+                  {
+                    "Struct": {
+                      "address": "0x1",
+                      "module": "string",
+                      "name": "String",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "cap_id",
+            "type": {
+              "Struct": {
+                "address": "0x1",
+                "module": "option",
+                "name": "Option",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "object",
+                      "name": "ID",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "DisplayCap": {
+        "abilities": {
+          "abilities": [
+            "Store",
+            "Key"
+          ]
+        },
+        "typeParameters": [
+          {
+            "constraints": {
+              "abilities": []
+            },
+            "isPhantom": true
+          }
+        ],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "DisplayKey": {
+        "abilities": {
+          "abilities": [
+            "Copy",
+            "Drop",
+            "Store"
+          ]
+        },
+        "typeParameters": [
+          {
+            "constraints": {
+              "abilities": []
+            },
+            "isPhantom": true
+          }
+        ],
+        "fields": [
+          {
+            "name": "dummy_field",
+            "type": "Bool"
+          }
+        ]
+      },
+      "DisplayRegistry": {
+        "abilities": {
+          "abilities": [
+            "Key"
+          ]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      },
+      "SystemMigrationCap": {
+        "abilities": {
+          "abilities": [
+            "Key"
+          ]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "id",
+            "type": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "cap_id": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "object",
+                    "name": "ID",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "claim": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "DisplayCap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "claim_with_publisher": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "package",
+                "name": "Publisher",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "DisplayCap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "clear": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "DisplayCap",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "delete_legacy": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ],
+        "return": []
+      },
+      "destroy_system_migration_cap": {
+        "visibility": "Private",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "SystemMigrationCap",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "fields": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "vec_map",
+                "name": "VecMap",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x1",
+                      "module": "string",
+                      "name": "String",
+                      "typeArguments": []
+                    }
+                  },
+                  {
+                    "Struct": {
+                      "address": "0x1",
+                      "module": "string",
+                      "name": "String",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "migrate_v1_to_v2": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "DisplayRegistry",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "DisplayCap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "migration_cap_receiver": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          "Address"
+        ]
+      },
+      "new": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "DisplayRegistry",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "internal",
+              "name": "Permit",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "DisplayCap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "new_with_publisher": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "DisplayRegistry",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "package",
+                "name": "Publisher",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "DisplayCap",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "set": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "DisplayCap",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "string",
+              "name": "String",
+              "typeArguments": []
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "string",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      },
+      "share": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "Display",
+              "typeArguments": [
+                {
+                  "TypeParameter": 0
+                }
+              ]
+            }
+          }
+        ],
+        "return": []
+      },
+      "system_migration": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "DisplayRegistry",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "SystemMigrationCap",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x1",
+                "module": "string",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "Vector": {
+              "Struct": {
+                "address": "0x1",
+                "module": "string",
+                "name": "String",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "tx_context",
+                "name": "TxContext",
+                "typeArguments": []
+              }
+            }
+          }
+        ],
+        "return": []
+      },
+      "transfer_migration_cap": {
+        "visibility": "Private",
+        "isEntry": true,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "display_registry",
+              "name": "SystemMigrationCap",
+              "typeArguments": []
+            }
+          },
+          "Address"
+        ],
+        "return": []
+      },
+      "unset": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": []
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "Display",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "display_registry",
+                "name": "DisplayCap",
+                "typeArguments": [
+                  {
+                    "TypeParameter": 0
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "string",
+              "name": "String",
+              "typeArguments": []
+            }
+          }
+        ],
+        "return": []
+      }
+    }
+  },
   "dynamic_field": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "dynamic_field",
     "friends": [
@@ -12338,6 +13292,37 @@
               "TypeParameter": 1
             }
           }
+        ]
+      },
+      "exists": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Copy",
+              "Drop",
+              "Store"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "TypeParameter": 0
+          }
+        ],
+        "return": [
+          "Bool"
         ]
       },
       "exists_": {
@@ -12645,11 +13630,113 @@
             }
           }
         ]
+      },
+      "remove_opt": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Copy",
+              "Drop",
+              "Store"
+            ]
+          },
+          {
+            "abilities": [
+              "Store"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "TypeParameter": 0
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "TypeParameter": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "replace": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Copy",
+              "Drop",
+              "Store"
+            ]
+          },
+          {
+            "abilities": [
+              "Store"
+            ]
+          },
+          {
+            "abilities": [
+              "Store"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "TypeParameter": 0
+          },
+          {
+            "TypeParameter": 1
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "TypeParameter": 2
+                }
+              ]
+            }
+          }
+        ]
       }
     }
   },
   "dynamic_object_field": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "dynamic_object_field",
     "friends": [
@@ -12804,6 +13891,37 @@
               "TypeParameter": 1
             }
           }
+        ]
+      },
+      "exists": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Copy",
+              "Drop",
+              "Store"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "TypeParameter": 0
+          }
+        ],
+        "return": [
+          "Bool"
         ]
       },
       "exists_": {
@@ -13150,11 +14268,116 @@
             "TypeParameter": 1
           }
         ]
+      },
+      "remove_opt": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Copy",
+              "Drop",
+              "Store"
+            ]
+          },
+          {
+            "abilities": [
+              "Store",
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "TypeParameter": 0
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "TypeParameter": 1
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "replace": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [
+          {
+            "abilities": [
+              "Copy",
+              "Drop",
+              "Store"
+            ]
+          },
+          {
+            "abilities": [
+              "Store",
+              "Key"
+            ]
+          },
+          {
+            "abilities": [
+              "Store",
+              "Key"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "MutableReference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "object",
+                "name": "UID",
+                "typeArguments": []
+              }
+            }
+          },
+          {
+            "TypeParameter": 0
+          },
+          {
+            "TypeParameter": 1
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x1",
+              "module": "option",
+              "name": "Option",
+              "typeArguments": [
+                {
+                  "TypeParameter": 2
+                }
+              ]
+            }
+          }
+        ]
       }
     }
   },
   "ecdsa_k1": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "ecdsa_k1",
     "friends": [],
@@ -13229,7 +14452,7 @@
     }
   },
   "ecdsa_r1": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "ecdsa_r1",
     "friends": [],
@@ -13287,7 +14510,7 @@
     }
   },
   "ecvrf": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "ecvrf",
     "friends": [],
@@ -13326,7 +14549,7 @@
     }
   },
   "ed25519": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "ed25519",
     "friends": [],
@@ -13360,7 +14583,7 @@
     }
   },
   "event": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "event",
     "friends": [],
@@ -13405,7 +14628,7 @@
     }
   },
   "funds_accumulator": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "funds_accumulator",
     "friends": [
@@ -13716,7 +14939,7 @@
     }
   },
   "groth16": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "groth16",
     "friends": [],
@@ -14019,13 +15242,17 @@
     }
   },
   "group_ops": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "group_ops",
     "friends": [
       {
         "address": "0x2",
         "name": "bls12381"
+      },
+      {
+        "address": "0x2",
+        "name": "ristretto255"
       }
     ],
     "structs": {
@@ -14638,7 +15865,7 @@
     }
   },
   "hash": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "hash",
     "friends": [],
@@ -14681,7 +15908,7 @@
     }
   },
   "hex": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "hex",
     "friends": [],
@@ -14720,7 +15947,7 @@
     }
   },
   "hmac": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "hmac",
     "friends": [],
@@ -14751,7 +15978,7 @@
     }
   },
   "kiosk": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "kiosk",
     "friends": [
@@ -16711,7 +17938,7 @@
     }
   },
   "kiosk_extension": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "kiosk_extension",
     "friends": [],
@@ -17203,7 +18430,7 @@
     }
   },
   "linked_table": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "linked_table",
     "friends": [],
@@ -18131,7 +19358,7 @@
     }
   },
   "math": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "math",
     "friends": [],
@@ -18222,7 +19449,7 @@
     }
   },
   "nitro_attestation": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "nitro_attestation",
     "friends": [],
@@ -18610,7 +19837,7 @@
     }
   },
   "object": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "object",
     "friends": [
@@ -18641,6 +19868,10 @@
       {
         "address": "0x2",
         "name": "derived_object"
+      },
+      {
+        "address": "0x2",
+        "name": "display_registry"
       },
       {
         "address": "0x2",
@@ -19064,6 +20295,31 @@
           }
         ]
       },
+      "sui_display_registry_address": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          "Address"
+        ]
+      },
+      "sui_display_registry_object_id": {
+        "visibility": "Friend",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "object",
+              "name": "UID",
+              "typeArguments": []
+            }
+          }
+        ]
+      },
       "uid_as_inner": {
         "visibility": "Public",
         "isEntry": false,
@@ -19165,7 +20421,7 @@
     }
   },
   "object_bag": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "object_bag",
     "friends": [],
@@ -19558,7 +20814,7 @@
     }
   },
   "object_table": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "object_table",
     "friends": [],
@@ -20072,7 +21328,7 @@
     }
   },
   "package": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "package",
     "friends": [],
@@ -20750,7 +22006,7 @@
     }
   },
   "party": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "party",
     "friends": [
@@ -20885,7 +22141,7 @@
     }
   },
   "pay": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "pay",
     "friends": [],
@@ -21184,7 +22440,7 @@
     }
   },
   "poseidon": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "poseidon",
     "friends": [],
@@ -21208,7 +22464,7 @@
     }
   },
   "priority_queue": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "priority_queue",
     "friends": [],
@@ -21491,7 +22747,7 @@
     }
   },
   "protocol_config": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "protocol_config",
     "friends": [
@@ -21518,7 +22774,7 @@
     }
   },
   "prover": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "prover",
     "friends": [],
@@ -21526,7 +22782,7 @@
     "exposedFunctions": {}
   },
   "random": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "random",
     "friends": [],
@@ -21960,8 +23216,929 @@
       }
     }
   },
+  "rangeproofs": {
+    "fileFormatVersion": 7,
+    "address": "0x2",
+    "name": "rangeproofs",
+    "friends": [],
+    "structs": {},
+    "exposedFunctions": {
+      "verify_bulletproofs_ristretto255": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          },
+          "U8",
+          {
+            "Reference": {
+              "Vector": {
+                "Struct": {
+                  "address": "0x2",
+                  "module": "group_ops",
+                  "name": "Element",
+                  "typeArguments": [
+                    {
+                      "Struct": {
+                        "address": "0x2",
+                        "module": "ristretto255",
+                        "name": "G",
+                        "typeArguments": []
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "U8"
+        ],
+        "return": [
+          "Bool"
+        ]
+      }
+    }
+  },
+  "ristretto255": {
+    "fileFormatVersion": 7,
+    "address": "0x2",
+    "name": "ristretto255",
+    "friends": [],
+    "structs": {
+      "G": {
+        "abilities": {
+          "abilities": [
+            "Store"
+          ]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "dummy_field",
+            "type": "Bool"
+          }
+        ]
+      },
+      "Scalar": {
+        "abilities": {
+          "abilities": [
+            "Store"
+          ]
+        },
+        "typeParameters": [],
+        "fields": [
+          {
+            "name": "dummy_field",
+            "type": "Bool"
+          }
+        ]
+      }
+    },
+    "exposedFunctions": {
+      "g_add": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "G",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "G",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "g_div": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "G",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "g_from_bytes": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "g_generator": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "g_identity": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "g_mul": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "G",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "g_neg": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "G",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "g_sub": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "G",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "G",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "G",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_add": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_div": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_from_bytes": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Vector": "U8"
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_from_u64": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          "U64"
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_inv": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_mul": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_neg": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_one": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_sub": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Reference": {
+              "Struct": {
+                "address": "0x2",
+                "module": "group_ops",
+                "name": "Element",
+                "typeArguments": [
+                  {
+                    "Struct": {
+                      "address": "0x2",
+                      "module": "ristretto255",
+                      "name": "Scalar",
+                      "typeArguments": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scalar_zero": {
+        "visibility": "Public",
+        "isEntry": false,
+        "typeParameters": [],
+        "parameters": [],
+        "return": [
+          {
+            "Struct": {
+              "address": "0x2",
+              "module": "group_ops",
+              "name": "Element",
+              "typeArguments": [
+                {
+                  "Struct": {
+                    "address": "0x2",
+                    "module": "ristretto255",
+                    "name": "Scalar",
+                    "typeArguments": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
   "sui": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "sui",
     "friends": [],
@@ -22011,7 +24188,7 @@
     }
   },
   "table": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "table",
     "friends": [],
@@ -22492,7 +24669,7 @@
     }
   },
   "table_vec": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "table_vec",
     "friends": [],
@@ -22923,7 +25100,7 @@
     }
   },
   "token": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "token",
     "friends": [],
@@ -25219,7 +27396,7 @@
     }
   },
   "transfer": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "transfer",
     "friends": [],
@@ -25615,7 +27792,7 @@
     }
   },
   "transfer_policy": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "transfer_policy",
     "friends": [],
@@ -26711,7 +28888,7 @@
     }
   },
   "tx_context": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "tx_context",
     "friends": [],
@@ -26926,7 +29103,7 @@
     }
   },
   "types": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "types",
     "friends": [],
@@ -26956,7 +29133,7 @@
     }
   },
   "url": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "url",
     "friends": [],
@@ -27087,7 +29264,7 @@
     }
   },
   "vdf": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "vdf",
     "friends": [],
@@ -27139,7 +29316,7 @@
     }
   },
   "vec_map": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "vec_map",
     "friends": [],
@@ -28070,7 +30247,7 @@
     }
   },
   "vec_set": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "vec_set",
     "friends": [],
@@ -28466,7 +30643,7 @@
     }
   },
   "versioned": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "versioned",
     "friends": [],
@@ -28740,7 +30917,7 @@
     }
   },
   "zklogin_verified_id": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "zklogin_verified_id",
     "friends": [],
@@ -29074,7 +31251,7 @@
     }
   },
   "zklogin_verified_issuer": {
-    "fileFormatVersion": 6,
+    "fileFormatVersion": 7,
     "address": "0x2",
     "name": "zklogin_verified_issuer",
     "friends": [],
