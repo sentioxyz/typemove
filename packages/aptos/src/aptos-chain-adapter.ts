@@ -38,6 +38,12 @@ export class AptosChainAdapter extends ChainAdapter<MoveModuleBytecode, Event | 
     return modules.flatMap((m) => (m.abi ? [toInternalModule(m)] : []))
   }
 
+  // Drop bytecode from cached ABI files — only `abi` is consumed by codegen,
+  // and bytecode is ~50% of each Aptos ABI JSON's bytes.
+  override toPersistableModules(modules: MoveModuleBytecode[]) {
+    return modules.map(({ abi }) => ({ abi }))
+  }
+
   getMeaningfulFunctionParams(params: TypeDescriptor[]): TypeDescriptor[] {
     if (params.length === 0) {
       return params

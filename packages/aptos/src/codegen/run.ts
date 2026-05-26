@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { codegen } from './codegen.js'
+import { AptosChainAdapter } from '../aptos-chain-adapter.js'
 import { Aptos, AptosConfig, Network } from '@aptos-labs/ts-sdk'
 import * as path from 'path'
 import * as fs from 'fs'
@@ -56,7 +57,10 @@ program
       if (!fs.existsSync(abisDir)) {
         fs.mkdirSync(abisDir, { recursive: true })
       }
-      fs.writeFileSync(path.join(abisDir, abiAddress + '.json'), JSON.stringify(abi, null, 2))
+      fs.writeFileSync(
+        path.join(abisDir, abiAddress + '.json'),
+        JSON.stringify(new AptosChainAdapter(aptosClient).toPersistableModules(abi), null, 2)
+      )
     }
 
     const num = await codegen(abisDir, options.targetDir, config, true)
