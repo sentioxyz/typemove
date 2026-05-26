@@ -1,22 +1,26 @@
-import { TransactionBlock } from '@mysten/sui/transactions'
-import { getFullnodeUrl, SuiClient } from '@mysten/sui/client'
+import { Transaction } from '@mysten/sui/transactions'
+import { getGrpcClient, getGrpcFullnodeUrl } from '@typemove/sui'
 import { clob_v2 } from './types/0xdee9.js'
 import { _0x2 } from '@typemove/sui/builtin'
 
-const tx = new TransactionBlock()
-const provider = new SuiClient({ url: getFullnodeUrl('testnet') })
+const tx = new Transaction()
+const provider = getGrpcClient(getGrpcFullnodeUrl('testnet'))
 
 clob_v2.builder.getMarketPrice(
   tx,
   ['0x5d2687b354f2ad4bce90c828974346d91ac1787ff170e5d09cb769e5dbcdefae'],
   ['0x2::sui::SUI', '0x219d80b1be5d586ff3bdbfeaf4d051ec721442c3a6498a3222773c6945a73d9f::usdt::USDT']
 )
-console.log(tx.blockData)
+console.log(tx.getData())
 
-const result = provider.devInspectTransactionBlock({
-  transactionBlock: tx,
-  sender: '0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd'
-})
+// checksEnabled: false matches the old devInspectTransactionBlock semantics —
+// allow simulating without validating object ownership or signer.
+const result = provider.simulateTransaction({
+  transaction: tx,
+  sender: '0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd',
+  include: { commandResults: true },
+  checksEnabled: false
+} as any)
 
 result.then((r) => console.log(r))
 

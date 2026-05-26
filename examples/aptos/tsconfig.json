@@ -3,7 +3,7 @@
     "rootDir": "./src",
     "baseUrl": "./src",
     "outDir": "dist",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "module": "esnext"
   },
   "exclude": ["dist"],
