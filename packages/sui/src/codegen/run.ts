@@ -5,8 +5,7 @@ import { Command } from 'commander'
 import { createRequire } from 'module'
 import fs from 'fs'
 import path from 'path'
-import { SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
-import { inferNetworkFromUrl } from '../sui-chain-adapter.js'
+import { getGrpcClient, SuiChainAdapter } from '../sui-chain-adapter.js'
 const require = createRequire(import.meta.url)
 let pkg = undefined
 try {
@@ -38,12 +37,15 @@ program
       endpoint = 'https://fullnode.testnet.sui.io/'
     }
 
-    const suiClient = new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) })
+    const suiClient = getGrpcClient(endpoint)
 
     let abisDir = location
     if (location.startsWith('0x')) {
       const abiAddress = abisDir
-      const abi = await suiClient.getNormalizedMoveModulesByPackage({ package: abiAddress })
+      // Fetch via adapter so the on-disk shape matches what codegen reads back.
+      // ABI is serialized as { address, module }[] — the address is included
+      // because the proto Module doesn't carry the package id per entry.
+      const abi = await new SuiChainAdapter(suiClient).fetchModules(abiAddress)
       abisDir = options.abiDir
       if (!fs.existsSync(abisDir)) {
         fs.mkdirSync(abisDir, { recursive: true })

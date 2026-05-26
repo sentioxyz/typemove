@@ -8,60 +8,70 @@ import {
   TypeDescriptor
 } from '@typemove/move'
 
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
+import type { GrpcTypes } from '@mysten/sui/grpc'
+import { SuiGrpcClient } from '@mysten/sui/grpc'
+import type { SuiEvent, SuiMoveObject } from '@mysten/sui/jsonRpc'
 
-export class SuiChainAdapter extends ChainAdapter<
-  // SuiNetwork,
-  SuiMoveNormalizedModule,
-  SuiEvent | SuiMoveObject
-> {
-  async getChainId() {
-    return this.client.getChainIdentifier()
-  }
-  // static INSTANCE = new SuiChainAdapter()
+// Decoder-input types stay sourced from `/jsonRpc` because they describe the
+// runtime shape of events/objects that upstream processors hand to MoveCoder.
+// We are not migrating the data ingestion path here — only the codegen / ABI
+// fetch path.
 
-  client: SuiJsonRpcClient
-  constructor(client: SuiJsonRpcClient) {
+// Adapter ModuleType is the proto Module plus the package address (which the
+// proto doesn't carry per-entry — only the wrapping Package has storageId).
+export interface ModuleWithAddress {
+  address: string
+  module: GrpcTypes.Module
+}
+
+export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEvent | SuiMoveObject> {
+  client: SuiGrpcClient
+
+  constructor(client: SuiGrpcClient) {
     super()
     this.client = client
   }
 
-  async fetchModule(
-    account: string,
-    module: string
-    // network: SuiNetwork
-  ): Promise<SuiMoveNormalizedModule> {
-    return await this.client.getNormalizedMoveModule({ package: account, module })
+  async getChainId(): Promise<string> {
+    const { chainIdentifier } = await this.client.core.getChainIdentifier()
+    return chainIdentifier ?? ''
   }
 
-  async fetchModules(
-    account: string
-    // network: SuiNetwork
-  ): Promise<SuiMoveNormalizedModule[]> {
-    const modules = await this.client.getNormalizedMoveModulesByPackage({
-      package: account
-    })
-    return Object.values(modules)
+  async fetchModule(account: string, module: string): Promise<ModuleWithAddress> {
+    // gRPC has no single-module-fetch RPC; pull the whole package and filter.
+    const modules = await this.fetchModules(account)
+    const m = modules.find((x) => x.module.name === module)
+    if (!m) {
+      throw Error(`Module ${module} not found in package ${account}`)
+    }
+    return m
+  }
+
+  async fetchModules(account: string): Promise<ModuleWithAddress[]> {
+    const { response } = await this.client.movePackageService.getPackage({ packageId: account })
+    const pkg = response.package
+    if (!pkg) {
+      throw Error(`No package returned for ${account}`)
+    }
+    // gRPC returns the canonical long-form storage id (0x0000...0002); the rest
+    // of typemove keys system packages by their short form (0x2). Preserve the
+    // caller-supplied address so framework lookups and short-form import paths
+    // (`@typemove/sui/builtin/0x2`) keep working.
+    return (pkg.modules ?? []).map((module) => ({ address: account, module }))
   }
 
   getMeaningfulFunctionParams(params: TypeDescriptor[]): TypeDescriptor[] {
     return params
-    // if (params.length === 0) {
-    //   return params
-    // }
-    // return params.slice(0, params.length - 1)
   }
 
-  toInternalModules(modules: SuiMoveNormalizedModule[]): InternalMoveModule[] {
-    return Object.values(modules).map(toInternalModule)
+  toInternalModules(modules: ModuleWithAddress[]): InternalMoveModule[] {
+    return modules.map(({ address, module }) => toInternalModule(module, address))
   }
 
   getAllEventStructs(modules: InternalMoveModule[]): Map<string, InternalMoveStruct> {
     const eventMap = new Map<string, InternalMoveStruct>()
-
     for (const module of modules) {
       const qname = moduleQname(module)
-
       for (const struct of module.structs) {
         const abilities = new Set(struct.abilities)
         if (abilities.has('Drop') && abilities.has('Copy')) {
@@ -77,25 +87,15 @@ export class SuiChainAdapter extends ChainAdapter<
   }
 
   getData(val: SuiEvent | SuiMoveObject) {
-    // if (val.parsedJson) {
-    //   return val.parsedJson as any
-    // }
     if (val === undefined) {
       throw Error('val is undefined')
     }
     if ('parsedJson' in val) {
       return val.parsedJson as any
     }
-    // if (SuiParsedData.is(val)) {
-    //   return val.fields as any
-    // }
     if (val.dataType === 'moveObject') {
       return val.fields as any
     }
-    // if (SuiMoveObject.is(val)) {
-    //   return val.fields as any
-    // }
-    // This may not be perfect, just think everything has
     if ('fields' in val) {
       if ('type' in val && Object.keys(val).length === 2) {
         return val.fields as any
@@ -103,9 +103,6 @@ export class SuiChainAdapter extends ChainAdapter<
     }
     return val as any
   }
-  // validateAndNormalizeAddress(address: string) {
-  //   return validateAndNormalizeAddress(address)
-  // }
 }
 
 export function inferNetworkFromUrl(url: string): string {
@@ -116,6 +113,7 @@ export function inferNetworkFromUrl(url: string): string {
   return 'custom'
 }
 
-function getRpcClient(endpoint: string): SuiJsonRpcClient {
-  return new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) })
+export function getGrpcClient(endpoint: string): SuiGrpcClient {
+  const network = inferNetworkFromUrl(endpoint) as any
+  return new SuiGrpcClient({ network, baseUrl: endpoint })
 }

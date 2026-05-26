@@ -1,4 +1,4 @@
-import { SuiMoveNormalizedModule, SuiEvent, SuiMoveObject, SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
+import type { SuiEvent, SuiMoveObject } from '@mysten/sui/jsonRpc'
 
 import * as fs from 'fs'
 import chalk from 'chalk'
@@ -13,7 +13,7 @@ import {
 } from '@typemove/move'
 import { AbstractCodegen } from '@typemove/move/codegen'
 import { join } from 'path'
-import { SuiChainAdapter, inferNetworkFromUrl } from '../sui-chain-adapter.js'
+import { SuiChainAdapter, ModuleWithAddress, getGrpcClient } from '../sui-chain-adapter.js'
 
 export async function codegen(
   abisDir: string,
@@ -42,31 +42,20 @@ export async function codegen(
   }
 }
 
-export class SuiCodegen extends AbstractCodegen<
-  // SuiNetwork,
-  SuiMoveNormalizedModule,
-  SuiEvent | SuiMoveObject
-> {
+export class SuiCodegen extends AbstractCodegen<ModuleWithAddress, SuiEvent | SuiMoveObject> {
   ADDRESS_TYPE = 'string'
   SYSTEM_PACKAGE = '@typemove/sui'
-  // ADDRESS_TYPE = 'string'
-  // MAIN_NET = SuiNetwork.MAIN_NET
-  // TEST_NET = SuiNetwork.TEST_NET
   PREFIX = 'Sui'
-  // STRUCT_FIELD_NAME = 'fields'
-  // GENERATE_ON_ENTRY = true
   PAYLOAD_OPTIONAL = true
 
   constructor(endpoint: string) {
-    super(new SuiChainAdapter(new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) })))
+    super(new SuiChainAdapter(getGrpcClient(endpoint)))
   }
 
   readModulesFile(fullPath: string) {
-    const res = super.readModulesFile(fullPath)
-    if (res.result) {
-      return res.result
-    }
-    return res
+    // Cached ABI is now an array of { address, module } produced by
+    // SuiChainAdapter.fetchModules / codegen run.ts. Just pass it through.
+    return super.readModulesFile(fullPath)
   }
 
   generateStructs(module: InternalMoveModule, struct: InternalMoveStruct, events: Set<string>): string {
@@ -207,20 +196,27 @@ export class SuiCodegen extends AbstractCodegen<
     const args = this.generateArgs(module, func, true)
     const returnType = `${this.generateFunctionReturnTypeParameters(func, module.address)}`
 
+    // gRPC simulateTransaction's CommandOutput only carries BCS bytes (no type
+    // string the way devInspectTransactionBlock did), so we capture the
+    // declared Move return-type signatures at codegen time and pass them
+    // through to the decoder at runtime.
+    const returnSignaturesLiteral = JSON.stringify(func.return.map((t) => t.getSignature()))
+
     return `export async function ${camel(normalizeToJSName(func.name))}${genericString}(
-      client: SuiJsonRpcClient,
+      client: SuiGrpcClient,
       args: [${args.map((a) => a.paramType).join(',')}],
       ${
         typeParamArg.length > 0 ? `typeArguments: [${typeParamArg}]` : ``
-      } ): Promise<TypedDevInspectResults<${returnType}>> {
+      } ): Promise<TypedSimulateResults<${returnType}>> {
       const tx = new Transaction()
       builder.${camel(normalizeToJSName(func.name))}(tx, args ${typeParamArg.length > 0 ? `, typeArguments` : ''})
-      const inspectRes = await client.devInspectTransactionBlock({
-        transactionBlock: tx,
-        sender: ZERO_ADDRESS
-      })
+      const simulateRes = await client.simulateTransaction({
+        transaction: tx,
+        sender: ZERO_ADDRESS,
+        include: { commandResults: true }
+      } as any)
 
-      return (await getMoveCoder(client)).decodeDevInspectResult<${returnType}>(inspectRes)
+      return (await getMoveCoder(client)).decodeSimulateResult<${returnType}>(simulateRes, ${returnSignaturesLiteral})
     }`
   }
 
@@ -267,9 +263,9 @@ export class SuiCodegen extends AbstractCodegen<
   generateImports(): string {
     return `
       ${super.generateImports()}
-      import { ZERO_ADDRESS, TypedDevInspectResults, getMoveCoder } from '@typemove/sui'
+      import { ZERO_ADDRESS, TypedSimulateResults, getMoveCoder } from '@typemove/sui'
       import { Transaction, TransactionArgument, TransactionObjectArgument } from '@mysten/sui/transactions'
-      import { SuiJsonRpcClient } from '@mysten/sui/jsonRpc'
+      import { SuiGrpcClient } from '@mysten/sui/grpc'
       import {  transactionArgumentOrObject, 
                 transactionArgumentOrVec,
                 transactionArgumentOrPure,

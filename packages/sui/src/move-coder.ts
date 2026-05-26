@@ -1,4 +1,4 @@
-import { TypedDevInspectResults, TypedEventInstance, TypedFunctionPayload } from './models.js'
+import { TypedSimulateResults, TypedEventInstance, TypedFunctionPayload } from './models.js'
 import {
   AbstractMoveCoder,
   ANY_TYPE,
@@ -9,16 +9,9 @@ import {
   TypeDescriptor,
   InternalMoveModule
 } from '@typemove/move'
-import {
-  MoveCallSuiTransaction,
-  SuiCallArg,
-  SuiEvent,
-  SuiMoveNormalizedModule,
-  SuiMoveObject,
-  DevInspectResults,
-  SuiJsonRpcClient
-} from '@mysten/sui/jsonRpc'
-import { SuiChainAdapter, inferNetworkFromUrl } from './sui-chain-adapter.js'
+import type { MoveCallSuiTransaction, SuiCallArg, SuiEvent, SuiMoveObject } from '@mysten/sui/jsonRpc'
+import { SuiGrpcClient } from '@mysten/sui/grpc'
+import { SuiChainAdapter, ModuleWithAddress, getGrpcClient } from './sui-chain-adapter.js'
 import { toInternalModule } from './to-internal.js'
 import { dynamic_field } from './builtin/0x2.js'
 import { BcsType, bcs } from '@mysten/sui/bcs'
@@ -28,24 +21,21 @@ export type Encoding = 'base58' | 'base64' | 'hex'
 
 import { normalizeSuiObjectId, normalizeSuiAddress } from '@mysten/sui/utils'
 
-export class MoveCoder extends AbstractMoveCoder<
-  // SuiNetwork,
-  SuiMoveNormalizedModule,
-  SuiEvent | SuiMoveObject
-> {
-  constructor(client: SuiJsonRpcClient) {
+export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEvent | SuiMoveObject> {
+  constructor(client: SuiGrpcClient) {
     super(new SuiChainAdapter(client))
   }
 
-  load(module: SuiMoveNormalizedModule, address: string): InternalMoveModule {
+  load(entry: ModuleWithAddress, address: string): InternalMoveModule {
     address = accountTypeString(address)
-    let m = this.moduleMapping.get(module.address + '::' + module.name)
+    const { address: moduleAddress, module } = entry
+    let m = this.moduleMapping.get(moduleAddress + '::' + module.name)
     const mDeclared = this.moduleMapping.get(address + '::' + module.name)
     if (m && mDeclared) {
       return m
     }
-    this.accounts.add(module.address)
-    m = toInternalModule(module)
+    this.accounts.add(moduleAddress)
+    m = toInternalModule(module, moduleAddress)
     this.loadInternal(m, address)
     return m
   }
@@ -256,14 +246,32 @@ export class MoveCoder extends AbstractMoveCoder<
     return bcsType?.parse(data)
   }
 
-  async decodeDevInspectResult<T extends any[]>(inspectRes: DevInspectResults): Promise<TypedDevInspectResults<T>> {
-    const returnValues = []
-    if (inspectRes.results != null) {
-      for (const r of inspectRes.results) {
-        if (r.returnValues) {
-          for (const returnValue of r.returnValues) {
-            const type = parseMoveType(returnValue[1])
-            const bcsDecoded = await this.decodeBCS(type, new Uint8Array(returnValue[0]))
+  // Replaces decodeDevInspectResult. gRPC simulateTransaction returns
+  // `commandResults: CommandResult[]` where each CommandResult.returnValues is
+  // `CommandOutput[]` of raw `{ bcs: Uint8Array }` — there is no per-return
+  // type string the way devInspect carried one. The caller must therefore pass
+  // the Move return-type signatures explicitly (codegen emits them next to
+  // each generated view helper).
+  async decodeSimulateResult<T extends any[]>(
+    simulateRes: any,
+    returnTypeSignatures: string[]
+  ): Promise<TypedSimulateResults<T>> {
+    const returnValues: any[] = []
+    const commandResults = simulateRes?.commandResults
+    if (Array.isArray(commandResults)) {
+      let typeIdx = 0
+      for (const r of commandResults) {
+        const rvs = r?.returnValues
+        if (Array.isArray(rvs) && rvs.length > 0) {
+          for (const rv of rvs) {
+            const sig = returnTypeSignatures[typeIdx++]
+            if (!sig) {
+              returnValues.push(null)
+              continue
+            }
+            const type = parseMoveType(sig)
+            const bcsBytes = rv?.bcs instanceof Uint8Array ? rv.bcs : new Uint8Array(rv?.bcs ?? [])
+            const bcsDecoded = await this.decodeBCS(type, bcsBytes)
             const decoded = await this.decodeType(bcsDecoded, type)
             returnValues.push(decoded)
           }
@@ -272,38 +280,36 @@ export class MoveCoder extends AbstractMoveCoder<
         }
       }
     }
-    return { ...inspectRes, results_decoded: returnValues as any }
+    return { ...simulateRes, results_decoded: returnValues as any }
   }
 }
 
 const DEFAULT_ENDPOINT = 'https://fullnode.mainnet.sui.io/'
 const CODER_MAP = new Map<string, MoveCoder>()
-const CHAIN_ID_CODER_MAP = new Map<string, MoveCoder>()
 
 export function defaultMoveCoder(endpoint: string = DEFAULT_ENDPOINT): MoveCoder {
   let coder = CODER_MAP.get(endpoint)
   if (!coder) {
-    coder = new MoveCoder(new SuiJsonRpcClient({ url: endpoint, network: inferNetworkFromUrl(endpoint) }))
+    coder = new MoveCoder(getGrpcClient(endpoint))
     CODER_MAP.set(endpoint, coder)
   }
   return coder
 }
 
-const PROVIDER_CODER_MAP = new Map<SuiJsonRpcClient, MoveCoder>()
+const PROVIDER_CODER_MAP = new Map<SuiGrpcClient, MoveCoder>()
 
 let DEFAULT_CHAIN_ID: string | undefined
 
-export async function getMoveCoder(client: SuiJsonRpcClient): Promise<MoveCoder> {
+export async function getMoveCoder(client: SuiGrpcClient): Promise<MoveCoder> {
   let coder = PROVIDER_CODER_MAP.get(client)
   if (!coder) {
     coder = new MoveCoder(client)
-    // TODO how to dedup
-    const id = await client.getChainIdentifier()
+    const { chainIdentifier } = await client.core.getChainIdentifier()
     const defaultCoder = defaultMoveCoder()
     if (!DEFAULT_CHAIN_ID) {
       DEFAULT_CHAIN_ID = await defaultCoder.adapter.getChainId()
     }
-    if (id === DEFAULT_CHAIN_ID) {
+    if (chainIdentifier === DEFAULT_CHAIN_ID) {
       coder = defaultCoder
     }
 

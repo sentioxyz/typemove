@@ -1,1356 +1,1535 @@
-{
-  "airdrop": {
-    "fileFormatVersion": 6,
+[
+  {
     "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-    "name": "airdrop",
-    "friends": [],
-    "structs": {
-      "AIRDROP": {
-        "abilities": {
-          "abilities": ["Drop"]
-        },
-        "typeParameters": [],
-        "fields": [
-          {
-            "name": "dummy_field",
-            "type": "Bool"
-          }
-        ]
-      },
-      "AirdropConfig": {
-        "abilities": {
-          "abilities": []
-        },
-        "typeParameters": [],
-        "fields": [
-          {
-            "name": "max_token_limit",
-            "type": "U64"
-          },
-          {
-            "name": "tokens",
-            "type": "U64"
-          },
-          {
-            "name": "role",
-            "type": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Role",
-                "typeArguments": [
-                  {
-                    "Struct": {
-                      "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                      "module": "roles",
-                      "name": "ApiRole",
-                      "typeArguments": []
-                    }
-                  }
-                ]
+    "module": {
+      "datatypes": [
+        {
+          "abilities": [
+            2
+          ],
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "dummy_field",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 2
               }
             }
-          }
-        ]
-      },
-      "AirdropEvent": {
-        "abilities": {
-          "abilities": ["Copy", "Drop"]
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AIRDROP",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "airdrop",
+          "name": "AIRDROP",
+          "kind": 1
         },
-        "typeParameters": [
-          {
-            "constraints": {
-              "abilities": []
+        {
+          "abilities": [],
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "max_token_limit",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 6
+              }
             },
-            "isPhantom": true
-          }
-        ],
-        "fields": [
-          {
-            "name": "addr",
-            "type": "Address"
-          },
-          {
-            "name": "value",
-            "type": "U64"
-          }
-        ]
-      },
-      "AirdropRegistry": {
-        "abilities": {
-          "abilities": ["Key"]
-        },
-        "typeParameters": [],
-        "fields": [
-          {
-            "name": "id",
-            "type": {
-              "Struct": {
-                "address": "0x2",
-                "module": "object",
-                "name": "UID",
-                "typeArguments": []
+            {
+              "name": "tokens",
+              "position": 1,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 6
               }
-            }
-          },
-          {
-            "name": "roles",
-            "type": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "name": "record",
-            "type": {
-              "Struct": {
-                "address": "0x2",
-                "module": "table",
-                "name": "Table",
-                "typeArguments": [
+            },
+            {
+              "name": "role",
+              "position": 2,
+              "type": {
+                "typeParameterInstantiation": [
                   {
-                    "Struct": {
-                      "address": "0x1",
-                      "module": "string",
-                      "name": "String",
-                      "typeArguments": []
-                    }
+                    "typeParameterInstantiation": [],
+                    "type": 10,
+                    "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::ApiRole"
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Role"
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropConfig",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "airdrop",
+          "name": "AirdropConfig",
+          "kind": 1
+        },
+        {
+          "abilities": [
+            1,
+            2
+          ],
+          "typeParameters": [
+            {
+              "constraints": [],
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "addr",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            },
+            {
+              "name": "value",
+              "position": 1,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 6
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropEvent",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "airdrop",
+          "name": "AirdropEvent",
+          "kind": 1
+        },
+        {
+          "abilities": [
+            4
+          ],
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "id",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::object::UID"
+              }
+            },
+            {
+              "name": "roles",
+              "position": 1,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            },
+            {
+              "name": "record",
+              "position": 2,
+              "type": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 10,
+                    "typeName": "0x0000000000000000000000000000000000000000000000000000000000000001::string::String"
                   },
-                  "Bool"
-                ]
-              }
-            }
-          }
-        ]
-      }
-    },
-    "exposedFunctions": {
-      "add_record": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Struct": {
-              "address": "0x1",
-              "module": "string",
-              "name": "String",
-              "typeArguments": []
-            }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": []
-      },
-      "authorize_api": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "package",
-                "name": "Publisher",
-                "typeArguments": []
-              }
-            }
-          },
-          "Address",
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": []
-      },
-      "deauthorize_api": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "package",
-                "name": "Publisher",
-                "typeArguments": []
-              }
-            }
-          },
-          "Address",
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": []
-      },
-      "finalize_send": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "airdrop",
-              "name": "AirdropConfig",
-              "typeArguments": []
-            }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": []
-      },
-      "init_send": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "airdrop",
-              "name": "AirdropConfig",
-              "typeArguments": []
-            }
-          }
-        ]
-      },
-      "is_airdropped": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Struct": {
-              "address": "0x1",
-              "module": "string",
-              "name": "String",
-              "typeArguments": []
-            }
-          }
-        ],
-        "return": ["Bool"]
-      },
-      "remove_record": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Struct": {
-              "address": "0x1",
-              "module": "string",
-              "name": "String",
-              "typeArguments": []
-            }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": []
-      },
-      "roles": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          }
-        ]
-      },
-      "roles_mut": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          }
-        ]
-      },
-      "send_token": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "safe",
-                "name": "Safe",
-                "typeArguments": [
                   {
-                    "TypeParameter": 0
+                    "typeParameterInstantiation": [],
+                    "type": 2
                   }
-                ]
+                ],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::table::Table"
               }
             }
-          },
-          "U64",
-          {
-            "Struct": {
-              "address": "0x1",
-              "module": "string",
-              "name": "String",
-              "typeArguments": []
-            }
-          },
-          "Address",
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropRegistry",
-                "typeArguments": []
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "airdrop",
+          "name": "AirdropRegistry",
+          "kind": 1
+        }
+      ],
+      "functions": [
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000001::string::String"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
               }
             }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "airdrop",
-                "name": "AirdropConfig",
-                "typeArguments": []
+          ],
+          "returns": [],
+          "name": "add_record",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::package::Publisher"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
               }
             }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
+          ],
+          "returns": [],
+          "name": "authorize_api",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::package::Publisher"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
               }
             }
-          }
-        ],
-        "return": []
-      }
+          ],
+          "returns": [],
+          "name": "deauthorize_api",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropConfig"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "finalize_send",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AIRDROP"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "init",
+          "visibility": 1,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropConfig"
+              }
+            }
+          ],
+          "name": "init_send",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000001::string::String"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 2
+              }
+            }
+          ],
+          "name": "is_airdropped",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000001::string::String"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "remove_record",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            }
+          ],
+          "name": "roles",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            }
+          ],
+          "name": "roles_mut",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 6
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000001::string::String"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropRegistry"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::airdrop::AirdropConfig"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "send_token",
+          "visibility": 2,
+          "isEntry": false
+        }
+      ],
+      "name": "airdrop"
     }
   },
-  "memefi": {
-    "fileFormatVersion": 6,
+  {
     "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-    "name": "memefi",
-    "friends": [],
-    "structs": {
-      "MEMEFI": {
-        "abilities": {
-          "abilities": ["Drop"]
-        },
-        "typeParameters": [],
-        "fields": [
-          {
-            "name": "dummy_field",
-            "type": "Bool"
-          }
-        ]
-      }
-    },
-    "exposedFunctions": {}
-  },
-  "roles": {
-    "fileFormatVersion": 6,
-    "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-    "name": "roles",
-    "friends": [
-      {
-        "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-        "name": "airdrop"
-      },
-      {
-        "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-        "name": "safe"
-      }
-    ],
-    "structs": {
-      "ApiRole": {
-        "abilities": {
-          "abilities": []
-        },
-        "typeParameters": [],
-        "fields": [
-          {
-            "name": "dummy_field",
-            "type": "Bool"
-          }
-        ]
-      },
-      "Role": {
-        "abilities": {
-          "abilities": ["Copy", "Drop", "Store"]
-        },
-        "typeParameters": [
-          {
-            "constraints": {
-              "abilities": []
+    "module": {
+      "datatypes": [
+        {
+          "abilities": [
+            2
+          ],
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "dummy_field",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 2
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::memefi::MEMEFI",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "memefi",
+          "name": "MEMEFI",
+          "kind": 1
+        }
+      ],
+      "functions": [
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::memefi::MEMEFI"
+              }
             },
-            "isPhantom": true
-          }
-        ],
-        "fields": [
-          {
-            "name": "addr",
-            "type": "Address"
-          }
-        ]
-      },
-      "Roles": {
-        "abilities": {
-          "abilities": ["Store"]
-        },
-        "typeParameters": [],
-        "fields": [
-          {
-            "name": "data",
-            "type": {
-              "Struct": {
-                "address": "0x2",
-                "module": "bag",
-                "name": "Bag",
-                "typeArguments": []
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
               }
             }
-          }
-        ]
-      }
-    },
-    "exposedFunctions": {
-      "addr": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Role",
-                "typeArguments": [
-                  {
-                    "TypeParameter": 0
-                  }
-                ]
-              }
-            }
-          }
-        ],
-        "return": ["Address"]
-      },
-      "assert_has_role": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          },
-          "Address"
-        ],
-        "return": []
-      },
-      "assert_publisher_from_package": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "package",
-                "name": "Publisher",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": []
-      },
-      "authorize": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "roles",
-              "name": "Role",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
-            }
-          }
-        ],
-        "return": []
-      },
-      "config": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          },
-          {
-            "abilities": ["Drop", "Store"]
-          }
-        ],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          },
-          "Address"
-        ],
-        "return": [
-          {
-            "Reference": {
-              "TypeParameter": 1
-            }
-          }
-        ]
-      },
-      "data": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "bag",
-                "name": "Bag",
-                "typeArguments": []
-              }
-            }
-          }
-        ]
-      },
-      "deauthorize": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "roles",
-              "name": "Role",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
-            }
-          }
-        ],
-        "return": ["Bool"]
-      },
-      "destroy_empty": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "roles",
-              "name": "Roles",
-              "typeArguments": []
-            }
-          }
-        ],
-        "return": []
-      },
-      "is_authorized": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "roles",
-                "name": "Roles",
-                "typeArguments": []
-              }
-            }
-          },
-          "Address"
-        ],
-        "return": ["Bool"]
-      },
-      "new": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "roles",
-              "name": "Roles",
-              "typeArguments": []
-            }
-          }
-        ]
-      },
-      "new_role": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": ["Address"],
-        "return": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "roles",
-              "name": "Role",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
-            }
-          }
-        ]
-      }
+          ],
+          "returns": [],
+          "name": "init",
+          "visibility": 1,
+          "isEntry": false
+        }
+      ],
+      "name": "memefi"
     }
   },
-  "safe": {
-    "fileFormatVersion": 6,
+  {
     "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-    "name": "safe",
-    "friends": [
-      {
-        "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-        "name": "airdrop"
-      }
-    ],
-    "structs": {
-      "Safe": {
-        "abilities": {
-          "abilities": ["Key"]
+    "module": {
+      "datatypes": [
+        {
+          "abilities": [],
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "dummy_field",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 2
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::ApiRole",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "roles",
+          "name": "ApiRole",
+          "kind": 1
         },
-        "typeParameters": [
-          {
-            "constraints": {
-              "abilities": []
+        {
+          "abilities": [
+            1,
+            2,
+            3
+          ],
+          "typeParameters": [
+            {
+              "constraints": [],
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "addr",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Role",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "roles",
+          "name": "Role",
+          "kind": 1
+        },
+        {
+          "abilities": [
+            3
+          ],
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "data",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::bag::Bag"
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "roles",
+          "name": "Roles",
+          "kind": 1
+        }
+      ],
+      "functions": [
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Role"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            }
+          ],
+          "name": "addr",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
             },
-            "isPhantom": true
-          }
-        ],
-        "fields": [
-          {
-            "name": "id",
-            "type": {
-              "Struct": {
-                "address": "0x2",
-                "module": "object",
-                "name": "UID",
-                "typeArguments": []
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
               }
             }
-          },
-          {
-            "name": "balance",
-            "type": {
-              "Struct": {
-                "address": "0x2",
-                "module": "balance",
-                "name": "Balance",
-                "typeArguments": [
+          ],
+          "returns": [],
+          "name": "assert_has_role",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::package::Publisher"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "assert_publisher_from_package",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [
                   {
-                    "TypeParameter": 0
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
                   }
-                ]
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Role"
               }
             }
-          }
-        ]
-      }
-    },
-    "exposedFunctions": {
-      "balance": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "safe",
-                "name": "Safe",
-                "typeArguments": [
-                  {
-                    "TypeParameter": 0
-                  }
-                ]
-              }
-            }
-          }
-        ],
-        "return": ["U64"]
-      },
-      "balance_mut": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "safe",
-                "name": "Safe",
-                "typeArguments": [
-                  {
-                    "TypeParameter": 0
-                  }
-                ]
-              }
-            }
-          }
-        ],
-        "return": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "balance",
-                "name": "Balance",
-                "typeArguments": [
-                  {
-                    "TypeParameter": 0
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "delete": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "safe",
-              "name": "Safe",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
+          ],
+          "returns": [],
+          "name": "authorize",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            },
+            {
+              "constraints": [
+                2,
+                3
               ]
             }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
+          ],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
               }
             }
-          }
-        ],
-        "return": []
-      },
-      "new": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
+          ],
+          "returns": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 11,
+                "typeParameter": 1
               }
             }
-          }
-        ],
-        "return": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "safe",
-              "name": "Safe",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
+          ],
+          "name": "config",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
             }
-          }
-        ]
-      },
-      "put": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": ["Drop"]
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "safe",
-                "name": "Safe",
-                "typeArguments": [
+          ],
+          "returns": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::bag::Bag"
+              }
+            }
+          ],
+          "name": "data",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [
                   {
-                    "TypeParameter": 0
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
                   }
-                ]
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Role"
               }
             }
-          },
-          {
-            "Struct": {
-              "address": "0x2",
-              "module": "coin",
-              "name": "Coin",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
-            }
-          },
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "package",
-                "name": "Publisher",
-                "typeArguments": []
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 2
               }
             }
-          }
-        ],
-        "return": []
-      },
-      "share": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "safe",
-              "name": "Safe",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
+          ],
+          "name": "deauthorize",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
             }
-          }
-        ],
-        "return": []
-      },
-      "withdraw": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": ["Drop"]
-          }
-        ],
-        "parameters": [
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "safe",
-                "name": "Safe",
-                "typeArguments": [
+          ],
+          "returns": [],
+          "name": "destroy_empty",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 2
+              }
+            }
+          ],
+          "name": "is_authorized",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Roles"
+              }
+            }
+          ],
+          "name": "new",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 1
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
                   {
-                    "TypeParameter": 0
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
                   }
-                ]
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::roles::Role"
               }
             }
-          },
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "package",
-                "name": "Publisher",
-                "typeArguments": []
-              }
-            }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
-              }
-            }
-          }
-        ],
-        "return": [
-          {
-            "Struct": {
-              "address": "0x2",
-              "module": "coin",
-              "name": "Coin",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
-            }
-          }
-        ]
-      }
+          ],
+          "name": "new_role",
+          "visibility": 3,
+          "isEntry": false
+        }
+      ],
+      "name": "roles"
     }
   },
-  "treasury": {
-    "fileFormatVersion": 6,
+  {
     "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-    "name": "treasury",
-    "friends": [
-      {
-        "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-        "name": "memefi"
-      }
-    ],
-    "structs": {
-      "TreasuryCapKey": {
-        "abilities": {
-          "abilities": ["Copy", "Drop", "Store"]
-        },
-        "typeParameters": [],
-        "fields": [
-          {
-            "name": "dummy_field",
-            "type": "Bool"
-          }
-        ]
-      },
-      "WrappedTreasury": {
-        "abilities": {
-          "abilities": ["Key"]
-        },
-        "typeParameters": [
-          {
-            "constraints": {
-              "abilities": []
+    "module": {
+      "datatypes": [
+        {
+          "abilities": [
+            4
+          ],
+          "typeParameters": [
+            {
+              "constraints": [],
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::object::UID"
+              }
             },
-            "isPhantom": true
-          }
-        ],
-        "fields": [
-          {
-            "name": "id",
-            "type": {
-              "Struct": {
-                "address": "0x2",
-                "module": "object",
-                "name": "UID",
-                "typeArguments": []
-              }
-            }
-          }
-        ]
-      }
-    },
-    "exposedFunctions": {
-      "share": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "treasury",
-              "name": "WrappedTreasury",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
-            }
-          }
-        ],
-        "return": []
-      },
-      "total_supply": {
-        "visibility": "Public",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Reference": {
-              "Struct": {
-                "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-                "module": "treasury",
-                "name": "WrappedTreasury",
-                "typeArguments": [
+            {
+              "name": "balance",
+              "position": 1,
+              "type": {
+                "typeParameterInstantiation": [
                   {
-                    "TypeParameter": 0
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
                   }
-                ]
+                ],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::balance::Balance"
               }
             }
-          }
-        ],
-        "return": ["U64"]
-      },
-      "wrap": {
-        "visibility": "Friend",
-        "isEntry": false,
-        "typeParameters": [
-          {
-            "abilities": []
-          }
-        ],
-        "parameters": [
-          {
-            "Struct": {
-              "address": "0x2",
-              "module": "coin",
-              "name": "TreasuryCap",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
-              ]
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "safe",
+          "name": "Safe",
+          "kind": 1
+        }
+      ],
+      "functions": [
+        {
+          "typeParameters": [
+            {
+              "constraints": []
             }
-          },
-          {
-            "MutableReference": {
-              "Struct": {
-                "address": "0x2",
-                "module": "tx_context",
-                "name": "TxContext",
-                "typeArguments": []
+          ],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
               }
             }
-          }
-        ],
-        "return": [
-          {
-            "Struct": {
-              "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
-              "module": "treasury",
-              "name": "WrappedTreasury",
-              "typeArguments": [
-                {
-                  "TypeParameter": 0
-                }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 6
+              }
+            }
+          ],
+          "name": "balance",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::balance::Balance"
+              }
+            }
+          ],
+          "name": "balance_mut",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "delete",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "init",
+          "visibility": 1,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
+              }
+            }
+          ],
+          "name": "new",
+          "visibility": 3,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": [
+                2
               ]
             }
-          }
-        ]
-      }
+          ],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
+              }
+            },
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin"
+              }
+            },
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::package::Publisher"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "put",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "share",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": [
+                2
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::safe::Safe"
+              }
+            },
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::package::Publisher"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::Coin"
+              }
+            }
+          ],
+          "name": "withdraw",
+          "visibility": 2,
+          "isEntry": false
+        }
+      ],
+      "name": "safe"
+    }
+  },
+  {
+    "address": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+    "module": {
+      "datatypes": [
+        {
+          "abilities": [
+            1,
+            2,
+            3
+          ],
+          "typeParameters": [],
+          "fields": [
+            {
+              "name": "dummy_field",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 2
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::treasury::TreasuryCapKey",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "treasury",
+          "name": "TreasuryCapKey",
+          "kind": 1
+        },
+        {
+          "abilities": [
+            4
+          ],
+          "typeParameters": [
+            {
+              "constraints": [],
+              "isPhantom": true
+            }
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "position": 0,
+              "type": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::object::UID"
+              }
+            }
+          ],
+          "variants": [],
+          "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::treasury::WrappedTreasury",
+          "definingId": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e",
+          "module": "treasury",
+          "name": "WrappedTreasury",
+          "kind": 1
+        }
+      ],
+      "functions": [
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::treasury::WrappedTreasury"
+              }
+            }
+          ],
+          "returns": [],
+          "name": "share",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "reference": 1,
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::treasury::WrappedTreasury"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 6
+              }
+            }
+          ],
+          "name": "total_supply",
+          "visibility": 2,
+          "isEntry": false
+        },
+        {
+          "typeParameters": [
+            {
+              "constraints": []
+            }
+          ],
+          "parameters": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::coin::TreasuryCap"
+              }
+            },
+            {
+              "reference": 2,
+              "body": {
+                "typeParameterInstantiation": [],
+                "type": 10,
+                "typeName": "0x0000000000000000000000000000000000000000000000000000000000000002::tx_context::TxContext"
+              }
+            }
+          ],
+          "returns": [
+            {
+              "body": {
+                "typeParameterInstantiation": [
+                  {
+                    "typeParameterInstantiation": [],
+                    "type": 11,
+                    "typeParameter": 0
+                  }
+                ],
+                "type": 10,
+                "typeName": "0x7f7a37c826c88bcfe9aecc042453395ddfa9df6f29cb7c97590bf86cf2b0a75e::treasury::WrappedTreasury"
+              }
+            }
+          ],
+          "name": "wrap",
+          "visibility": 3,
+          "isEntry": false
+        }
+      ],
+      "name": "treasury"
     }
   }
-}
+]
