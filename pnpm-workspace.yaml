@@ -1,9 +1,9 @@
 packages:
   - 'packages/*'
   - 'examples/*'
-# pnpm 11 errors on ignored build scripts unless explicitly approved.
+# pnpm 11 errors on ignored build scripts unless explicitly approved here.
 # esbuild (used by tsx) and unrs-resolver (eslint-import-resolver-typescript's
 # native binary) both ship legitimate postinstall builds.
-onlyBuiltDependencies:
-  - esbuild
-  - unrs-resolver
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
