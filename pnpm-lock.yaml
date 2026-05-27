@@ -134,10 +134,6 @@ importers:
       radash:
         specifier: ^12.0.0
         version: 12.1.0
-    devDependencies:
-      '@types/node':
-        specifier: ^24.0.0
-        version: 24.10.13
 
   packages/iota:
     dependencies:
@@ -159,20 +155,12 @@ importers:
       radash:
         specifier: ^12.0.0
         version: 12.1.0
-    devDependencies:
-      '@types/node':
-        specifier: ^24.0.0
-        version: 24.10.13
 
   packages/move:
     dependencies:
       radash:
         specifier: ^12.0.0
         version: 12.1.0
-    devDependencies:
-      '@types/node':
-        specifier: ^24.0.0
-        version: 24.10.13
 
   packages/sui:
     dependencies:
@@ -194,10 +182,6 @@ importers:
       radash:
         specifier: ^12.0.0
         version: 12.1.0
-    devDependencies:
-      '@types/node':
-        specifier: ^24.0.0
-        version: 24.10.13
 
 packages:
 
