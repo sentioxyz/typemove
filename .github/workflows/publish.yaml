@@ -39,7 +39,7 @@ jobs:
         run: pnpm build:all
       - name: Semantic Release
         id: semantic
-        uses: cycjimmy/semantic-release-action@v6.0.0
+        uses: cycjimmy/semantic-release-action@v6
         with:
           semantic_version: 24.0.0
         env:
