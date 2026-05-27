@@ -3,7 +3,7 @@
   "name": "@example/sui",
   "version": "1.0.0-development",
   "license": "Apache-2.0",
-  "type": "commonjs",
+  "type": "module",
   "files": [
     "{dist,src}",
     "!**/*.test.{js,ts}",
@@ -13,10 +13,10 @@
     "build": "pnpm gen && tsc",
     "build:all": "pnpm --filter=$(node -p \"require('./package.json').name\")... build",
     "build:cjs": "pnpm gen && tsc --project tsconfig.cjs.json",
-    "gen": "typemove-sui -t ./src/types ./src/abis"
+    "gen": "typemove-sui -t ./src/types -a ./src/abis -n testnet 0xdee9"
   },
   "dependencies": {
-    "@mysten/sui": "~1.38.0",
+    "@mysten/sui": "~2.17.0",
     "@typemove/move": "workspace:*",
     "@typemove/sui": "workspace:*"
   },
