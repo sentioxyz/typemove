@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     "rootDir": "./src",
-    "baseUrl": "./src",
     "outDir": "dist/esm",
     "paths": {
-      "@typemove/aptos": ["./index.ts"],
-      "@typemove/aptos/*": ["./*/index.ts"],
-      "@typemove/aptos/builtin/*": ["./builtin/*.ts"]
+      "@typemove/aptos": ["./src/index.ts"],
+      "@typemove/aptos/*": ["./src/*/index.ts"],
+      "@typemove/aptos/builtin/*": ["./src/builtin/*.ts"]
     }
   },
   "exclude": ["dist"],

@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     "rootDir": "./src",
-    "baseUrl": "./src",
     "outDir": "dist/esm",
     "paths": {
-      "@typemove/sui": ["./index.ts"],
-      "@typemove/sui/*": ["./*/index.ts"],
-      "@typemove/sui/builtin/*": ["./builtin/*.ts"]
+      "@typemove/sui": ["./src/index.ts"],
+      "@typemove/sui/*": ["./src/*/index.ts"],
+      "@typemove/sui/builtin/*": ["./src/builtin/*.ts"]
     }
   },
   "exclude": ["dist"],
