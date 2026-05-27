@@ -42,7 +42,7 @@ describe('account resource client', () => {
     try {
       const x = await accountResourceClient.matchExact(ACCOUNT_ADDRESS, type)
     } catch (e) {
-      expect(e.message).to.be.equal('resource type for match call should not contain any type')
+      expect((e as Error).message).to.be.equal('resource type for match call should not contain any type')
     }
   })
 })

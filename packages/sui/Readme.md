@@ -77,29 +77,29 @@ export interface DeliveryInfo {
 
 let deliveryInfo: DeliveryInfo | undefined =
     // @ts-ignore
-    data.content.fields.info.fields.delivery_info
+    data.json.info.delivery_info
         ? {
           // @ts-ignore
-          round: data.content.fields.info.fields.delivery_info.fields.round,
+          round: data.json.info.delivery_info.round,
           // @ts-ignore
-          price: data.content.fields.info.fields.delivery_info.fields.price,
+          price: data.json.info.delivery_info.price,
           // @ts-ignore
-          size: data.content.fields.info.fields.delivery_info.fields.size,
+          size: data.json.info.delivery_info.size,
           // @ts-ignore
-          premium: data.content.fields.info.fields.delivery_info.fields.premium,
+          premium: data.json.info.delivery_info.premium,
           // @ts-ignore
-          tsMs: data.content.fields.info.fields.delivery_info.fields.ts_ms,
+          tsMs: data.json.info.delivery_info.ts_ms,
         }
         : undefined;
 let info: Info = {
   // @ts-ignore
-  index: data.content.fields.info.fields.index,
+  index: data.json.info.index,
   // @ts-ignore
-  creator: data.content.fields.info.fields.creator,
+  creator: data.json.info.creator,
   // @ts-ignore
-  createTsMs: data.content.fields.info.fields.create_ts_ms,
+  createTsMs: data.json.info.create_ts_ms,
   // @ts-ignore
-  round: data.content.fields.info.fields.round,
+  round: data.json.info.round,
   deliveryInfo,
 };
 
@@ -130,15 +130,15 @@ res = (await _0x2.math.view.min(client, [20n, 4n]))
 console.log(res?.results_decoded[0])
 ```
 
-Typemove's generated view function stubs wraps the `devInspectTransactionBlock` API and decode the result,
-it adds an fully typed `results_decoded` field to the result object. e.g. the above `min` function generated has type annotation as below: 
+Typemove's generated view function stubs wrap the gRPC `simulateTransaction` API and decode the result,
+adding a fully typed `results_decoded` field to the result object. e.g. the above `min` function generated has type annotation as below: 
 
 ```typescript
 module math {
   export async function min(
-      client: SuiClient,
+      client: SuiGrpcClient,
       args: [bigint | TransactionArgument, bigint | TransactionArgument],
-  ): Promise<TypedDevInspectResults<[bigint]>> {
+  ): Promise<TypedSimulateResults<[bigint]>> {
   ...
   }
 }
@@ -150,12 +150,14 @@ Similar to original transaction building process, but you could use generated bu
 
 ```typescript
 import { clob_v2 } from './types/testnet/0xdee9.js'
+import { getGrpcClient, getGrpcFullnodeUrl } from '@typemove/sui'
+import { Transaction } from '@mysten/sui/transactions'
 
-const client = new SuiClient({ url: getFullnodeUrl('testnet') })
-const tx = new TransactionBlock()
+const client = getGrpcClient(getGrpcFullnodeUrl('testnet'))
+const tx = new Transaction()
 clob_v2.builder.createAccount(tx, ["0xd9e6dc1e7f0790c18acf96b629f0a236d56de2f96537d921197bcb0e071b12bd"])
     ... more tx build 
-client.signAndExecuteTransactionBlock({transactionBlock: tx, signer: keypair})
+client.signAndExecuteTransaction({ transaction: tx, signer: keypair })
 ```
 
 Checkout our [tests](./src/tests/move-call.test.ts) for more examples.

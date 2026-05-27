@@ -1,5 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "enabledPlugins": {
+    "claude-md-management@claude-plugins-official": true
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -19,6 +22,19 @@
           {
             "type": "command",
             "command": "jq -r '.tool_input.file_path // empty' | xargs -I {} sh -c 'case \"{}\" in *.ts|*.tsx|*.js|*.mjs|*.cjs|*.json|*.yml|*.yaml|*.md) cd \"$CLAUDE_PROJECT_DIR\" && pnpm exec prettier --write --log-level warn \"{}\" 2>/dev/null || true ;; esac'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "Audit and, if warranted, update the typemove repo's CLAUDE.md after a Claude Code session.\n\nStep 1 — Quick triage. Run `git status --short` from the repo root. If there are no file changes (nothing modified or staged), output exactly `SKIP: no changes` and STOP — do not edit anything.\n\nStep 2 — If changes exist, run the `/claude-md-improver` skill (from the claude-md-management plugin) to audit whether CLAUDE.md needs updating and apply minimal, targeted edits. Only update for durable, workflow-relevant changes (new/changed scripts, codegen workflow, new packages/chains, PR/git conventions, tech-stack/build requirements, sentio-sdk integration, npm publishing) — not routine bug fixes, dep bumps that don't change workflow, refactors, regenerated builtin/ABI output, or test-only changes.\n\nSCOPE: typemove is a PUBLIC repository. Never add references to the private `sentio/` or `production/` repos, their structure, services, credentials, or internal URLs.\n\nReport a one-line summary of what you changed (or `SKIP: nothing CLAUDE.md-worthy` if no update was warranted).\n\nHook input: $ARGUMENTS",
+            "timeout": 120,
+            "statusMessage": "Auditing typemove CLAUDE.md (/claude-md-improver)",
+            "async": true
           }
         ]
       }

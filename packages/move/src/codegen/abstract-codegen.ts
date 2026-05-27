@@ -18,24 +18,21 @@ interface Config {
   // network: NetworkType
 }
 
-// TODO be able to generate cjs
 export abstract class AbstractCodegen<ModuleTypes, StructType> {
-  ADDRESS_TYPE: string
-  SYSTEM_PACKAGE: string
-  PREFIX: string
+  // Set by every concrete subclass (SuiCodegen / AptosCodegen / …) as class
+  // field initializers; the definite-assignment assertion satisfies
+  // strictPropertyInitialization without a base-class default.
+  ADDRESS_TYPE!: string
+  SYSTEM_PACKAGE!: string
+  PREFIX!: string
   STRUCT_FIELD_NAME: string = 'data'
   PAYLOAD_OPTIONAL = false
   SYSTEM_MODULES = new Set(['0x1', '0x2', '0x3', '0x4'])
-  ESM = true
 
   chainAdapter: ChainAdapter<ModuleTypes, StructType>
 
   protected constructor(chainAdapter: ChainAdapter<ModuleTypes, StructType>) {
     this.chainAdapter = chainAdapter
-  }
-
-  public maybeEsmPrefix() {
-    return this.ESM ? '.js' : ''
   }
 
   readModulesFile(fullPath: string) {
@@ -159,9 +156,7 @@ export abstract class AbstractCodegen<ModuleTypes, StructType> {
 `
     for (const output of outputs) {
       const parsed = path.parse(output.fileName)
-      rootFileContent += `export * as _${parsed.name.replaceAll('-', '_')} from './${
-        parsed.name
-      }${this.maybeEsmPrefix()}'\n`
+      rootFileContent += `export * as _${parsed.name.replaceAll('-', '_')} from './${parsed.name}.js'\n`
     }
     fs.writeFileSync(rootFile, rootFileContent)
 
@@ -535,7 +530,7 @@ export class AccountCodegen<ModuleType, StructType> {
             // `import _${account} = builtin._${account} `
           )
         } else {
-          moduleImports.push(`import * as _${account} from "${tsAccountModule}${this.moduleGen.maybeEsmPrefix()}"`)
+          moduleImports.push(`import * as _${account} from "${tsAccountModule}.js"`)
         }
 
         dependedAccounts.push(account)

@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
           ref: ${{ github.event.inputs.commit }}
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24
@@ -39,7 +39,7 @@ jobs:
         run: pnpm build:all
       - name: Semantic Release
         id: semantic
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@v6
         with:
           semantic_version: 24.0.0
         env:

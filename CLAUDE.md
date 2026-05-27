@@ -35,23 +35,27 @@ typemove/
 ### Package Structure
 
 **`packages/move/`** - Core package
+
 - Base Move type system
 - Common utilities for Move data structures
 - Shared encoding/decoding logic
 
 **`packages/aptos/`** - Aptos integration
+
 - Aptos-specific type generation
 - View function calling for Aptos
 - Transaction building for Aptos
 - Resource and object utilities
 
 **`packages/sui/`** - Sui integration
+
 - Sui-specific type generation
 - View function calling for Sui
 - Transaction building for Sui
 - Object and dynamic field utilities
 
 **`packages/iota/`** - Iota integration
+
 - Iota-specific type generation (based on Sui)
 - View function calling for Iota
 - Transaction building for Iota
@@ -86,8 +90,11 @@ pnpm install
 # Build all packages
 pnpm build:all
 
-# Run tests
-pnpm test
+# Run all package tests
+pnpm test:all
+
+# Test one package
+pnpm --filter @typemove/sui test
 
 # Lint code
 pnpm lint
@@ -95,21 +102,34 @@ pnpm lint
 # Format code
 pnpm format
 
+# Generate API docs (typedoc)
+pnpm gen:docs
+
 # Build specific package
 pnpm --filter @typemove/aptos build
 pnpm --filter @typemove/sui build
 pnpm --filter @typemove/iota build
 ```
 
+### Code Generation
+
+The committed `packages/<chain>/src/builtin/0x*.ts` are generated from ABIs.
+Regenerate after changing ABIs, codegen logic, or bumping a chain SDK:
+
+```bash
+cd packages/aptos && pnpm gen      # builtins (Aptos: 0x1/0x3/0x4; Sui/Iota: 0x1/0x2/0x3)
+cd packages/aptos && pnpm gen:test # regenerate test types
+```
+
+Underlying CLI: `typemove-aptos` / `typemove-sui` / `typemove-iota`
+(`-t <target-dir> -a <abi-dir> -n <network> <address|abi-dir>`).
+Helper skills: `/regen-builtins`, `/bump-chain-sdk`.
+
 ### Working with Examples
 
 ```bash
-# Navigate to examples directory
-cd examples/
-
-# Run example (varies by example)
-pnpm install
-pnpm build
+pnpm --filter @example/aptos build
+pnpm --filter @example/sui build
 ```
 
 ## Integration with sentio-sdk
@@ -125,13 +145,15 @@ TypeMove is a dependency of sentio-sdk for Move-based blockchain support:
 1. Make changes in `typemove/`
 2. Build TypeMove: `pnpm build:all`
 3. Link to sentio-sdk (if testing locally):
-   ```bash
-   cd typemove/packages/aptos  # or sui/iota
-   pnpm link
 
+   ```bash
+   cd typemove/packages/aptos # or sui/iota
+   pnpm link
+   
    cd ../../../sentio-sdk
-   pnpm link @typemove/aptos  # or @typemove/sui, @typemove/iota
+   pnpm link @typemove/aptos # or @typemove/sui, @typemove/iota
    ```
+
 4. Test in sentio-sdk with Move chain examples
 
 ## Pull Request Workflow
@@ -166,7 +188,7 @@ git checkout -b dev/<your-name>/<feature-name>
 pnpm build:all
 
 # Run tests
-pnpm test
+pnpm test:all
 
 # Lint code
 pnpm lint
@@ -208,6 +230,11 @@ pnpm format
 3. Write tests for the new utility
 4. Document usage in package README
 
+## Gotchas
+
+- **Never hand-edit generated output**: `packages/*/src/builtin/` and `src/abis/` are codegen artifacts (a PreToolUse hook blocks edits to `builtin/0x*.ts`). Change the ABI or codegen source and re-run `pnpm gen` (see Code Generation above).
+- Generated `builtin/` and `types/` are gitignored; `abis/` are committed.
+
 ## Testing Strategy
 
 - **Unit Tests**: Test individual functions and utilities
@@ -218,6 +245,7 @@ pnpm format
 ## Publishing
 
 TypeMove packages are published to npm:
+
 - `@typemove/move`
 - `@typemove/aptos`
 - `@typemove/sui`

@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "rootDir": "./src",
-    "baseUrl": "./src",
     "outDir": "dist",
     "module": "nodenext",
     "moduleResolution": "nodenext"

@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     "rootDir": "./src",
-    "baseUrl": "./src",
     "outDir": "dist/esm",
     "paths": {
-      "@typemove/iota": ["./index.ts"],
-      "@typemove/iota/*": ["./*/index.ts"],
-      "@typemove/iota/builtin/*": ["./builtin/*.ts"]
+      "@typemove/iota": ["./src/index.ts"],
+      "@typemove/iota/*": ["./src/*/index.ts"],
+      "@typemove/iota/builtin/*": ["./src/builtin/*.ts"]
     }
   },
   "exclude": ["dist", "sync-from-sui.ts"],
