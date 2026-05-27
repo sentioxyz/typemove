@@ -2,6 +2,11 @@
   "name": "@typemove/move",
   "version": "1.0.0-development",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sentioxyz/typemove.git",
+    "directory": "packages/move"
+  },
   "type": "module",
   "exports": {
     ".": "./dist/esm/index.js",
@@ -19,6 +24,5 @@
   },
   "dependencies": {
     "radash": "^12.0.0"
-  },
-  "url": "https://github.com/sentioxyz/typemove"
+  }
 }

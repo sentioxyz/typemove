@@ -2,6 +2,11 @@
   "name": "@typemove/sui",
   "version": "1.0.0-development",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sentioxyz/typemove.git",
+    "directory": "packages/sui"
+  },
   "type": "module",
   "exports": {
     ".": "./dist/esm/index.js",
@@ -36,6 +41,5 @@
     "commander": "^14.0.0",
     "prettier": "^3.2.4",
     "radash": "^12.0.0"
-  },
-  "url": "https://github.com/sentioxyz/typemove"
+  }
 }
