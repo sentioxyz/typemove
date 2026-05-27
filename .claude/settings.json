@@ -1,5 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "enabledPlugins": {
+    "claude-md-management@claude-plugins-official": true
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -27,8 +30,11 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/claude-md-stale-check.sh"
+            "type": "agent",
+            "prompt": "You are auditing whether the typemove repo's CLAUDE.md needs updating after a Claude Code session.\n\nStep 1 — Quick triage. Run `git status --short` and `git diff HEAD --stat` from the typemove repo root. If there are no file changes (nothing modified or staged), output exactly `SKIP: no changes` and STOP. Do not edit anything.\n\nStep 2 — Relevance check. If changes exist, inspect the diff. typemove/CLAUDE.md should ONLY be updated when the session established something durable that a future Claude session would need to know:\n  - New or changed pnpm scripts contributors must know about (build, build:all, test, lint, format, gen, gen:test in any package.json)\n  - New package added under packages/ (e.g. support for a new Move chain) or a new top-level directory (examples/, scripts/, etc.)\n  - Changed code-generation / type-generation workflow (codegen entrypoints, the typemove-aptos / typemove-sui / typemove-iota CLI flags, ABI fetch/regeneration steps)\n  - Changed PR workflow, git aliases (git dev/sync), or commit conventions\n  - New tech-stack version that changes how contributors build (Node, pnpm, TypeScript) or a new build/runtime requirement\n  - Changed sentio-sdk integration or local-linking workflow\n  - Changed publishing flow for the @typemove/* npm packages\n\nDo NOT update for: routine bug fixes, one-off code changes, dependency version bumps that don't change workflow, internal refactors, regenerated builtin/ABI output, test-only changes, doc tweaks outside CLAUDE.md, or anything already captured.\n\nSCOPE: typemove is a PUBLIC repository. Never add references to the private `sentio/` or `production/` repos, their structure, services, credentials, or internal URLs.\n\nStep 3 — If an update is warranted, read typemove/CLAUDE.md and make a minimal, targeted edit matching its existing structure (headings, code-block style, callout style). Output a one-line summary of what you changed and why.\n\nIf no update is warranted, output exactly `SKIP: nothing CLAUDE.md-worthy` and STOP.\n\nHook input: $ARGUMENTS",
+            "timeout": 120,
+            "statusMessage": "Checking if typemove CLAUDE.md needs updating",
+            "async": true
           }
         ]
       }
