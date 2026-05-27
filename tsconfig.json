@@ -1,12 +1,6 @@
 {
   "compilerOptions": {
     "importHelpers": true,
-    // TS 6 flipped `strict` to default-on. This project historically opted
-    // into individual strict-family flags (strictNullChecks, noImplicitAny,
-    // etc.) but never full strict, so pin it off to keep
-    // strictPropertyInitialization / useUnknownInCatchVariables from breaking
-    // the existing codebase.
-    "strict": false,
     "declaration": true,
     "declarationMap": true,
     "alwaysStrict": true,

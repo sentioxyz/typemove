@@ -19,9 +19,12 @@ interface Config {
 }
 
 export abstract class AbstractCodegen<ModuleTypes, StructType> {
-  ADDRESS_TYPE: string
-  SYSTEM_PACKAGE: string
-  PREFIX: string
+  // Set by every concrete subclass (SuiCodegen / AptosCodegen / …) as class
+  // field initializers; the definite-assignment assertion satisfies
+  // strictPropertyInitialization without a base-class default.
+  ADDRESS_TYPE!: string
+  SYSTEM_PACKAGE!: string
+  PREFIX!: string
   STRUCT_FIELD_NAME: string = 'data'
   PAYLOAD_OPTIONAL = false
   SYSTEM_MODULES = new Set(['0x1', '0x2', '0x3', '0x4'])
