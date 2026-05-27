@@ -16,7 +16,7 @@ describe('account resource client', () => {
     const allPoolResources = await accountResourceClient.matchAll(ACCOUNT_ADDRESS, poolType)
     expect(allPoolResources.length).to.greaterThan(1)
     for (const r of allPoolResources) {
-      expect(r.data_decoded.x_reserve).not.be.undefined
+      expect(r.data_decoded.x_reserve).to.not.equal(undefined)
     }
 
     const poolTypeWithAptos = amm.Pool.type(aptos_coin.AptosCoin.type(), ANY_TYPE)
@@ -28,13 +28,13 @@ describe('account resource client', () => {
 
   test('test single resource', async () => {
     const x = await accountResourceClient.matchExact(ACCOUNT_ADDRESS, vault.Vault.type())
-    expect(x).not.be.undefined
+    expect(x).to.not.equal(undefined)
   })
 
   test('test single resource with type', async () => {
     const type = amm.Pool.type(aptos_coin.AptosCoin.type(), aptos_coin.AptosCoin.type())
     const x = await accountResourceClient.matchExact(ACCOUNT_ADDRESS, type)
-    expect(x).not.be.undefined
+    expect(x).to.not.equal(undefined)
   })
 
   test('test single resource with wrong pattern', async () => {
