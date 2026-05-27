@@ -22,6 +22,16 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/claude-md-stale-check.sh"
+          }
+        ]
+      }
     ]
   }
 }
