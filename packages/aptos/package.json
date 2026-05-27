@@ -27,7 +27,7 @@
     "gen": "pnpm _gen 0x1 && pnpm _gen 0x3 && pnpm _gen 0x4",
     "gen:test": "tsx src/codegen/run.ts -t src/tests/types src/tests/abis",
     "gen-with-address": "tsx src/codegen/run.ts -t ./src/tests/types 0x48271d39d0b05bd6efca2278f22277d6fcc375504f9839fd73f74ace240861af",
-    "test": "glob -c 'tsx --test' '**/*.test.ts'"
+    "test": "tsx --test '**/*.test.ts'"
   },
   "types": "./dist/esm/index.d.ts",
   "dependencies": {
@@ -37,6 +37,9 @@
     "commander": "^14.0.0",
     "prettier": "^3.2.4",
     "radash": "^12.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0"
   },
   "url": "https://github.com/sentioxyz/typemove"
 }

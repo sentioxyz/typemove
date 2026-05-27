@@ -1,12 +1,19 @@
 {
   "compilerOptions": {
     "importHelpers": true,
+    // TS 6 flipped `strict` to default-on. This project historically opted
+    // into individual strict-family flags (strictNullChecks, noImplicitAny,
+    // etc.) but never full strict, so pin it off to keep
+    // strictPropertyInitialization / useUnknownInCatchVariables from breaking
+    // the existing codebase.
+    "strict": false,
     "declaration": true,
     "declarationMap": true,
     "alwaysStrict": true,
     "sourceMap": true,
     "target": "esnext",
-    "lib": ["ES2021.String"],
+    "lib": ["ESNext"],
+    "types": ["node"],
     "esModuleInterop": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -20,6 +27,7 @@
     "noFallthroughCasesInSwitch": false,
     "noEmitOnError": false,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "6.0"
   }
 }
