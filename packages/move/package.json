@@ -8,10 +8,10 @@
     "./codegen": "./dist/esm/codegen/index.js"
   },
   "files": [
-    "**/package.json",
-    "{dist,src}",
-    "!**/*.test.{js,ts}",
-    "!{dist,src}/*/tests"
+    "dist",
+    "src",
+    "!**/*.test.*",
+    "!**/tests"
   ],
   "scripts": {
     "build": "tsc",

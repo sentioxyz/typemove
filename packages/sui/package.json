@@ -15,10 +15,10 @@
     "typemove-sui": "./dist/esm/codegen/run.js"
   },
   "files": [
-    "**/package.json",
-    "{dist,src}",
-    "!**/*.test.{js,ts}",
-    "!{dist,src}/*/tests"
+    "dist",
+    "src",
+    "!**/*.test.*",
+    "!**/tests"
   ],
   "scripts": {
     "_gen": "pnpm gen:test && tsx src/codegen/run.ts -t src/builtin -a src/abis",
