@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "importHelpers": true,
     "declaration": true,
     "declarationMap": true,
     "alwaysStrict": true,
