@@ -17,8 +17,7 @@
     "isolatedModules": true,
     "strictNullChecks": true,
     "stripInternal": true,
-    "noFallthroughCasesInSwitch": false,
-    "noEmitOnError": false,
+    "noEmitOnError": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   }
