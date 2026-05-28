@@ -310,7 +310,6 @@ export function vectorType<T>(t: TypeDescriptor<T> = ANY_TYPE): TypeDescriptor<T
 
 export const BUILTIN_TYPES = {
   ADDRESS_TYPE: new TypeDescriptor<string>('address'),
-  // export const Address = new TypeDescriptor<string>("Address")
 
   VECTOR_TYPE_ANY: new TypeDescriptor<any[]>('vector'),
   VECTOR_TYPE: vectorType,
@@ -318,17 +317,11 @@ export const BUILTIN_TYPES = {
   BOOL_TYPE: new TypeDescriptor<number>('bool'),
 
   U8_TYPE: new TypeDescriptor<number>('u8'),
-  // export const U8 = new TypeDescriptor<number>("U8")
   U16_TYPE: new TypeDescriptor<number>('u16'),
-  // export const U16 = new TypeDescriptor<number>("U16")
   U32_TYPE: new TypeDescriptor<number>('u32'),
-  // export const U32 = new TypeDescriptor<number>("U32")
   U64_TYPE: new TypeDescriptor<number>('u64'),
-  // export const U64 = new TypeDescriptor<number>("U64")
   U128_TYPE: new TypeDescriptor<number>('u128'),
-  // export const U128 = new TypeDescriptor<number>("U128")
   U256_TYPE: new TypeDescriptor<number>('u256')
-  // export const U256 = new TypeDescriptor<number>("U256")
 }
 
 const BUILTIN_TYPES_SET = new Set(
