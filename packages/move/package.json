@@ -23,6 +23,6 @@
     "test": "tsx --test '**/*.test.ts'"
   },
   "dependencies": {
-    "radash": "^12.0.0"
+    "radash": "^12.1.1"
   }
 }
