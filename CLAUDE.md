@@ -123,7 +123,7 @@ cd packages/aptos && pnpm gen:test # regenerate test types
 
 Underlying CLI: `typemove-aptos` / `typemove-sui` / `typemove-iota`
 (`-t <target-dir> -a <abi-dir> -n <network> <address|abi-dir>`).
-Helper skills: `/regen-builtins`, `/bump-chain-sdk`.
+Helper skill: `/bump-chain-sdk`.
 
 ### Working with Examples
 
