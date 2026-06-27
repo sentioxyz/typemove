@@ -19,7 +19,7 @@
     "@typescript-eslint/eslint-plugin": "^8.60.0",
     "@typescript-eslint/parser": "^8.60.0",
     "chai": "^6.2.2",
-    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "conventional-changelog-conventionalcommits": "^10.0.0",
     "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -39,5 +39,5 @@
   "engines": {
     "node": ">=24"
   },
-  "packageManager": "pnpm@11.3.0"
+  "packageManager": "pnpm@11.9.0"
 }
