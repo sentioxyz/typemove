@@ -8,6 +8,15 @@
       matchPackageNames: ["node"],
       enabled: false,
     },
+    {
+      // conventional-changelog-conventionalcommits v10 switched the preset to
+      // render functions, which semantic-release's release-notes-generator
+      // (still on conventional-changelog-writer v8 / handlebars) cannot consume
+      // — it silently emits empty release notes. Hold at v9 until semantic-release
+      // ships support for conventional-changelog-writer v9.
+      matchPackageNames: ["conventional-changelog-conventionalcommits"],
+      allowedVersions: "<10",
+    },
   ],
   timezone: "America/Los_Angeles",
   schedule: ["after 9pm on sunday"],
