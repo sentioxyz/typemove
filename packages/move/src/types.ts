@@ -18,6 +18,20 @@ export class TypeDescriptor<T = any> {
   mutable: boolean
   typeArgs: TypeDescriptor[]
 
+  /**
+   * Phantom marker that ties the type argument `T` into TypeDescriptor's
+   * structural shape. `T` is otherwise unused, which means `TypeDescriptor<A>`
+   * and `TypeDescriptor<B>` are identical types and callers cannot infer `T`
+   * from a `TypeDescriptor<T>` parameter — e.g. `MovePoolAdaptor.poolType` in
+   * @sentio/sdk, where the lost inference surfaces as `unknown` pool callbacks.
+   * It matters most when two copies of this package coexist in one dependency
+   * tree (a descriptor produced by one copy is consumed against another): the
+   * two declarations are compared structurally, and without a `T`-using member
+   * structural inference yields no candidate. Declared (not initialized) so it
+   * stays purely type-level — no runtime field is emitted.
+   */
+  declare readonly __inferredType?: T
+
   constructor(symbol: string, typeParams?: TypeDescriptor[]) {
     this.qname = symbol
     this.reference = false
