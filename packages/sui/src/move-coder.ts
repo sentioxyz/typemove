@@ -61,6 +61,18 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
       }
       return super.decode(data, type)
     }
+    // gRPC's unified Object.json also flattens 0x1::type_name::TypeName to its
+    // inner string (e.g. "<addr>::coin::COIN") — re-wrap to `{ name: '...' }` so
+    // downstream `.name` accessors keep working. Without this the string falls
+    // into the generic struct walk and decodes to `{ name: undefined }`. The
+    // BCS-shaped path (`{ name: { bytes: ... } }`) is delegated to super.decode,
+    // whose field walk hits the ascii::String case.
+    if (type.qname === '0x1::type_name::TypeName') {
+      if (typeof data === 'string') {
+        return { name: data } as any
+      }
+      return super.decode(data, type)
+    }
     switch (type.qname) {
       case '0x1::ascii::Char':
         if (data !== undefined && typeof data !== 'string') {

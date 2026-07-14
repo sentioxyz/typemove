@@ -99,6 +99,15 @@ describe('Test move coder', () => {
     const res2 = await coder.decodeType(nonBcsData, type)
     expect(res2).to.deep.eq(res)
   })
+
+  test('decode type_name flattened to string', async () => {
+    const coder = defaultMoveCoder()
+    // gRPC's unified Object.json flattens 0x1::type_name::TypeName to its inner
+    // string; the decoder should re-wrap it so `.name` accessors keep working.
+    const name = '5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN'
+    const res = await coder.decodeType(name, parseMoveType('0x1::type_name::TypeName'))
+    expect(res).to.deep.eq({ name })
+  })
 })
 
 const bcsData =
