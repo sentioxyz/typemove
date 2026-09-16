@@ -4,10 +4,12 @@ import { expect } from 'chai'
 import { Account, Aptos, AptosConfig, InputViewFunctionData, Network } from '@aptos-labs/ts-sdk'
 
 describe('client call of entry or view', () => {
+  // The tests pin historical ledger versions, which the regular mainnet fullnode has pruned
+  // (it only keeps the recent ledger), so query the archival fullnode that serves full history.
   const client = new Aptos(
     new AptosConfig({
       network: Network.MAINNET,
-      fullnode: 'https://mainnet.aptoslabs.com/v1'
+      fullnode: 'https://archive.mainnet.aptoslabs.com/v1'
     })
   )
 
