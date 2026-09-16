@@ -100,6 +100,23 @@ describe('Test move coder', () => {
     expect(res2).to.deep.eq(res)
   })
 
+  test('decode option none omitted from json', async () => {
+    const coder = defaultMoveCoder()
+    // gRPC json leaves out Option fields that are None (the bcs payload still carries the
+    // None tag), so a struct with an absent Option field must decode instead of throwing.
+    const metadata = {
+      id: { id: '0x9258181f5ceac8dbffb7030890243caed69a9599d2886d957a9cb7656af3bdb3' },
+      decimals: 9,
+      name: 'Sui',
+      symbol: 'SUI',
+      description: ''
+    }
+    const res: any = await coder.decodeType(metadata, parseMoveType('0x2::coin::CoinMetadata<0x2::sui::SUI>'))
+    expect(res.icon_url).to.equal(null)
+    expect(res.decimals).to.equal(9)
+    expect(res.symbol).to.equal('SUI')
+  })
+
   test('decode type_name flattened to string', async () => {
     const coder = defaultMoveCoder()
     // gRPC's unified Object.json flattens 0x1::type_name::TypeName to its inner

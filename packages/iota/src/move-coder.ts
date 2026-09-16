@@ -90,8 +90,10 @@ export class MoveCoder extends AbstractMoveCoder<
         }
         return BigInt(data)
       case '0x1::option::Option':
-        if (data === null) {
-          return data
+        if (data === null || data === undefined) {
+          // A None option can arrive as null (json-rpc) or be omitted entirely from the
+          // decoded json (grpc), so a missing field decodes to None as well.
+          return null
         }
         if (data.vec) {
           // bcs verifed
