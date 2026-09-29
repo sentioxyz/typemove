@@ -26,7 +26,7 @@ import { BcsType, bcs } from '@mysten/sui/bcs'
 // import { Encoding } from '@mysten/bcs/types', this doesn't get exported correctly
 export type Encoding = 'base58' | 'base64' | 'hex'
 
-import { normalizeSuiObjectId, normalizeSuiAddress } from '@mysten/sui/utils'
+import { normalizeSuiObjectId, normalizeSuiAddress, fromBase64 } from '@mysten/sui/utils'
 
 export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInput | SuiMoveObjectInput> {
   constructor(client: SuiGrpcClient) {
@@ -72,6 +72,16 @@ export class MoveCoder extends AbstractMoveCoder<ModuleWithAddress, SuiEventInpu
         return { name: data } as any
       }
       return super.decode(data, type)
+    }
+    // gRPC's unified Object.json renders vector<u8> as a base64 string, while the generated types (and
+    // json-rpc / BCS) use number[]. Convert so the runtime value matches the declared type; nested
+    // vector<vector<u8>> reaches here through the element recursion in super.decode.
+    if (
+      typeof data === 'string' &&
+      type.qname.toLowerCase() === 'vector' &&
+      (type.typeArgs[0]?.qname === 'u8' || type.typeArgs[0]?.qname === 'U8')
+    ) {
+      return Array.from(fromBase64(data)) as any
     }
     switch (type.qname) {
       case '0x1::ascii::Char':
