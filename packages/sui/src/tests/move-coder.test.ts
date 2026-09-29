@@ -17,6 +17,17 @@ describe('Test Sui coder', () => {
     expect(res).equals('mystring')
   })
 
+  test('decode vector<u8> rendered as base64 by gRPC json', async () => {
+    const u8s = parseMoveType('vector<u8>')
+    expect(await coder.decodeType('CQk=', u8s)).deep.equals([9, 9])
+    expect(await coder.decodeType('', u8s)).deep.equals([])
+    // already an array (json-rpc / BCS shape) passes through
+    expect(await coder.decodeType([1, 2, 3], u8s)).deep.equals([1, 2, 3])
+    expect(await coder.decodeType(['CQk=', ''], parseMoveType('vector<vector<u8>>'))).deep.equals([[9, 9], []])
+    expect(await coder.decodeType('CQk=', parseMoveType('0x1::option::Option<vector<u8>>'))).deep.equals([9, 9])
+    expect(await coder.decodeType(null, parseMoveType('0x1::option::Option<vector<u8>>'))).equals(null)
+  })
+
   test('decode object', async () => {
     // gRPC unified shape: nested struct values are flat — no { type, fields } envelopes.
     const data = {
