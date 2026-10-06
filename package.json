@@ -4,7 +4,6 @@
   "scripts": {
     "build:all": "pnpm --filter \"./packages/*\" build",
     "format": "prettier --write .",
-    "gen:docs": "typedoc --options typedoc.json",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "git config --local include.path ../.github/.gitconfig && git config core.hooksPath .github/.githooks",
     "lint": "ls-lint && eslint .",
@@ -32,7 +31,6 @@
     "prettier-plugin-sh": "^0.18.1",
     "semantic-release": "^25.0.3",
     "tsx": "^4.22.3",
-    "typedoc": "^0.28.19",
     "typescript": "^6.0.0",
     "typescript-eslint": "^8.60.0"
   },
