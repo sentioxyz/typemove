@@ -6,18 +6,6 @@
       "friends": [],
       "exposed_functions": [
         {
-          "name": "merge",
-          "visibility": "public",
-          "is_entry": false,
-          "is_view": false,
-          "generic_type_params": [],
-          "params": [
-            "&mut 0x3::token::Token",
-            "0x3::token::Token"
-          ],
-          "return": []
-        },
-        {
           "name": "burn",
           "visibility": "public",
           "is_entry": true,
@@ -44,6 +32,18 @@
             "0x3::token::TokenId",
             "address",
             "u64"
+          ],
+          "return": []
+        },
+        {
+          "name": "merge",
+          "visibility": "public",
+          "is_entry": false,
+          "is_view": false,
+          "generic_type_params": [],
+          "params": [
+            "&mut 0x3::token::Token",
+            "0x3::token::Token"
           ],
           "return": []
         },
@@ -2101,6 +2101,21 @@
       "friends": [],
       "exposed_functions": [
         {
+          "name": "remove",
+          "visibility": "public",
+          "is_entry": false,
+          "is_view": false,
+          "generic_type_params": [],
+          "params": [
+            "&mut 0x3::property_map::PropertyMap",
+            "&0x1::string::String"
+          ],
+          "return": [
+            "0x1::string::String",
+            "0x3::property_map::PropertyValue"
+          ]
+        },
+        {
           "name": "new",
           "visibility": "public",
           "is_entry": false,
@@ -2151,21 +2166,6 @@
           ],
           "return": [
             "u64"
-          ]
-        },
-        {
-          "name": "remove",
-          "visibility": "public",
-          "is_entry": false,
-          "is_view": false,
-          "generic_type_params": [],
-          "params": [
-            "&mut 0x3::property_map::PropertyMap",
-            "&0x1::string::String"
-          ],
-          "return": [
-            "0x1::string::String",
-            "0x3::property_map::PropertyValue"
           ]
         },
         {
