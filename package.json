@@ -18,7 +18,7 @@
     "@typescript-eslint/eslint-plugin": "^8.72.1",
     "@typescript-eslint/parser": "^8.72.1",
     "chai": "^6.3.0",
-    "conventional-changelog-conventionalcommits": "^10.4.1",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
     "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
