@@ -15,7 +15,7 @@
     "gen": "typemove-sui -t ./src/types -a ./src/abis -n testnet 0xdee9"
   },
   "dependencies": {
-    "@mysten/sui": "~2.17.0",
+    "@mysten/sui": "~2.38.0",
     "@typemove/move": "workspace:*",
     "@typemove/sui": "workspace:*"
   },
