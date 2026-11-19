@@ -72,6 +72,27 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
 
   private requestMap = new Map<string, Promise<void>>()
 
+  private async fetchModulesForAccount(account: string): Promise<void> {
+    let resp: Promise<void> | undefined = this.requestMap.get(account)
+    if (!resp) {
+      resp = this.adapter
+        .fetchModules(account)
+        .then((modules) => {
+          for (const m of modules) {
+            this.load(m, account)
+          }
+        })
+        .catch((e) => {
+          if (this.requestMap.get(account) === resp) {
+            this.requestMap.delete(account)
+          }
+          throw e
+        })
+      this.requestMap.set(account, resp)
+    }
+    await resp
+  }
+
   async getMoveStruct(type: string): Promise<InternalMoveStruct> {
     const [account_, module, typeName] = type.split(SPLITTER)
     const account = accountTypeString(account_)
@@ -84,16 +105,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (this.accounts.has(account)) {
       throw new Error('Failed to load struct ' + type + ' for imported account')
     }
-    let resp = this.requestMap.get(account)
-    if (!resp) {
-      resp = this.adapter.fetchModules(account).then((modules) => {
-        for (const m of modules) {
-          this.load(m, account)
-        }
-      })
-      this.requestMap.set(account, resp)
-    }
-    await resp
+    await this.fetchModulesForAccount(account)
     struct = this.typeMapping.get(type)
     if (struct) {
       return struct
@@ -113,16 +125,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (this.accounts.has(account)) {
       return undefined
     }
-    let resp = this.requestMap.get(account)
-    if (!resp) {
-      resp = this.adapter.fetchModules(account).then((modules) => {
-        for (const m of modules) {
-          this.load(m, account)
-        }
-      })
-      this.requestMap.set(account, resp)
-    }
-    await resp
+    await this.fetchModulesForAccount(account)
     enumType = this.enumMapping.get(type)
     if (enumType) {
       return enumType
@@ -142,21 +145,7 @@ export abstract class AbstractMoveCoder<ModuleType, StructType> {
     if (this.accounts.has(account)) {
       throw new Error('Failed to load function ' + type + ' for imported account')
     }
-    let resp = this.requestMap.get(account)
-    if (!resp) {
-      resp = this.adapter
-        .fetchModules(account)
-        .then((modules) => {
-          for (const m of modules) {
-            this.load(m, account)
-          }
-        })
-        .catch((e) => {
-          this.requestMap.delete(account)
-        })
-      this.requestMap.set(account, resp)
-    }
-    await resp
+    await this.fetchModulesForAccount(account)
     func = this.funcMapping.get(type)
     if (func) {
       return func
