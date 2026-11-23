@@ -44,7 +44,7 @@ jobs:
         id: semantic
         uses: cycjimmy/semantic-release-action@v6
         with:
-          semantic_version: 24.0.0
+          semantic_version: 26.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       - name: Release Summary
