@@ -297,8 +297,8 @@ importers:
   examples/sui:
     dependencies:
       '@mysten/sui':
-        specifier: ~2.38.0
-        version: 2.38.0(typescript@6.0.3)
+        specifier: ~3.0.0
+        version: 3.0.1(typescript@6.0.3)
       '@typemove/move':
         specifier: workspace:*
         version: link:../../packages/move
@@ -711,10 +711,6 @@ packages:
 
   '@mysten/bcs@2.1.4':
     resolution: {integrity: sha512-ksfm0HGy82iDcuLaf4kAduaeTNqALH8D8WCdxxwU/L2Gpk4SnqoC7D8R4qMoMpCSkh56CFVG3Tme343Iz2P8PA==}
-
-  '@mysten/sui@2.38.0':
-    resolution: {integrity: sha512-j/uG+waSo62eWH0c3+a/3V8tnsAUTKfe7OIXtIDmhPLQcWnPCchf0R5WjxMx904Vh61qfYmrySFYoAau2+7bwA==}
-    engines: {node: '>=22'}
 
   '@mysten/sui@3.0.1':
     resolution: {integrity: sha512-humKrLNPyScafqwbl2axfffWO9YVK3blAkxHJyBy4tid5CZ1P19NIRlHv659oa8DhR8KeGpCTeb9/8xcoIDKkQ==}
@@ -3033,29 +3029,6 @@ snapshots:
     dependencies:
       '@mysten/utils': 0.4.2
       '@scure/base': 2.4.0
-
-  '@mysten/sui@2.38.0(typescript@6.0.3)':
-    dependencies:
-      '@graphql-typed-document-node/core': 3.2.0(graphql@17.1.0)
-      '@mysten/bcs': 2.1.4
-      '@mysten/utils': 0.4.2
-      '@noble/curves': 2.4.0
-      '@noble/hashes': 2.4.0
-      '@noble/post-quantum': 0.7.1
-      '@protobuf-ts/grpcweb-transport': 2.11.1
-      '@protobuf-ts/runtime': 2.11.1
-      '@protobuf-ts/runtime-rpc': 2.11.1
-      '@scure/base': 2.4.0
-      '@scure/bip32': 2.4.0
-      '@scure/bip39': 2.4.0
-      gql.tada: 1.11.5(graphql@17.1.0)(typescript@6.0.3)
-      graphql: 17.1.0
-      poseidon-lite: 0.3.0
-      valibot: 1.5.0(typescript@6.0.3)
-    transitivePeerDependencies:
-      - '@gql.tada/svelte-support'
-      - '@gql.tada/vue-support'
-      - typescript
 
   '@mysten/sui@3.0.1(typescript@6.0.3)':
     dependencies:
