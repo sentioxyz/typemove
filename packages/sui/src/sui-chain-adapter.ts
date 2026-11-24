@@ -51,7 +51,11 @@ export class SuiChainAdapter extends ChainAdapter<ModuleWithAddress, SuiEventInp
   }
 
   async fetchModules(account: string): Promise<ModuleWithAddress[]> {
-    const { response } = await this.client.movePackageService.getPackage({ packageId: account })
+    // No selector: return the package stored at exactly this id (not the latest in its upgrade lineage).
+    const { response } = await this.client.movePackageService.getPackage({
+      packageId: account,
+      selector: { oneofKind: undefined }
+    })
     const pkg = response.package
     if (!pkg) {
       throw Error(`No package returned for ${account}`)

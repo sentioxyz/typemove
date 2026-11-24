@@ -35,11 +35,11 @@
   },
   "types": "./dist/esm/index.d.ts",
   "dependencies": {
-    "@mysten/sui": "~2.38.0",
+    "@mysten/sui": "~3.0.0",
     "@typemove/move": "workspace:*",
     "chalk": "^6.0.1",
-    "commander": "^15.0.0",
-    "prettier": "^3.9.10",
+    "commander": "^15.1.0",
+    "prettier": "^3.10.1",
     "radash": "^12.1.1"
   }
 }
